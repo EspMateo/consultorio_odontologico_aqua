@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# React / Node
+odontologia/frontend/node_modules/
+odontologia/frontend/build/
+odontologia/frontend/.env
+odontologia/frontend/.env.local
+odontologia/frontend/.env.development.local
+odontologia/frontend/.env.test.local
+odontologia/frontend/.env.production.local
