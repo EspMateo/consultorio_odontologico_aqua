@@ -1,6 +1,6 @@
 # Bienvenid@s al consultorio odontologico *Aqua* 🦷💧 :
 
-Actualmente, estamos trabajando en los siguientes repositorios:
+Actualmente, estamos trabajando en el siguiente repositorio:
 
  Repositorio(s) 
 |----------------|
@@ -8,7 +8,7 @@ Actualmente, estamos trabajando en los siguientes repositorios:
 
 ---
 
-## 🔗 Links de utilidad 📎
+## Links de utilidad 📎
 
 - [Documentación](https://docs.google.com/document/d/1LQL90-KxwrwAMquo1VGfmtoC0j5jS22c/edit?usp=sharing&ouid=111480813215766818155&rtpof=true&sd=true)
 
