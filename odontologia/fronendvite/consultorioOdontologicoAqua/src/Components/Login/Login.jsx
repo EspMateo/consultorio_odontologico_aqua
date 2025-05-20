@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import '../components/login/Login.css';
+import '../styles/Login.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');

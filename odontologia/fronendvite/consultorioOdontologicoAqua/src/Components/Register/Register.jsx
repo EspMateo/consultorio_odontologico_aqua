@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ENDPOINTS } from '../../config';
-import './Register.css';
+import '../styles/Register.css';
 
 function Register() {
   const [form, setForm] = useState({
