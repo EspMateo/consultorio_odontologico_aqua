@@ -14,15 +14,11 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public Optional<Usuario> login(String email, String password) {
-        return usuarioRepository.findByEmailAndPassword(email, password);
+        return usuarioRepository.findByEmail(email)
+                .filter(usuario -> usuario.getPassword().equals(password));
     }
 
     public Usuario save(Usuario usuario) {
         return usuarioRepository.save(usuario);
-    }
-
-    public Usuario findByEmail(String email) {
-        return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 }

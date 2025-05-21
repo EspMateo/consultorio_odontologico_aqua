@@ -1,33 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('inicio');
-  const [userName, setUserName] = useState('Usuario');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const email = localStorage.getItem('userEmail');
-        if (email) {
-          const response = await axios.get(`/api/usuarios/current?email=${email}`);
-          if (response.data && response.data.name) {
-            setUserName(response.data.name);
-          }
-        }
-      } catch (error) {
-        console.error('Error al obtener datos del usuario:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  const userEmail = localStorage.getItem('userEmail');
 
   const handleLogout = () => {
     localStorage.removeItem('userEmail');
@@ -50,8 +28,8 @@ const Dashboard = () => {
           <h1 className="app-title">Consultorio Odontológico</h1>
         </div>
         <div className="user-info">
-          <span className="welcome-text">Bienvenido, Dr(a).</span>
-          <span className="user-name">{loading ? 'Cargando...' : userName}</span>
+          <span className="welcome-text">Bienvenido,</span>
+          <span className="user-name">{userEmail}</span>
           <button className="logout-button" onClick={handleLogout}>
             Cerrar Sesión
           </button>

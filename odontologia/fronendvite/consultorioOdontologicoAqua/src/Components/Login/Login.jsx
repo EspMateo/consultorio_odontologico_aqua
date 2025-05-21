@@ -1,73 +1,55 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Login.css';
+import '../styles/Login.css';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/usuarios/login', formData);
-      if (response.data) {
-        localStorage.setItem('token', 'dummy-token'); // Reemplazar con token real cuando implementes JWT
-        localStorage.setItem('userEmail', formData.email);
+      const res = await axios.post('http://localhost:8080/api/usuarios/login', {
+        email,
+        password,
+      });
+
+      if (res.data) {
+        localStorage.setItem('userEmail', email);
         navigate('/dashboard');
-      } else {
-        setError('Credenciales inválidas');
       }
-    } catch (error) {
-      setError('Error al iniciar sesión');
-      console.error('Error:', error);
+    } catch (err) {
+      alert('Credenciales incorrectas');
     }
   };
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <h2>Iniciar Sesión</h2>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Contraseña:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button type="submit" className="login-button">
-            Iniciar Sesión
-          </button>
-        </form>
-      </div>
+      <form className="login-form" onSubmit={handleLogin}>
+        <h2 className="login-title">Login</h2>
+        <input 
+          className="login-input" 
+          type="email" 
+          placeholder="Correo" 
+          value={email} 
+          onChange={e => setEmail(e.target.value)} 
+          required 
+        />
+        <input 
+          className="login-input" 
+          type="password" 
+          placeholder="Contraseña" 
+          value={password} 
+          onChange={e => setPassword(e.target.value)} 
+          required 
+        />
+        <button className="login-btn" type="submit">Ingresar</button>
+        <div className="register-link">
+          ¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link>
+        </div>
+      </form>
     </div>
   );
 };

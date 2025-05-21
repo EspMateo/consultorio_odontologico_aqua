@@ -9,6 +9,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@CrossOrigin(origins = {"http://localhost:5173"}, 
+             methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
+             allowedHeaders = "*",
+             allowCredentials = "true")
 public class AuthController {
 
     @Autowired
@@ -23,10 +27,5 @@ public class AuthController {
     @PostMapping("/register")
     public Usuario register(@RequestBody Usuario usuario) {
         return usuarioService.save(usuario);
-    }
-
-    @GetMapping("/current")
-    public Usuario getCurrentUser(@RequestParam String email) {
-        return usuarioService.findByEmail(email);
     }
 }
