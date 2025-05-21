@@ -15,13 +15,18 @@ public class AuthController {
     private UsuarioService usuarioService;
 
     @PostMapping("/login")
-    public String login(@RequestBody Usuario usuario) {
+    public Usuario login(@RequestBody Usuario usuario) {
         Optional<Usuario> user = usuarioService.login(usuario.getEmail(), usuario.getPassword());
-        return user.isPresent() ? "Login exitoso" : "Credenciales inválidas";
+        return user.orElse(null);
     }
 
     @PostMapping("/register")
     public Usuario register(@RequestBody Usuario usuario) {
         return usuarioService.save(usuario);
+    }
+
+    @GetMapping("/current")
+    public Usuario getCurrentUser(@RequestParam String email) {
+        return usuarioService.findByEmail(email);
     }
 }
