@@ -3,6 +3,8 @@ package com.consultorio.odontologia.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "usuarios")
 @Getter @Setter
@@ -19,6 +21,10 @@ public class Usuario {
     private String password;
 
     private String name;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<HistoriaClinica> historiaClinicas;
+
 
     public Long getId() {
         return id;
