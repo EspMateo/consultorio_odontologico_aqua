@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Login.css';
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -17,11 +17,21 @@ const Login = () => {
       });
 
       if (res.data) {
+        // Guardar el token y datos del usuario
+        localStorage.setItem('token', res.data.token);
         localStorage.setItem('userEmail', email);
+        localStorage.setItem('userId', res.data.id);
+        
+        // Redirigir al dashboard (nota la 'd' minúscula)
         navigate('/dashboard');
       }
     } catch (err) {
-      alert('Credenciales incorrectas');
+      console.error('Error en login:', err);
+      if (err.response) {
+        alert(err.response.data || 'Credenciales incorrectas');
+      } else {
+        alert('Error al conectar con el servidor');
+      }
     }
   };
 
@@ -52,6 +62,4 @@ const Login = () => {
       </form>
     </div>
   );
-};
-
-export default Login;
+}
