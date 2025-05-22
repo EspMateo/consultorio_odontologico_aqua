@@ -1,0 +1,117 @@
+/* Contenedor principal */
+.patient-form-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f4f8fb;
+  border-radius: 18px;
+}
+
+.patient-form-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+  padding: 40px 32px;
+}
+
+.patient-form-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.patient-form-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #2563eb;
+  margin-bottom: 8px;
+}
+
+.patient-form-subtitle {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.patient-form-section {
+  margin-bottom: 32px;
+}
+
+.patient-form-section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 18px;
+}
+
+.patient-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.patient-form-group {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-form-group-full {
+  flex: 2 1 100%;
+}
+
+.patient-form-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 7px;
+}
+
+.patient-form-input {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  background: #f8fafc;
+  color: #1e293b;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03);
+}
+.patient-form-input:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(37,99,235,0.08);
+}
+
+.patient-form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.patient-form-button {
+  background: #2563eb;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 14px 38px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(37,99,235,0.10);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.patient-form-button:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 16px 0 rgba(37,99,235,0.15);
+}
+
+@media (max-width: 800px) {
+  .patient-form-card {
+    padding: 24px 8px;
+  }
+  .patient-form-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+} 

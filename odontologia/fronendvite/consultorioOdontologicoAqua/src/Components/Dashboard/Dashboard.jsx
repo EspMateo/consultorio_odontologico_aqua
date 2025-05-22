@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
+import PatientRegistration from '../PatientRegistration';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -51,8 +52,8 @@ const Dashboard = () => {
       <main className="dashboard-content">
         {activeTab === 'inicio' && (
           <div className="content-section">
-            <h2>Panel de Control</h2>
-            <p>Bienvenido al sistema de gestión del consultorio odontológico.</p>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">Registro de Nuevo Paciente</h2>
+            <PatientRegistration />
           </div>
         )}
         {/* Aquí se pueden agregar más secciones según el tab activo */}
