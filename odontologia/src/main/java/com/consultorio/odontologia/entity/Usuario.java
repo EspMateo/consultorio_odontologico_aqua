@@ -25,6 +25,12 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<HistoriaClinica> historiaClinicas;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Paciente> pacientes;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Cita> citas;
+
 
     public Long getId() {
         return id;

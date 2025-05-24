@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name = "historiaClinica")
 @Getter
@@ -27,4 +30,24 @@ public class HistoriaClinica {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    private Date fecha;
+
+    private String cepilladoDental;
+    private String cepilladoEncias;
+    private String cepilladoLingual;
+    private String hiloDental;
+    private String expociosionPhAcido;
+    private String momentosDeAzucar;
+    private String ingestasClientes;
+    private String obsHigiene;
+    private String obsAlimenticio;
+    private String fumar;
+
+    public List<Infusiones> infusiones;
+    public List<Mordisqueo> mordisqueos;
+    public List<Succion> succiones;
+
+
+
+    
 }

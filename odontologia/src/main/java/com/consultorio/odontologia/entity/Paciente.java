@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "pacientes")
 @Getter
@@ -31,11 +33,18 @@ public class Paciente {
     private String generalMedicalHistory;
     private String dentalHistory;
     private String releaseSummary;
+
     @OneToOne
     @JoinColumn(name="historiaClinica_id", referencedColumnName = "id", nullable = true)
     @JsonManagedReference
     private HistoriaClinica historiaClinica;
 
+    @OneToMany(mappedBy = "paciente")
+    private List<Cita> citas;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
 
 }
