@@ -124,9 +124,9 @@
 }
 
 .dashboard-loader-container {
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
-  width: 100%;
+  background: rgba(245, 247, 250, 0.95);
 } 

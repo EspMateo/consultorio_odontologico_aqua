@@ -80,4 +80,25 @@ body {
 .register-link a:hover {
   color: #2e7d32;
   text-decoration: underline;
+}
+
+.login-logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.login-logo-img {
+  width: 140px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.login-logo-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2563eb;
+  letter-spacing: 2px;
+  margin: 0;
 } 

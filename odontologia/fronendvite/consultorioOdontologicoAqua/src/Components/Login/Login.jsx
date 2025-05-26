@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Login.css';
 import Loader from '../Loader';
+import logoAqua from '../../assets/logo-aqua.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -40,11 +42,15 @@ export default function Login() {
 
   return (
     <div className="login-container">
+      {!loading && (
+        <div className="login-logo-section">
+          <img src={logoAqua} alt="Logo Aqua" className="login-logo-img" />
+        </div>
+      )}
       {loading ? (
         <Loader mensaje="Cargando..." />
       ) : (
         <form className="login-form" onSubmit={handleLogin}>
-          <h2 className="login-title">Login</h2>
           <input 
             className="login-input" 
             type="email" 
@@ -67,6 +73,7 @@ export default function Login() {
           </div>
         </form>
       )}
+      {error && <div className="login-error">{error}</div>}
     </div>
   );
 }

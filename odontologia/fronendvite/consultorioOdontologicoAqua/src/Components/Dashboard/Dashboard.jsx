@@ -30,7 +30,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       {loading ? (
-        <div className="dashboard-loader-container">
+        <div className="fullscreen-loader">
           <Loader mensaje="Cerrando sesión..." />
         </div>
       ) : (
