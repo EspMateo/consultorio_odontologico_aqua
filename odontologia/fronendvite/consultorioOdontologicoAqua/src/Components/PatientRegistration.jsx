@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './PatientRegistration.css';
 
 const steps = [
@@ -18,6 +19,8 @@ const PatientRegistration = () => {
     fecha: '',
     sexo: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -29,10 +32,35 @@ const PatientRegistration = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí iría la lógica para enviar los datos al backend
-    console.log(formData);
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await axios.post('http://localhost:8080/api/pacientes/registro', formData);
+      
+      if (response.data) {
+        // Limpiar el formulario después de un registro exitoso
+        setFormData({
+          nombre: '',
+          apellido: '',
+          cedula: '',
+          numero: '',
+          direccion: '',
+          consulta: '',
+          fecha: '',
+          sexo: ''
+        });
+        alert('Paciente registrado exitosamente');
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || 'Error al registrar el paciente');
+      alert('Error al registrar el paciente');
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Para navegación entre pasos (opcional, puedes dejarlo fijo en 0 si quieres todo el formulario junto)
@@ -46,6 +74,7 @@ const PatientRegistration = () => {
           <h2 className="patient-form-title">Registro de Paciente</h2>
           <p className="patient-form-subtitle">Complete el formulario con los datos del paciente</p>
         </div>
+        {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit} className="patient-form">
           <div className="patient-form-section">
             <h3 className="patient-form-section-title">Información Personal</h3>
@@ -100,7 +129,13 @@ const PatientRegistration = () => {
             </div>
           </div>
           <div className="patient-form-actions">
-            <button type="submit" className="patient-form-button">Registrar Paciente</button>
+            <button 
+              type="submit" 
+              className="patient-form-button"
+              disabled={loading}
+            >
+              {loading ? 'Registrando...' : 'Registrar Paciente'}
+            </button>
           </div>
         </form>
       </div>
