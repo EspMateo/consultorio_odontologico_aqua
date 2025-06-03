@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
 import PatientRegistration from '../PatientRegistration';
+import Agenda from '../Agenda/Agenda';
 import Loader from '../Loader';
 
 const Dashboard = () => {
@@ -22,7 +23,7 @@ const Dashboard = () => {
   const menuItems = [
     { id: 'inicio', label: 'Inicio' },
     { id: 'pacientes', label: 'Pacientes' },
-    { id: 'citas', label: 'Citas' },
+    { id: 'agenda', label: 'Agenda' },
     { id: 'tratamientos', label: 'Tratamientos' },
     { id: 'reportes', label: 'Reportes' },
   ];
@@ -63,6 +64,9 @@ const Dashboard = () => {
           <main className="dashboard-content">
             {activeTab === 'inicio' && (
               <PatientRegistration />
+            )}
+            {activeTab === 'agenda' && (
+              <Agenda />
             )}
             {/* Aquí se pueden agregar más secciones según el tab activo */}
           </main>
