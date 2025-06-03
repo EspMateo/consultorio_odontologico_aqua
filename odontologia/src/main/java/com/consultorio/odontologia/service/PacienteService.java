@@ -5,6 +5,7 @@ import com.consultorio.odontologia.entity.Paciente;
 import com.consultorio.odontologia.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class PacienteService {
@@ -26,5 +27,9 @@ public class PacienteService {
         paciente.setMedication("");
         paciente.setDentalHistory("");
         return pacienteRepository.save(paciente);
+    }
+
+    public List<Paciente> getAllPacientes() {
+        return pacienteRepository.findAll();
     }
 } 

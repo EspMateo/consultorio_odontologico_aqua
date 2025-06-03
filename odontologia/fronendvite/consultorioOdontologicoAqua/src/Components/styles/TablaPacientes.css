@@ -1,0 +1,49 @@
+.tabla-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 20px 0;
+  padding: 0 20px;
+}
+
+.tabla-pacientes {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.tabla-pacientes th,
+.tabla-pacientes td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla-pacientes th {
+  background-color: #f8f9fa;
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.tabla-pacientes tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.tabla-pacientes tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media screen and (max-width: 768px) {
+  .tabla-container {
+    padding: 0 10px;
+  }
+  
+  .tabla-pacientes th,
+  .tabla-pacientes td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+} 

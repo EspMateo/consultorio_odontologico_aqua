@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
 import PatientRegistration from '../PatientRegistration';
+import TablaPacientes from '../TablaPacientes';
 import Loader from '../Loader';
 
 const Dashboard = () => {
@@ -9,6 +10,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('inicio');
   const [loading, setLoading] = useState(false);
   const userEmail = localStorage.getItem('userEmail');
+  const userId = localStorage.getItem('userId');
 
   const handleLogout = () => {
     setLoading(true);
@@ -64,7 +66,9 @@ const Dashboard = () => {
             {activeTab === 'inicio' && (
               <PatientRegistration />
             )}
-            {/* Aquí se pueden agregar más secciones según el tab activo */}
+            {activeTab === 'pacientes' && (
+              <TablaPacientes usuarioId={userId} />
+            )}
           </main>
         </>
       )}

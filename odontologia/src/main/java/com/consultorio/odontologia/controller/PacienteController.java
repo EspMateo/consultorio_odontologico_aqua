@@ -6,6 +6,7 @@ import com.consultorio.odontologia.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pacientes")
@@ -17,8 +18,13 @@ public class PacienteController {
 
     @PostMapping("/registro")
     public ResponseEntity<Paciente> registrarPaciente(@RequestBody PacienteDTO pacienteDTO) {
-        System.out.println("Recibido en backend: " + pacienteDTO);
         Paciente pacienteRegistrado = pacienteService.registrarPaciente(pacienteDTO);
         return ResponseEntity.ok(pacienteRegistrado);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Paciente>> getAllPacientes() {
+        List<Paciente> pacientes = pacienteService.getAllPacientes();
+        return ResponseEntity.ok(pacientes);
     }
 } 
