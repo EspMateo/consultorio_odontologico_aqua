@@ -33,12 +33,6 @@ public class PacienteController {
     @GetMapping("/{id}")
     public ResponseEntity<Paciente> obtenerPacientePorId(@PathVariable Long id) {
         Paciente paciente = pacienteService.obtenerPacientePorId(id);
-        return ResponseEntity.ok(paciente);z
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Paciente>> getAllPacientes() {
-        List<Paciente> pacientes = pacienteService.getAllPacientes();
-        return ResponseEntity.ok(pacientes);
+        return ResponseEntity.ok(paciente);
     }
 }

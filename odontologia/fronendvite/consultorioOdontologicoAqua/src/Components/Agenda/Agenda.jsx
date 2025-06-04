@@ -21,11 +21,6 @@ const Agenda = () => {
     fetchPacientes();
   }, []);
 
-  const formatCI = (ci) => {
-    if (!ci) return 'No disponible';
-    return ci.toString();
-  };
-
   const fetchPacientes = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/pacientes');
@@ -41,7 +36,7 @@ const Agenda = () => {
       const response = await axios.get('http://localhost:8080/api/citas');
       const formattedEvents = response.data.map(cita => ({
         id: cita.id,
-        title: `${cita.paciente.name} ${cita.paciente.lastname}`,
+        title: `${cita.paciente.name} ${cita.paciente.lastname} - CI: ${cita.paciente.ci}`,
         start: `${cita.fecha}T${cita.hora}`,
         description: cita.motivo
       }));
@@ -67,10 +62,24 @@ const Agenda = () => {
     e.preventDefault();
     try {
       const userId = localStorage.getItem('userId');
-      await axios.post('http://localhost:8080/api/citas', {
-        ...formData,
-        usuarioId: userId
+      const selectedPaciente = pacientes.find(p => p.id === parseInt(formData.pacienteId));
+      
+      const citaData = {
+        paciente: {
+          id: selectedPaciente.id
+        },
+        fecha: formData.fecha,
+        hora: formData.hora,
+        motivo: formData.motivo,
+        usuarioId: parseInt(userId)
+      };
+
+      await axios.post('http://localhost:8080/api/citas', citaData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+      
       setShowModal(false);
       fetchAppointments();
       setFormData({
@@ -137,7 +146,7 @@ const Agenda = () => {
                   <option value="">Seleccione un paciente</option>
                   {pacientes.map(paciente => (
                     <option key={paciente.id} value={paciente.id}>
-                      {paciente.name} {paciente.lastname} - CI: {formatCI(paciente.CI)}
+                      {paciente.name} {paciente.lastname} - CI: {paciente.ci}
                     </option>
                   ))}
                 </select>

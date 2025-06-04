@@ -22,8 +22,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/usuarios/register", "/api/usuarios/login").permitAll()
-                .requestMatchers("/api/pacientes").permitAll()
-                .requestMatchers("/api/usuarios/register", "/api/usuarios/login", "/api/**","/api/usuarios/login").permitAll()
+                .requestMatchers("/api/pacientes/**").permitAll()
+                .requestMatchers("/api/citas/**").permitAll()
                 .anyRequest().authenticated()
             );
         
@@ -37,6 +37,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
