@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/pacientes")
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
@@ -20,5 +22,17 @@ public class PacienteController {
         System.out.println("Recibido en backend: " + pacienteDTO);
         Paciente pacienteRegistrado = pacienteService.registrarPaciente(pacienteDTO);
         return ResponseEntity.ok(pacienteRegistrado);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Paciente>> obtenerTodosLosPacientes() {
+        List<Paciente> pacientes = pacienteService.obtenerTodosLosPacientes();
+        return ResponseEntity.ok(pacientes);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Paciente> obtenerPacientePorId(@PathVariable Long id) {
+        Paciente paciente = pacienteService.obtenerPacientePorId(id);
+        return ResponseEntity.ok(paciente);z
     }
 } 

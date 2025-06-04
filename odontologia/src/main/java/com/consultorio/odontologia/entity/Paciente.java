@@ -31,11 +31,11 @@ public class Paciente {
     private String generalMedicalHistory;
     private String dentalHistory;
     private String releaseSummary;
+    
     @OneToOne
     @JoinColumn(name="historiaClinica_id", referencedColumnName = "id", nullable = true)
     @JsonManagedReference
     private HistoriaClinica historiaClinica;
-
 
     public Long getId() {
         return id;
