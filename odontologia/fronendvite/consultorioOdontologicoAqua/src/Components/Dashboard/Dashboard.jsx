@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
 import PatientRegistration from '../PatientRegistration';
 import Agenda from '../Agenda/Agenda';
+import TablaPacientes from '../TablaPacientes';
 import Loader from '../Loader';
 
 const Dashboard = () => {
@@ -10,6 +11,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('inicio');
   const [loading, setLoading] = useState(false);
   const userEmail = localStorage.getItem('userEmail');
+  const userId = localStorage.getItem('userId');
 
   const handleLogout = () => {
     setLoading(true);
@@ -64,6 +66,9 @@ const Dashboard = () => {
           <main className="dashboard-content">
             {activeTab === 'inicio' && (
               <PatientRegistration />
+            )}
+            {activeTab === 'pacientes' && (
+              <TablaPacientes usuarioId={userId} />
             )}
             {activeTab === 'agenda' && (
               <Agenda />

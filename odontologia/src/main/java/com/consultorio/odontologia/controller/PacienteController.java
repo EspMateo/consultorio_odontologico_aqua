@@ -6,8 +6,8 @@ import com.consultorio.odontologia.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/pacientes")
@@ -35,4 +35,10 @@ public class PacienteController {
         Paciente paciente = pacienteService.obtenerPacientePorId(id);
         return ResponseEntity.ok(paciente);z
     }
-} 
+
+    @GetMapping
+    public ResponseEntity<List<Paciente>> getAllPacientes() {
+        List<Paciente> pacientes = pacienteService.getAllPacientes();
+        return ResponseEntity.ok(pacientes);
+    }
+}

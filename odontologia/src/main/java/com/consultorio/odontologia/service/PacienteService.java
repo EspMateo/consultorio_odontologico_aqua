@@ -25,7 +25,7 @@ public class PacienteService {
         } else {
             throw new RuntimeException("La cédula es obligatoria");
         }
-        
+
         paciente.setName(pacienteDTO.getNombre());
         paciente.setLastname(pacienteDTO.getApellido());
         paciente.setGender(pacienteDTO.getSexo());
@@ -39,6 +39,10 @@ public class PacienteService {
         return pacienteRepository.save(paciente);
     }
 
+    public List<Paciente> getAllPacientes() {
+        return pacienteRepository.findAll();
+    }
+
     public List<Paciente> obtenerTodosLosPacientes() {
         return pacienteRepository.findAll();
     }
@@ -47,4 +51,4 @@ public class PacienteService {
         return pacienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
     }
-} 
+}
