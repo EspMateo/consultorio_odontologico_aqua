@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import '../styles/Dashboard.css';
-import PatientRegistration from '../PatientRegistration';
-import Agenda from '../Agenda/Agenda';
-import TablaPacientes from '../TablaPacientes';
 import Loader from '../Loader';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('inicio');
   const [loading, setLoading] = useState(false);
   const userEmail = localStorage.getItem('userEmail');
@@ -23,12 +21,25 @@ const Dashboard = () => {
   };
 
   const menuItems = [
-    { id: 'inicio', label: 'Inicio' },
-    { id: 'pacientes', label: 'Pacientes' },
-    { id: 'agenda', label: 'Agenda' },
-    { id: 'tratamientos', label: 'Tratamientos' },
-    { id: 'reportes', label: 'Reportes' },
+    { id: 'inicio', label: 'Inicio', path: '' }, // Ruta por defecto para /dashboard
+    { id: 'pacientes', label: 'Pacientes', path: 'pacientes' },
+    { id: 'agenda', label: 'Agenda', path: 'agenda' },
+    { id: 'tratamientos', label: 'Tratamientos', path: 'tratamientos' },
+    { id: 'reportes', label: 'Reportes', path: 'reportes' },
   ];
+
+  // Determinar la pestaña activa basada en la ruta actual
+  React.useEffect(() => {
+    const path = location.pathname;
+    if (path.includes('/dashboard/pacientes')) {
+      setActiveTab('pacientes');
+    } else if (path.includes('/dashboard/agenda')) {
+      setActiveTab('agenda');
+    } else if (path === '/dashboard' || path === '/dashboard/') {
+      setActiveTab('inicio');
+    }
+    // Puedes añadir más lógica para otras pestañas si es necesario
+  }, [location.pathname]);
 
   return (
     <div className="dashboard-container">
@@ -56,7 +67,10 @@ const Dashboard = () => {
               <button
                 key={item.id}
                 className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  navigate(`/dashboard/${item.path}`);
+                }}
               >
                 {item.label}
               </button>
@@ -64,16 +78,7 @@ const Dashboard = () => {
           </nav>
 
           <main className="dashboard-content">
-            {activeTab === 'inicio' && (
-              <PatientRegistration />
-            )}
-            {activeTab === 'pacientes' && (
-              <TablaPacientes usuarioId={userId} />
-            )}
-            {activeTab === 'agenda' && (
-              <Agenda />
-            )}
-            {/* Aquí se pueden agregar más secciones según el tab activo */}
+            <Outlet /> {/* Aquí se renderizarán los componentes de las rutas anidadas */}
           </main>
         </>
       )}

@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pacientes")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class PacienteController {
 
     @Autowired
@@ -34,5 +33,28 @@ public class PacienteController {
     public ResponseEntity<Paciente> obtenerPacientePorId(@PathVariable Long id) {
         Paciente paciente = pacienteService.obtenerPacientePorId(id);
         return ResponseEntity.ok(paciente);
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Paciente>> buscarPacientes(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String apellido,
+            @RequestParam(required = false) String cedula) {
+        List<Paciente> pacientes = pacienteService.buscarPacientes(nombre, apellido, cedula);
+        return ResponseEntity.ok(pacientes);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarPaciente(@PathVariable Long id) {
+        pacienteService.eliminarPaciente(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Paciente> actualizarPaciente(
+            @PathVariable Long id,
+            @RequestBody PacienteDTO pacienteDTO) {
+        Paciente pacienteActualizado = pacienteService.actualizarPaciente(id, pacienteDTO);
+        return ResponseEntity.ok(pacienteActualizado);
     }
 }
