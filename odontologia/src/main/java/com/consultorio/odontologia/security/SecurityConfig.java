@@ -6,7 +6,7 @@ import org.springframework.http.HttpMethod;
 // import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; // Considerar habilitar si usas @PreAuthorize/PostAuthorize
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer; // Importamos WebSecurityCustomizer
+// import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer; // Importamos WebSecurityCustomizer
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -28,16 +28,15 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permitir solicitudes OPTIONS
+                .requestMatchers("/api/usuarios/login", "/api/usuarios/register").permitAll() // Permitir acceso a login y register
+                .requestMatchers(HttpMethod.GET, "/api/pacientes/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/pacientes/**").permitAll()// Permitir acceso GET a pacientes
+                .requestMatchers(HttpMethod.PUT, "/api/pacientes/**").permitAll() // Permitir acceso PUT a pacientes
+                .requestMatchers(HttpMethod.DELETE, "/api/pacientes/**").permitAll() // Permitir acceso DELETE a pacientes
                 .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
             );
         
         return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-                .requestMatchers(HttpMethod.DELETE, "/api/pacientes/**"); // IGNORAR COMPLETAMENTE la seguridad para DELETE de pacientes
     }
 
     @Bean
