@@ -20,7 +20,11 @@ function TablaPacientes({ usuarioId }) {
   const fetchPacientes = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8080/api/pacientes');
+      const response = await axios.get('http://localhost:8080/api/pacientes', {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       setPacientes(response.data);
     } catch (error) {
       console.error('Error al cargar pacientes:', error);
@@ -40,6 +44,9 @@ function TablaPacientes({ usuarioId }) {
           apellido: searchTerm || null,
           cedula: searchTerm || null,
         },
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
       setPacientes(response.data);
       if (response.data.length === 0) {
@@ -66,7 +73,7 @@ function TablaPacientes({ usuarioId }) {
       try {
         await axios.delete(`http://localhost:8080/api/pacientes/${id}`, {
           headers: {
-            Authorization: '' // No enviar ningún token de autenticación para esta solicitud
+            'Content-Type': 'application/json'
           }
         });
         setPacientes(pacientes.filter(p => p.id !== id));

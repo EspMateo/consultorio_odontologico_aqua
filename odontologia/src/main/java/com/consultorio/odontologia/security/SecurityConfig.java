@@ -29,10 +29,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permitir solicitudes OPTIONS
                 .requestMatchers("/api/usuarios/login", "/api/usuarios/register").permitAll() // Permitir acceso a login y register
-                .requestMatchers(HttpMethod.GET, "/api/pacientes/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/pacientes/**").permitAll()// Permitir acceso GET a pacientes
-                .requestMatchers(HttpMethod.PUT, "/api/pacientes/**").permitAll() // Permitir acceso PUT a pacientes
-                .requestMatchers(HttpMethod.DELETE, "/api/pacientes/**").permitAll() // Permitir acceso DELETE a pacientes
+                .requestMatchers("/api/pacientes/**").permitAll() // Temporalmente permitimos todo acceso a pacientes
                 .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
             );
         
@@ -44,7 +41,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         
