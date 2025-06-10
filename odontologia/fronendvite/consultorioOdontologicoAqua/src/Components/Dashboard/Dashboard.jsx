@@ -51,7 +51,7 @@ const Dashboard = () => {
         <>
           <header className="dashboard-header">
             <div className="header-left">
-              <h1 className="app-title">Consultorio Odontológico</h1>
+              <h1 className="app-title">Consultorio Odontológico AQUA</h1>
             </div>
             <div className="user-info">
               <span className="welcome-text">Bienvenido,</span>

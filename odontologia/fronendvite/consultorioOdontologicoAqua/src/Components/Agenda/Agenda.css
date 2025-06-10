@@ -3,6 +3,8 @@
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 800px;
+  min-height: 700px;
 }
 
 .calendar-container {
@@ -14,6 +16,8 @@
   background-color: #ffffff;
   border-radius: 8px;
   padding: 20px;
+  min-width: 760px;
+  min-height: 600px;
 }
 
 .fc-toolbar-title {

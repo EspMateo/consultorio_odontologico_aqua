@@ -5,6 +5,8 @@
   padding: 10px;
   background: #f4f8fb;
   border-radius: 14px;
+  min-width: 800px; /* Ancho mínimo para el contenedor del formulario */
+  min-height: 700px; /* Altura mínima para el contenedor del formulario */
 }
 
 .patient-form-card {
