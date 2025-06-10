@@ -5,7 +5,7 @@
   padding: 10px;
   background: #f4f8fb;
   border-radius: 14px;
-  min-width: 800px; /* Ancho mínimo para el contenedor del formulario */
+  min-width: 1000px; /* Ancho mínimo para el contenedor del formulario */
   min-height: 700px; /* Altura mínima para el contenedor del formulario */
 }
 
@@ -26,7 +26,7 @@
 .patient-form-title {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #2563eb;
+  color: rgb(37, 100, 235);
   margin-bottom: 4px;
 }
 
@@ -93,7 +93,7 @@
 }
 
 .patient-form-button {
-  background: #2563eb;
+  background: #1262fa;
   color: #fff;
   font-size: 1rem;
   font-weight: 600;
@@ -105,7 +105,7 @@
   transition: background 0.2s, box-shadow 0.2s;
 }
 .patient-form-button:hover {
-  background: #1d4ed8;
+  background: #1267facb;
   box-shadow: 0 4px 16px 0 rgba(37,99,235,0.15);
 }
 
