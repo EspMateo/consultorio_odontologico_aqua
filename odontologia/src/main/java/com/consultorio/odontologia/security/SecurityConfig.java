@@ -30,6 +30,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permitir solicitudes OPTIONS
                 .requestMatchers("/api/usuarios/login", "/api/usuarios/register").permitAll() // Permitir acceso a login y register
                 .requestMatchers("/api/pacientes/**").permitAll() // Temporalmente permitimos todo acceso a pacientes
+                .requestMatchers(HttpMethod.POST, "/api/citas/**").permitAll() // Permitir agendar citas
+                .requestMatchers(HttpMethod.GET, "/api/citas/**").permitAll() // Permitir obtener citas
                 .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
             );
         
