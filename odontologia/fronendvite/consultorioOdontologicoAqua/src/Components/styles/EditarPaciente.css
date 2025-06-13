@@ -1,0 +1,155 @@
+.editar-paciente-container {
+  width: 100%;
+  margin: 32px 0;
+  padding: 10px;
+  background: #f4f8fb;
+  border-radius: 14px;
+}
+
+.editar-paciente-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+  padding: 22px 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.editar-paciente-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.editar-paciente-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 4px;
+}
+
+.editar-paciente-subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.editar-paciente-section {
+  margin-bottom: 18px;
+}
+
+.editar-paciente-section-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.editar-paciente-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.editar-paciente-group {
+  flex: 1 1 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.editar-paciente-group-full {
+  flex: 2 1 100%;
+}
+
+.editar-paciente-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.editar-paciente-input {
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.95rem;
+  background: #f8fafc;
+  color: #1e293b;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.02);
+}
+
+.editar-paciente-input:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(37,99,235,0.08);
+}
+
+.editar-paciente-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.editar-paciente-button {
+  background: #2563eb;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 22px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(37,99,235,0.10);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.editar-paciente-button:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 16px 0 rgba(37,99,235,0.15);
+}
+
+.editar-paciente-button:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.editar-paciente-button-secondary {
+  background: #e2e8f0;
+  color: #475569;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.05);
+}
+
+.editar-paciente-button-secondary:hover {
+  background: #cbd5e1;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.08);
+}
+
+.error-message {
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 800px) {
+  .editar-paciente-card {
+    padding: 12px 4px;
+  }
+  
+  .editar-paciente-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .editar-paciente-actions {
+    flex-direction: column;
+  }
+  
+  .editar-paciente-button {
+    width: 100%;
+  }
+} 

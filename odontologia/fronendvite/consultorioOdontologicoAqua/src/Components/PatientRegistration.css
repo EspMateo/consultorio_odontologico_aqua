@@ -1,0 +1,120 @@
+/* Contenedor principal */
+.patient-form-container {
+  width: 100%;
+  margin: 32px 0;
+  padding: 10px;
+  background: #f4f8fb;
+  border-radius: 14px;
+  min-width: 1000px; /* Ancho mínimo para el contenedor del formulario */
+  min-height: 700px; /* Altura mínima para el contenedor del formulario */
+}
+
+.patient-form-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+  padding: 22px 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.patient-form-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.patient-form-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgb(37, 100, 235);
+  margin-bottom: 4px;
+}
+
+.patient-form-subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.patient-form-section {
+  margin-bottom: 18px;
+}
+
+.patient-form-section-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.patient-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.patient-form-group {
+  flex: 1 1 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-form-group-full {
+  flex: 2 1 100%;
+}
+
+.patient-form-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.patient-form-input {
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.95rem;
+  background: #f8fafc;
+  color: #1e293b;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.02);
+}
+.patient-form-input:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(37,99,235,0.08);
+}
+
+.patient-form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.patient-form-button {
+  background: #1262fa;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 22px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(37,99,235,0.10);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.patient-form-button:hover {
+  background: #1267facb;
+  box-shadow: 0 4px 16px 0 rgba(37,99,235,0.15);
+}
+
+@media (max-width: 800px) {
+  .patient-form-card {
+    padding: 12px 4px;
+  }
+  .patient-form-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+} 

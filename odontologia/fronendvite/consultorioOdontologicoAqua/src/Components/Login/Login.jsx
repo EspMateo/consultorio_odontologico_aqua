@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Login.css';
+import Loader from '../Loader';
+import logoAqua from '../../assets/logo-aqua.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -21,9 +25,10 @@ export default function Login() {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userEmail', email);
         localStorage.setItem('userId', res.data.id);
-        
-        // Redirigir al dashboard (nota la 'd' minúscula)
-        navigate('/dashboard');
+        setLoading(true);
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1000);
       }
     } catch (err) {
       console.error('Error en login:', err);
@@ -37,29 +42,38 @@ export default function Login() {
 
   return (
     <div className="login-container">
-      <form className="login-form" onSubmit={handleLogin}>
-        <h2 className="login-title">Login</h2>
-        <input 
-          className="login-input" 
-          type="email" 
-          placeholder="Correo" 
-          value={email} 
-          onChange={e => setEmail(e.target.value)} 
-          required 
-        />
-        <input 
-          className="login-input" 
-          type="password" 
-          placeholder="Contraseña" 
-          value={password} 
-          onChange={e => setPassword(e.target.value)} 
-          required 
-        />
-        <button className="login-btn" type="submit">Ingresar</button>
-        <div className="register-link">
-          ¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link>
+      {!loading && (
+        <div className="login-logo-section">
+          <img src={logoAqua} alt="Logo Aqua" className="login-logo-img" />
         </div>
-      </form>
+      )}
+      {loading ? (
+        <Loader mensaje="Cargando..." />
+      ) : (
+        <form className="login-form" onSubmit={handleLogin}>
+          <input 
+            className="login-input" 
+            type="email" 
+            placeholder="Correo" 
+            value={email} 
+            onChange={e => setEmail(e.target.value)} 
+            required 
+          />
+          <input 
+            className="login-input" 
+            type="password" 
+            placeholder="Contraseña" 
+            value={password} 
+            onChange={e => setPassword(e.target.value)} 
+            required 
+          />
+          <button className="login-btn" type="submit">Ingresar</button>
+          <div className="register-link">
+            ¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link>
+          </div>
+        </form>
+      )}
+      {error && <div className="login-error">{error}</div>}
     </div>
   );
 }

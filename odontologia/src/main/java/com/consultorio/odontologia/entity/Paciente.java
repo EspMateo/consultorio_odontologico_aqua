@@ -45,6 +45,107 @@ public class Paciente {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public Long getCI() {
+        return CI;
+    }
+
+    public void setCI(Long CI) {
+        this.CI = CI;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(int telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public String getMedication() {
+        return medication;
+    }
+
+    public void setMedication(String medication) {
+        this.medication = medication;
+    }
+
+    public String getGeneralMedicalHistory() {
+        return generalMedicalHistory;
+    }
+
+    public void setGeneralMedicalHistory(String generalMedicalHistory) {
+        this.generalMedicalHistory = generalMedicalHistory;
+    }
+
+    public String getDentalHistory() {
+        return dentalHistory;
+    }
+
+    public void setDentalHistory(String dentalHistory) {
+        this.dentalHistory = dentalHistory;
+    }
+
+    public String getReleaseSummary() {
+        return releaseSummary;
+    }
+
+    public void setReleaseSummary(String releaseSummary) {
+        this.releaseSummary = releaseSummary;
+    }
+
+    public HistoriaClinica getHistoriaClinica() {
+        return historiaClinica;
+    }
+
+    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+        this.historiaClinica = historiaClinica;
+    }
 }
