@@ -3,7 +3,7 @@
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  min-width: 800px;
+  min-width: 1000px; /* Ancho mínimo para el contenedor del formulario */
   min-height: 700px;
 }
 

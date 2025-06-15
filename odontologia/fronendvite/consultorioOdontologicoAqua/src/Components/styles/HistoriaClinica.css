@@ -4,7 +4,7 @@
   padding: 10px;
   background: #f4f8fb;
   border-radius: 14px;
-  min-width: 800px;
+  min-width: 1000px; /* Ancho mínimo para el contenedor del formulario */
 }
 
 .historia-clinica-card {
