@@ -19,11 +19,41 @@ public class HistoriaClinica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = true)
+    private String enfermedadesActuales;
+
+    @Column(nullable = true)
+    private String medicamentos;
+
+    @Column(nullable = true)
+    private String alergias;
+
+    @Column(nullable = true)
+    private String antecedentesFamiliares;
+
+    @Column(nullable = true)
+    private String apreciacionGeneral;
+
+    @Column(nullable = true)
+    private String apreciacionGeneralDetalle;
+
+    @Column(nullable = true)
+    private String examenRegional;
+
+    @Column(nullable = true)
+    private String examenRegionalDetalle;
+
+    @Column(nullable = true)
+    private String examenLocal;
+
+    @Column(nullable = true)
+    private String examenLocalDetalle;
+
     @OneToOne(mappedBy = "historiaClinica")
     @JsonBackReference
     private Paciente paciente;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = true)
     private Usuario usuario;
 }
