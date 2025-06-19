@@ -23,7 +23,6 @@ const Dashboard = () => {
   const menuItems = [
     { id: 'inicio', label: 'Inicio', path: '' }, // Ruta por defecto para /dashboard
     { id: 'pacientes', label: 'Pacientes', path: 'pacientes' },
-    { id: 'agenda', label: 'Agenda', path: 'agenda' },
     { id: 'tratamientos', label: 'Tratamientos', path: 'tratamientos' },
     { id: 'reportes', label: 'Reportes', path: 'reportes' },
   ];
@@ -33,8 +32,6 @@ const Dashboard = () => {
     const path = location.pathname;
     if (path.includes('/dashboard/pacientes')) {
       setActiveTab('pacientes');
-    } else if (path.includes('/dashboard/agenda')) {
-      setActiveTab('agenda');
     } else if (path === '/dashboard' || path === '/dashboard/') {
       setActiveTab('inicio');
     }
