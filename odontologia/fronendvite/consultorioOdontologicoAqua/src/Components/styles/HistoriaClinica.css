@@ -50,18 +50,19 @@
 
 .historia-clinica-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
+  align-items: start;
 }
 
 .historia-clinica-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-.historia-clinica-item.full-width {
-  grid-column: 1 / -1;
+  padding: 8px;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
 }
 
 .historia-clinica-item label {
@@ -73,37 +74,71 @@
 .historia-clinica-item span {
   font-size: 1rem;
   color: #1e293b;
+  padding: 4px 0;
+}
+
+.historia-clinica-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.historia-clinica-item textarea {
+  width: 100%;
   padding: 8px;
-  background: #f8fafc;
-  border-radius: 6px;
   border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 80px;
 }
 
 .historia-clinica-actions {
   display: flex;
   justify-content: center;
+  gap: 16px;
   margin-top: 24px;
-  padding-top: 16px;
+  padding: 20px;
+  background: white;
   border-top: 1px solid #e2e8f0;
 }
 
 .historia-clinica-button {
   padding: 10px 24px;
-  border: none;
-  border-radius: 7px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  border: none;
+}
+
+.historia-clinica-button-primary {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.historia-clinica-button-primary:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.25);
 }
 
 .historia-clinica-button-secondary {
-  background: #e2e8f0;
+  background-color: #e2e8f0;
   color: #475569;
+  border: 1px solid #cbd5e1;
 }
 
-.historia-clinica-button-secondary:hover {
-  background: #cbd5e1;
+.historia-clinica-button-secondary:hover:not(:disabled) {
+  background-color: #cbd5e1;
+  color: #1e293b;
+  border-color: #94a3b8;
+}
+
+.historia-clinica-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .error-message {
@@ -127,4 +162,252 @@
   .historia-clinica-button {
     width: 100%;
   }
+}
+
+.examen-section {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.examen-column {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.examen-column h4 {
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.examen-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.examen-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.examen-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.examen-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.examen-item textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 32px;
+}
+
+.nested-checkboxes {
+  margin-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.enfermedades-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.enfermedades-title {
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.enfermedades-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.enfermedades-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.enfermedades-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.enfermedades-checkbox-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.enfermedades-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.enfermedades-checkbox {
+  width: 16px;
+  height: 16px;
+}
+
+.enfermedades-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 32px;
+}
+
+.habitos-higiene-section {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.habitos-higiene-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.habitos-higiene-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.habitos-higiene-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.habitos-higiene-input-container label {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.habitos-higiene-input-container input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.habitos-higiene-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.habitos-higiene-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.habitos-higiene-checkbox {
+  width: 16px;
+  height: 16px;
+}
+
+.habitos-higiene-observaciones {
+  height: 100%;
+}
+
+.habitos-higiene-observaciones textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.modal-confirm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-confirm-content {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.modal-confirm-title {
+  color: #1e293b;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.modal-confirm-message {
+  color: #475569;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.modal-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 } 
