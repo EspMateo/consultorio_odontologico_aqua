@@ -1,139 +1,454 @@
+/* Contenedor principal */
 .historia-clinica-container {
-  width: 100%;
-  margin: 32px 0;
-  padding: 10px;
-  background: #f4f8fb;
-  border-radius: 14px;
-  min-width: 1000px; /* Ancho mínimo para el contenedor del formulario */
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
+/* Contenido principal */
 .historia-clinica-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
-  padding: 22px 14px;
-  width: 100%;
-  box-sizing: border-box;
+  max-width: 900px;
+  min-width: 900px;
+  width: 900px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
 }
 
+/* Header */
 .historia-clinica-header {
   text-align: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
 }
 
 .historia-clinica-title {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 8px;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
 }
 
 .historia-clinica-subtitle {
-  color: #64748b;
   font-size: 1.1rem;
+  color: #6b7280;
 }
 
+/* Secciones */
 .historia-clinica-section {
-  margin-bottom: 24px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
 }
 
 .historia-clinica-section-title {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #334155;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #e2e8f0;
+  color: #1f2937;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #3b82f6;
+  display: inline-block;
 }
 
+/* Grid layout */
 .historia-clinica-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
+/* Items del formulario */
 .historia-clinica-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 8px;
-  background: #f8fafc;
-  border-radius: 6px;
-  border: 1px solid #e2e8f0;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-.historia-clinica-item label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #64748b;
-}
-
-.historia-clinica-item span {
-  font-size: 1rem;
-  color: #1e293b;
-  padding: 4px 0;
+.historia-clinica-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .historia-clinica-item.full-width {
   grid-column: 1 / -1;
 }
 
-.historia-clinica-item textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  resize: vertical;
-  min-height: 80px;
+.historia-clinica-item label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
 }
 
+.historia-clinica-item span {
+  font-size: 1rem;
+  color: #1f2937;
+  padding: 0.5rem 0;
+}
+
+.historia-clinica-item textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: all 0.2s;
+  background-color: white;
+}
+
+.historia-clinica-item textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.historia-clinica-item textarea::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Sección de examen */
+.examen-section {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.examen-column {
+  flex: 0 0 380px;
+  max-width: 380px;
+  min-width: 280px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.examen-column:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.examen-column h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #3b82f6;
+  display: inline-block;
+}
+
+.examen-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.examen-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.examen-item:hover {
+  background-color: #f3f4f6;
+}
+
+.examen-item label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.examen-item input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.examen-item textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: all 0.2s;
+  background-color: white;
+}
+
+.examen-item textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Checkboxes anidados */
+.nested-checkboxes {
+  margin-top: 1rem;
+  padding-left: 2rem;
+  border-left: 2px solid #e5e7eb;
+}
+
+/* Sección de enfermedades */
+.enfermedades-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.enfermedades-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.enfermedades-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #3b82f6;
+  display: inline-block;
+}
+
+.enfermedades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.enfermedades-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.enfermedades-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.enfermedades-checkbox-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.enfermedades-checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.enfermedades-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: all 0.2s;
+  background-color: white;
+}
+
+.enfermedades-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Sección de hábitos e higiene */
+.habitos-higiene-section {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.habitos-higiene-column {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.habitos-higiene-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+  margin-bottom: 1rem;
+}
+
+.habitos-higiene-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.habitos-higiene-input-container label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.habitos-higiene-input-container input[type="number"] {
+  width: 100%;
+  max-width: 200px;
+  padding: 0.3rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.habitos-higiene-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.habitos-higiene-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 160px;
+  margin-bottom: 0.5rem;
+}
+
+.habitos-higiene-checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.habitos-higiene-observaciones {
+  margin-top: 1rem;
+}
+
+.habitos-higiene-observaciones textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: all 0.2s;
+  background-color: white;
+}
+
+.habitos-higiene-observaciones textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Botones de acción */
 .historia-clinica-actions {
   display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 24px;
-  padding: 20px;
-  background: white;
-  border-top: 1px solid #e2e8f0;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e5e7eb;
 }
 
 .historia-clinica-button {
-  padding: 10px 24px;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 500;
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.125rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 120px;
+  transition: all 0.2s;
+  min-width: 180px;
+  text-align: center;
+  letter-spacing: 0.025em;
   border: none;
 }
 
 .historia-clinica-button-primary {
   background-color: #3b82f6;
   color: white;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
 }
 
 .historia-clinica-button-primary:hover:not(:disabled) {
   background-color: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+.historia-clinica-button-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
 }
 
 .historia-clinica-button-secondary {
-  background-color: #e2e8f0;
-  color: #475569;
-  border: 1px solid #cbd5e1;
+  background-color: white;
+  color: #4b5563;
+  border: 2px solid #d1d5db;
 }
 
 .historia-clinica-button-secondary:hover:not(:disabled) {
-  background-color: #cbd5e1;
-  color: #1e293b;
-  border-color: #94a3b8;
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.historia-clinica-button-secondary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .historia-clinica-button:disabled {
@@ -141,273 +456,221 @@
   cursor: not-allowed;
 }
 
+/* Mensajes de error */
 .error-message {
   background-color: #fee2e2;
   color: #dc2626;
-  padding: 12px;
-  border-radius: 6px;
-  margin: 16px 0;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
   font-size: 0.95rem;
+  border: 1px solid #fecaca;
 }
 
+/* Modal de confirmación */
+.modal-confirm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-confirm-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal-confirm-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.modal-confirm-message {
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.modal-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
+  .historia-clinica-container {
+    padding: 1rem;
+  }
+
   .historia-clinica-card {
-    padding: 16px 8px;
+    padding: 1.5rem;
+  }
+
+  .historia-clinica-section {
+    padding: 1.5rem;
   }
 
   .historia-clinica-grid {
     grid-template-columns: 1fr;
   }
 
+  .examen-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .habitos-higiene-column {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .historia-clinica-actions {
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
   .historia-clinica-button {
     width: 100%;
   }
+
+  .modal-confirm-actions {
+    flex-direction: column;
+  }
 }
 
+.apreciacion-general-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.apreciacion-general-checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  background: #e3f0fa;
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.apreciacion-general-checkbox-group input[type="checkbox"]:checked + span {
+  color: #1976d2;
+  font-weight: bold;
+}
+
+.examen-local-columns {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.examen-local-column {
+  flex: 0 0 380px;
+  max-width: 380px;
+  min-width: 280px;
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+/* Examen Regional también en columnas más pequeñas */
 .examen-section {
   display: flex;
-  gap: 32px;
-  margin-bottom: 24px;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  justify-content: center;
 }
 
 .examen-column {
-  flex: 1;
-  background: #fff;
-  padding: 20px;
+  flex: 0 0 380px;
+  max-width: 380px;
+  min-width: 280px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
 }
 
-.examen-column h4 {
-  color: #1e293b;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #e2e8f0;
-}
-
-.examen-items {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.examen-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.examen-item label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.95rem;
-  color: #475569;
-}
-
-.examen-item input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-}
-
-.examen-item textarea {
+/* Estilo para el textarea de apreciación general */
+.apreciacion-general-detalle {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  resize: vertical;
-  min-height: 32px;
-}
-
-.nested-checkboxes {
-  margin-left: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.enfermedades-section {
-  background: #fff;
-  padding: 20px;
+  min-height: 60px;
+  padding: 0.6rem 1rem;
+  border: 2px solid #90caf9;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 24px;
+  font-size: 1rem;
+  background: #f0f7ff;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  transition: border 0.2s;
 }
 
-.enfermedades-title {
-  color: #1e293b;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #e2e8f0;
+.apreciacion-general-detalle:focus {
+  outline: none;
+  border-color: #1976d2;
+  background: #e3f2fd;
 }
 
-.enfermedades-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+@media (max-width: 900px) {
+  .examen-local-columns, .examen-section {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .examen-local-column, .examen-column {
+    max-width: 100%;
+    min-width: 0;
+  }
 }
 
-.enfermedades-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.enfermedades-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.enfermedades-checkbox-group {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 8px 0;
-}
-
-.enfermedades-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.95rem;
-  color: #475569;
-}
-
-.enfermedades-checkbox {
-  width: 16px;
-  height: 16px;
-}
-
-.enfermedades-textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  resize: vertical;
-  min-height: 32px;
-}
-
-.habitos-higiene-section {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 24px;
-  background: #fff;
-  padding: 20px;
+.apreciacion-general-section {
+  flex: 0 0 380px;
+  max-width: 380px;
+  min-width: 280px;
+  background: #f7fafc;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  margin-right: 2rem;
 }
 
-.habitos-higiene-column {
+.historia-clinica-examenes-row {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.habitos-higiene-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.habitos-higiene-input-container {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.habitos-higiene-input-container label {
-  color: #475569;
-  font-size: 0.95rem;
-}
-
-.habitos-higiene-input-container input[type="number"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
-
-.habitos-higiene-checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.habitos-higiene-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #475569;
-  font-size: 0.95rem;
-}
-
-.habitos-higiene-checkbox {
-  width: 16px;
-  height: 16px;
-}
-
-.habitos-higiene-observaciones {
-  height: 100%;
-}
-
-.habitos-higiene-observaciones textarea {
-  width: 100%;
-  height: 100%;
-  min-height: 200px;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  resize: vertical;
-}
-
-.modal-confirm {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
+  gap: 2rem;
   justify-content: center;
-  z-index: 1000;
+  margin-top: 1.5rem;
 }
 
-.modal-confirm-content {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-
-.modal-confirm-title {
-  color: #1e293b;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.modal-confirm-message {
-  color: #475569;
-  margin-bottom: 24px;
-  line-height: 1.5;
-}
-
-.modal-confirm-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+@media (max-width: 900px) {
+  .historia-clinica-examenes-row {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .apreciacion-general-section {
+    max-width: 100%;
+    min-width: 0;
+    margin-right: 0;
+  }
 } 

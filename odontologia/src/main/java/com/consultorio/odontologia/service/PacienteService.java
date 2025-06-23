@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class PacienteService {
@@ -128,5 +129,9 @@ public class PacienteService {
         if (pacienteDTO.getFecha() != null) paciente.setReleaseSummary(pacienteDTO.getFecha());
 
         return pacienteRepository.save(paciente);
+    }
+
+    public Optional<Paciente> findById(Long id) {
+        return pacienteRepository.findById(id);
     }
 }

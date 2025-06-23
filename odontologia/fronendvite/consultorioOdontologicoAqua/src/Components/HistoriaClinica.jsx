@@ -98,9 +98,15 @@ const HistoriaClinica = () => {
   });
   const [notification, setNotification] = useState({ show: false, type: '', message: '' });
   const [formData, setFormData] = useState({
+    motivoConsulta: '',
+    cepilladoDental: '',
+    cepilladoEncias: '',
+    cepilladoLingual: '',
+    observacionesHigienicas: '',
     enfermedadesActuales: '',
     medicamentos: '',
-    alergias: '',
+    alergiasDetalle: '',
+    posologia: '',
     antecedentesFamiliares: '',
     apreciacionGeneral: '',
     apreciacionGeneralDetalle: '',
@@ -110,11 +116,16 @@ const HistoriaClinica = () => {
     examenLocalDetalle: ''
   });
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [fumador, setFumador] = useState(false);
+  const [consumeAlcohol, setConsumeAlcohol] = useState(false);
+  const [historiaClinicaId, setHistoriaClinicaId] = useState(null);
+  const [fechaUltimaActualizacion, setFechaUltimaActualizacion] = useState(null);
 
   useEffect(() => {
     if (location.state?.paciente) {
       setPaciente(location.state.paciente);
       setLoading(false);
+      fetchHistoriaClinica(location.state.paciente.id);
     } else {
       fetchPaciente();
     }
@@ -132,6 +143,45 @@ const HistoriaClinica = () => {
       setMessageType('error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchHistoriaClinica = async (pacienteId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/historia-clinica/paciente/${pacienteId}`);
+      if (response.data) {
+        setHistoriaClinicaId(response.data.id);
+        setFechaUltimaActualizacion(response.data.fecha);
+        setFormData({
+          motivoConsulta: response.data.motivoConsulta || '',
+          cepilladoDental: response.data.cepilladoDental || '',
+          cepilladoEncias: response.data.cepilladoEncias || '',
+          cepilladoLingual: response.data.cepilladoLingual || '',
+          observacionesHigienicas: response.data.observacionesHigienicas || '',
+          enfermedadesActuales: response.data.enfermedadesActuales || '',
+          medicamentos: response.data.medicamentos || '',
+          alergiasDetalle: response.data.alergias || '',
+          posologia: response.data.posologia || '',
+          antecedentesFamiliares: response.data.antecedentesFamiliares || '',
+          apreciacionGeneral: response.data.apreciacionGeneral || '',
+          apreciacionGeneralDetalle: response.data.apreciacionGeneralDetalle || '',
+          examenRegional: response.data.examenRegional || '',
+          examenRegionalDetalle: response.data.examenRegionalDetalle || '',
+          examenLocal: response.data.examenLocal || '',
+          examenLocalDetalle: response.data.examenLocalDetalle || ''
+        });
+        setUsaHiloDental(response.data.usaHiloDental || false);
+        setHigieneProtesica(response.data.higieneProtesica || false);
+        setFumador(response.data.fumador || false);
+        setConsumeCafe(response.data.consumeCafe || false);
+        setConsumeTe(response.data.consumeTe || false);
+        setConsumeMate(response.data.consumeMate || false);
+        setConsumeAlcohol(response.data.consumeAlcohol || false);
+        setConsumeDrogas(response.data.consumeDrogas || false);
+        // Aquí puedes setear otros estados booleanos/objetos si los tienes
+      }
+    } catch (error) {
+      // Si no hay historia clínica, no hacer nada
     }
   };
 
@@ -315,10 +365,15 @@ const HistoriaClinica = () => {
   };
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    console.log(`Actualizando campo ${field} con valor:`, value);
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [field]: value
+      };
+      console.log('Nuevo formData:', newData);
+      return newData;
+    });
   };
 
   const handleCancel = () => {
@@ -333,7 +388,7 @@ const HistoriaClinica = () => {
     setNotification({ show: true, type, message });
     setTimeout(() => {
       setNotification({ show: false, type: '', message: '' });
-    }, 3000);
+    }, 5000); // Aumentado a 5 segundos para mejor visibilidad
   };
 
   const handleSubmit = async (e) => {
@@ -346,65 +401,129 @@ const HistoriaClinica = () => {
       return;
     }
 
-    // Lógica para determinar si apreciacionGeneral es 'normal' o 'alterado'
-    // Y combinar con su detalle si es 'alterado'
-    let apreciacionGeneralEstado = 'normal';
-    let apreciacionGeneralDetalleTexto = '';
-    if (formData.apreciacionGeneral === 'alterado') {
-      apreciacionGeneralEstado = 'alterado';
-      apreciacionGeneralDetalleTexto = formData.apreciacionGeneralDetalle;
+    // Construir enfermedades actuales basado en las selecciones
+    let enfermedadesActuales = '';
+    if (tieneEnfermedades) {
+      const enfermedades = [];
+      if (enfermedadesSeleccionadas.cardiovasculares) enfermedades.push('Cardiovasculares');
+      if (enfermedadesSeleccionadas.diabetes) enfermedades.push('Diabetes');
+      if (enfermedadesSeleccionadas.ets) enfermedades.push('ETS');
+      if (enfermedadesSeleccionadas.otros && otrasEnfermedadesDetalle) {
+        enfermedades.push(`Otros: ${otrasEnfermedadesDetalle}`);
+      }
+      enfermedadesActuales = enfermedades.join(', ');
     }
 
-    // Lógica para examenRegional
-    let examenRegionalEstado = 'normal';
-    let examenRegionalDetalleTexto = '';
-    if (formData.examenRegional === 'alterado') {
-      examenRegionalEstado = 'alterado';
-      examenRegionalDetalleTexto = formData.examenRegionalDetalle;
+    // Construir medicamentos
+    let medicamentos = '';
+    if (tomaMedicamentos) {
+      medicamentos = formData.medicamentos || 'Medicamentos especificados';
     }
 
-    // Lógica para examenLocal
-    let examenLocalEstado = 'normal';
-    let examenLocalDetalleTexto = '';
-    if (formData.examenLocal === 'alterado') {
-      examenLocalEstado = 'alterado';
-      examenLocalDetalleTexto = formData.examenLocalDetalle;
+    // Construir alergias
+    let alergiasTexto = '';
+    if (alergias) {
+      alergiasTexto = formData.alergiasDetalle || 'Alergias especificadas';
+    }
+
+    // Construir apreciación general
+    let apreciacionGeneralTexto = '';
+    const apreciaciones = [];
+    if (apreciacionGeneral.lucido) apreciaciones.push('Lúcido');
+    if (apreciacionGeneral.apiretico) apreciaciones.push('Apirético');
+    if (apreciacionGeneral.colaborador) apreciaciones.push('Colaborador');
+    if (apreciacionGeneral.ambulatorio) apreciaciones.push('Ambulatorio');
+    apreciacionGeneralTexto = apreciaciones.join(', ');
+
+    // Construir examen regional
+    let examenRegionalTexto = '';
+    const examenesRegionales = [];
+    if (examenRegional.facies) examenesRegionales.push('Facies');
+    if (examenRegional.cuello) examenesRegionales.push('Cuello');
+    if (examenRegional.ganglios) examenesRegionales.push('Ganglios');
+    if (examenRegional.atm) examenesRegionales.push('ATM');
+    if (examenRegional.macizoFacial) examenesRegionales.push('Macizo facial');
+    if (examenRegional.mandibula) examenesRegionales.push('Mandíbula');
+    if (examenRegional.musculos) examenesRegionales.push('Músculos');
+    if (examenRegional.meso) examenesRegionales.push('Meso');
+    if (examenRegional.dolico) examenesRegionales.push('Dólico');
+    if (examenRegional.braqui) examenesRegionales.push('Braqui');
+    examenRegionalTexto = examenesRegionales.join(', ');
+
+    // Construir examen local
+    let examenLocalTexto = '';
+    if (continenteAlteraciones) {
+      const continenteItems = [];
+      if (continenteOpciones.esfinterOralAnterior) continenteItems.push('Esfínter oral anterior');
+      if (continenteOpciones.mejillas) continenteItems.push('Mejillas');
+      if (continenteOpciones.paladar) continenteItems.push('Paladar');
+      if (continenteOpciones.pisoDeBoca) continenteItems.push('Piso de boca');
+      if (continenteOpciones.esfinterOralPosterior) continenteItems.push('Esfínter oral posterior');
+      examenLocalTexto = `Continente alterado: ${continenteItems.join(', ')}`;
     }
 
     const historiaClinicaData = {
       paciente: { id: paciente.id },
-      enfermedadesActuales: formData.enfermedadesActuales,
-      medicamentos: formData.medicamentos,
-      alergias: formData.alergias,
+      motivoConsulta: formData.motivoConsulta,
+      cepilladoDental: formData.cepilladoDental,
+      cepilladoEncias: formData.cepilladoEncias,
+      cepilladoLingual: formData.cepilladoLingual,
+      observacionesHigienicas: formData.observacionesHigienicas,
+      usaHiloDental: usaHiloDental,
+      higieneProtesica: higieneProtesica,
+      enfermedadesActuales: enfermedadesActuales,
+      medicamentos: medicamentos,
+      alergias: alergiasTexto,
+      posologia: formData.posologia,
       antecedentesFamiliares: formData.antecedentesFamiliares,
-      
-      apreciacionGeneral: apreciacionGeneralEstado,
-      apreciacionGeneralDetalle: apreciacionGeneralDetalleTexto,
-
-      examenRegional: examenRegionalEstado,
-      examenRegionalDetalle: examenRegionalDetalleTexto,
-
-      examenLocal: examenLocalEstado,
-      examenLocalDetalle: examenLocalDetalleTexto,
-
+      enTratamiento: enTratamiento,
+      tomaBifosfonatos: tomaBifosfonatos,
+      apreciacionGeneral: apreciacionGeneralTexto,
+      apreciacionGeneralDetalle: formData.apreciacionGeneralDetalle,
+      examenRegional: examenRegionalTexto,
+      examenRegionalDetalle: formData.examenRegionalDetalle,
+      examenLocal: examenLocalTexto,
+      examenLocalDetalle: formData.examenLocalDetalle,
+      examenRegionalDetalles: examenRegionalDetalles,
+      continenteDetalles: continenteDetalles,
+      fumador: fumador,
+      consumeCafe: consumeCafe,
+      consumeTe: consumeTe,
+      consumeMate: consumeMate,
+      consumeAlcohol: consumeAlcohol,
+      consumeDrogas: consumeDrogas,
       usuario: { id: 1 } // Asegúrate de que este ID de usuario exista en tu DB
     };
 
+    // Debug: Mostrar los datos que se van a enviar
+    console.log('=== DATOS DEL FORMULARIO ===');
+    console.log('formData completo:', formData);
+    console.log('Datos a enviar al servidor:', historiaClinicaData);
+    console.log('=== FIN DEBUG ===');
+
     try {
-      await axios.post('http://localhost:8080/api/historia-clinica', historiaClinicaData);
-      showNotification('success', 'Historia clínica guardada con éxito');
-      setTimeout(() => {
-        navigate(-1);
-      }, 2000);
+      let response;
+      if (historiaClinicaId) {
+        // PUT (actualizar)
+        response = await axios.put(`http://localhost:8080/api/historia-clinica/${historiaClinicaId}`, historiaClinicaData);
+      } else {
+        // POST (crear)
+        response = await axios.post('http://localhost:8080/api/historia-clinica', historiaClinicaData);
+      }
+      showNotification('success', '¡Historia clínica guardada con éxito!');
+      if (response.data.fecha) {
+        setFechaUltimaActualizacion(response.data.fecha);
+      }
     } catch (error) {
-      showNotification('error', 'Error al guardar la historia clínica');
       console.error('Error al guardar:', error);
+      const errorMessage = error.response?.data?.message || 'Error al guardar la historia clínica';
+      showNotification('error', `Error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading && !paciente) return <p>Cargando...</p>;
   if (error) return <div className="error-message">{error}</div>;
   if (!paciente) return <p>No se encontró el paciente</p>;
 
@@ -414,6 +533,14 @@ const HistoriaClinica = () => {
         <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
           <form onSubmit={handleSubmit} className="space-y-6">
             <MessageDisplay message={displayMessage} type={messageType} onDismiss={handleDismissMessage} />
+            
+            {/* Notificación */}
+            {notification.show && (
+              <div className={`notification ${notification.type === 'success' ? 'success' : 'error'}`}>
+                {notification.message}
+              </div>
+            )}
+
             <div className="historia-clinica-container">
               <div className="historia-clinica-card">
                 <div className="historia-clinica-header">
@@ -444,6 +571,8 @@ const HistoriaClinica = () => {
                       <textarea
                         id="motivoConsulta"
                         name="motivoConsulta"
+                        value={formData.motivoConsulta}
+                        onChange={(e) => handleInputChange('motivoConsulta', e.target.value)}
                         rows="3"
                         placeholder="Describa el motivo de la consulta"
                       ></textarea>
@@ -463,6 +592,8 @@ const HistoriaClinica = () => {
                             type="number"
                             id="cepilladoDental"
                             name="cepilladoDental"
+                            value={formData.cepilladoDental}
+                            onChange={(e) => handleInputChange('cepilladoDental', e.target.value)}
                             min="0"
                           />
                         </div>
@@ -472,6 +603,8 @@ const HistoriaClinica = () => {
                             type="number"
                             id="cepilladoEncias"
                             name="cepilladoEncias"
+                            value={formData.cepilladoEncias}
+                            onChange={(e) => handleInputChange('cepilladoEncias', e.target.value)}
                             min="0"
                           />
                         </div>
@@ -481,6 +614,8 @@ const HistoriaClinica = () => {
                             type="number"
                             id="cepilladoLingual"
                             name="cepilladoLingual"
+                            value={formData.cepilladoLingual}
+                            onChange={(e) => handleInputChange('cepilladoLingual', e.target.value)}
                             min="0"
                           />
                         </div>
@@ -507,6 +642,68 @@ const HistoriaClinica = () => {
                           Higiene protésica
                         </label>
                       </div>
+                      <div className="habitos-higiene-checkbox-group" style={{marginTop: '1rem'}}>
+                        <label className="habitos-higiene-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="habitos-higiene-checkbox"
+                            name="fumador"
+                            checked={fumador}
+                            onChange={handleCheckboxChange(setFumador)}
+                          />
+                          Fumador
+                        </label>
+                        <label className="habitos-higiene-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="habitos-higiene-checkbox"
+                            name="consumeCafe"
+                            checked={consumeCafe}
+                            onChange={handleCheckboxChange(setConsumeCafe)}
+                          />
+                          Consume café
+                        </label>
+                        <label className="habitos-higiene-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="habitos-higiene-checkbox"
+                            name="consumeTe"
+                            checked={consumeTe}
+                            onChange={handleCheckboxChange(setConsumeTe)}
+                          />
+                          Consume té
+                        </label>
+                        <label className="habitos-higiene-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="habitos-higiene-checkbox"
+                            name="consumeMate"
+                            checked={consumeMate}
+                            onChange={handleCheckboxChange(setConsumeMate)}
+                          />
+                          Consume mate
+                        </label>
+                        <label className="habitos-higiene-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="habitos-higiene-checkbox"
+                            name="consumeAlcohol"
+                            checked={consumeAlcohol}
+                            onChange={handleCheckboxChange(setConsumeAlcohol)}
+                          />
+                          Consume alcohol
+                        </label>
+                        <label className="habitos-higiene-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="habitos-higiene-checkbox"
+                            name="consumeDrogas"
+                            checked={consumeDrogas}
+                            onChange={handleCheckboxChange(setConsumeDrogas)}
+                          />
+                          Consume drogas
+                        </label>
+                      </div>
                     </div>
                     <div className="habitos-higiene-column">
                       <div className="habitos-higiene-observaciones">
@@ -514,6 +711,8 @@ const HistoriaClinica = () => {
                         <textarea
                           id="observacionesHigienicas"
                           name="observacionesHigienicas"
+                          value={formData.observacionesHigienicas}
+                          onChange={(e) => handleInputChange('observacionesHigienicas', e.target.value)}
                           placeholder="Campo para observaciones de higiene o cualquier dato adicional"
                         ></textarea>
                       </div>
@@ -646,6 +845,8 @@ const HistoriaClinica = () => {
                           <textarea
                             className="enfermedades-textarea"
                             name="alergiasDetalle"
+                            value={formData.alergiasDetalle}
+                            onChange={(e) => handleInputChange('alergiasDetalle', e.target.value)}
                             placeholder="Detalle las alergias"
                           ></textarea>
                         </div>
@@ -683,6 +884,8 @@ const HistoriaClinica = () => {
                             <textarea
                               className="enfermedades-textarea"
                               name="medicamentos"
+                              value={formData.medicamentos}
+                              onChange={(e) => handleInputChange('medicamentos', e.target.value)}
                               placeholder="Liste los medicamentos"
                             ></textarea>
                           </div>
@@ -692,6 +895,8 @@ const HistoriaClinica = () => {
                             <textarea
                               className="enfermedades-textarea"
                               name="posologia"
+                              value={formData.posologia}
+                              onChange={(e) => handleInputChange('posologia', e.target.value)}
                               placeholder="Detalle la posología y otros comentarios relevantes"
                             ></textarea>
                           </div>
@@ -715,328 +920,543 @@ const HistoriaClinica = () => {
                 </div>
 
                 <div className="historia-clinica-section">
-                  <div className="examen-section">
-                    <div className="examen-column">
-                      <h4>Examen Regional:</h4>
-                      <div className="examen-items">
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="facies"
-                              checked={examenRegional.facies}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Facies
-                          </label>
-                          {examenRegional.facies && (
-                            <textarea
-                              name="facies"
-                              placeholder="Detalle aquí"
-                              value={examenRegionalDetalles.facies}
-                              onChange={handleExamenRegionalDetalleChange}
-                            ></textarea>
-                          )}
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="cuello"
-                              checked={examenRegional.cuello}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Cuello
-                          </label>
-                          {examenRegional.cuello && (
-                            <textarea
-                              name="cuello"
-                              placeholder="Detalle aquí"
-                              value={examenRegionalDetalles.cuello}
-                              onChange={handleExamenRegionalDetalleChange}
-                            ></textarea>
-                          )}
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="ganglios"
-                              checked={examenRegional.ganglios}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Ganglios
-                          </label>
-                          {examenRegional.ganglios && (
-                            <textarea
-                              name="ganglios"
-                              placeholder="Detalle aquí"
-                              value={examenRegionalDetalles.ganglios}
-                              onChange={handleExamenRegionalDetalleChange}
-                            ></textarea>
-                          )}
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="atm"
-                              checked={examenRegional.atm}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            ATM
-                          </label>
-                          {examenRegional.atm && (
-                            <textarea
-                              name="atm"
-                              placeholder="Detalle aquí"
-                              value={examenRegionalDetalles.atm}
-                              onChange={handleExamenRegionalDetalleChange}
-                            ></textarea>
-                          )}
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="macizoFacial"
-                              checked={examenRegional.macizoFacial}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Macizo facial
-                          </label>
-                          {examenRegional.macizoFacial && (
-                            <textarea
-                              name="macizoFacial"
-                              placeholder="Detalle aquí"
-                              value={examenRegionalDetalles.macizoFacial}
-                              onChange={handleExamenRegionalDetalleChange}
-                            ></textarea>
-                          )}
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="mandibula"
-                              checked={examenRegional.mandibula}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Mandíbula
-                          </label>
-                          {examenRegional.mandibula && (
-                            <textarea
-                              name="mandibula"
-                              placeholder="Detalle aquí"
-                              value={examenRegionalDetalles.mandibula}
-                              onChange={handleExamenRegionalDetalleChange}
-                            ></textarea>
-                          )}
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="musculos"
-                              checked={examenRegional.musculos}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Músculos
-                          </label>
-                          {examenRegional.musculos && (
-                            <textarea
-                              name="musculos"
-                              placeholder="Detalle aquí"
-                              value={examenRegionalDetalles.musculos}
-                              onChange={handleExamenRegionalDetalleChange}
-                            ></textarea>
-                          )}
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="meso"
-                              checked={examenRegional.meso}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Meso
-                          </label>
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="dolico"
-                              checked={examenRegional.dolico}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Dólico
-                          </label>
-                        </div>
-
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="braqui"
-                              checked={examenRegional.braqui}
-                              onChange={handleExamenRegionalChange}
-                            />
-                            Braqui
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="examen-column">
-                      <h4>Examen Local:</h4>
-                      <div className="examen-items">
-                        <div className="examen-item">
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="continenteAlteraciones"
-                              checked={continenteAlteraciones}
-                              onChange={handleContinenteAlteracionesChange}
-                            />
-                            Continente: ¿Existen alteraciones?
-                          </label>
-                          {continenteAlteraciones && (
-                            <div className="nested-checkboxes">
-                              <div className="examen-item">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="esfinterOralAnterior"
-                                    checked={continenteOpciones.esfinterOralAnterior}
-                                    onChange={handleContinenteOpcionesChange}
-                                  />
-                                  Esfínter oral anterior
-                                </label>
-                                {continenteOpciones.esfinterOralAnterior && (
-                                  <textarea
-                                    name="esfinterOralAnterior"
-                                    placeholder="Detalle"
-                                    value={continenteDetalles.esfinterOralAnterior}
-                                    onChange={handleContinenteDetalleChange}
-                                  ></textarea>
-                                )}
-                              </div>
-
-                              <div className="examen-item">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="mejillas"
-                                    checked={continenteOpciones.mejillas}
-                                    onChange={handleContinenteOpcionesChange}
-                                  />
-                                  Mejillas
-                                </label>
-                                {continenteOpciones.mejillas && (
-                                  <textarea
-                                    name="mejillas"
-                                    placeholder="Detalle"
-                                    value={continenteDetalles.mejillas}
-                                    onChange={handleContinenteDetalleChange}
-                                  ></textarea>
-                                )}
-                              </div>
-
-                              <div className="examen-item">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="paladar"
-                                    checked={continenteOpciones.paladar}
-                                    onChange={handleContinenteOpcionesChange}
-                                  />
-                                  Paladar
-                                </label>
-                                {continenteOpciones.paladar && (
-                                  <textarea
-                                    name="paladar"
-                                    placeholder="Detalle"
-                                    value={continenteDetalles.paladar}
-                                    onChange={handleContinenteDetalleChange}
-                                  ></textarea>
-                                )}
-                              </div>
-
-                              <div className="examen-item">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="pisoDeBoca"
-                                    checked={continenteOpciones.pisoDeBoca}
-                                    onChange={handleContinenteOpcionesChange}
-                                  />
-                                  Piso de boca
-                                </label>
-                                {continenteOpciones.pisoDeBoca && (
-                                  <textarea
-                                    name="pisoDeBoca"
-                                    placeholder="Detalle"
-                                    value={continenteDetalles.pisoDeBoca}
-                                    onChange={handleContinenteDetalleChange}
-                                  ></textarea>
-                                )}
-                              </div>
-
-                              <div className="examen-item">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="esfinterOralPosterior"
-                                    checked={continenteOpciones.esfinterOralPosterior}
-                                    onChange={handleContinenteOpcionesChange}
-                                  />
-                                  Esfínter oral posterior
-                                </label>
-                                {continenteOpciones.esfinterOralPosterior && (
-                                  <textarea
-                                    name="esfinterOralPosterior"
-                                    placeholder="Detalle"
-                                    value={continenteDetalles.esfinterOralPosterior}
-                                    onChange={handleContinenteDetalleChange}
-                                  ></textarea>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                  <h3 className="historia-clinica-section-title">Antecedentes Familiares</h3>
+                  <div className="historia-clinica-grid">
+                    <div className="historia-clinica-item full-width">
+                      <label htmlFor="antecedentesFamiliares">Antecedentes Familiares:</label>
+                      <textarea
+                        id="antecedentesFamiliares"
+                        name="antecedentesFamiliares"
+                        value={formData.antecedentesFamiliares}
+                        onChange={(e) => handleInputChange('antecedentesFamiliares', e.target.value)}
+                        rows="3"
+                        placeholder="Describa los antecedentes familiares relevantes"
+                      ></textarea>
                     </div>
                   </div>
                 </div>
 
-                <div className="historia-clinica-actions">
-                  <button
-                    type="button"
-                    onClick={handleCancel}
-                    disabled={loading}
-                    className="historia-clinica-button historia-clinica-button-secondary"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="historia-clinica-button historia-clinica-button-primary"
-                  >
-                    {loading ? 'Guardando...' : 'Guardar'}
-                  </button>
+                <div className="historia-clinica-section">
+                  <h3 className="historia-clinica-section-title">Apreciación General</h3>
+                  <div className="apreciacion-general-checkbox-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="lucido"
+                        checked={apreciacionGeneral.lucido}
+                        onChange={handleApreciacionGeneralChange}
+                      />
+                      Lúcido
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="apiretico"
+                        checked={apreciacionGeneral.apiretico}
+                        onChange={handleApreciacionGeneralChange}
+                      />
+                      Apirético
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="colaborador"
+                        checked={apreciacionGeneral.colaborador}
+                        onChange={handleApreciacionGeneralChange}
+                      />
+                      Colaborador
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="ambulatorio"
+                        checked={apreciacionGeneral.ambulatorio}
+                        onChange={handleApreciacionGeneralChange}
+                      />
+                      Ambulatorio
+                    </label>
+                  </div>
+                  <textarea
+                    name="apreciacionGeneralDetalle"
+                    value={formData.apreciacionGeneralDetalle}
+                    onChange={(e) => handleInputChange('apreciacionGeneralDetalle', e.target.value)}
+                    placeholder="Detalle apreciación general"
+                  ></textarea>
+                </div>
+
+                <div className="historia-clinica-section">
+                  <h3 className="historia-clinica-section-title">Examen Regional</h3>
+                  <div className="examen-items">
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="facies"
+                          checked={examenRegional.facies}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Facies
+                      </label>
+                      {examenRegional.facies && (
+                        <textarea
+                          name="facies"
+                          placeholder="Detalle aquí"
+                          value={examenRegionalDetalles.facies}
+                          onChange={handleExamenRegionalDetalleChange}
+                        ></textarea>
+                      )}
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="cuello"
+                          checked={examenRegional.cuello}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Cuello
+                      </label>
+                      {examenRegional.cuello && (
+                        <textarea
+                          name="cuello"
+                          placeholder="Detalle aquí"
+                          value={examenRegionalDetalles.cuello}
+                          onChange={handleExamenRegionalDetalleChange}
+                        ></textarea>
+                      )}
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="ganglios"
+                          checked={examenRegional.ganglios}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Ganglios
+                      </label>
+                      {examenRegional.ganglios && (
+                        <textarea
+                          name="ganglios"
+                          placeholder="Detalle aquí"
+                          value={examenRegionalDetalles.ganglios}
+                          onChange={handleExamenRegionalDetalleChange}
+                        ></textarea>
+                      )}
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="atm"
+                          checked={examenRegional.atm}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        ATM
+                      </label>
+                      {examenRegional.atm && (
+                        <textarea
+                          name="atm"
+                          placeholder="Detalle aquí"
+                          value={examenRegionalDetalles.atm}
+                          onChange={handleExamenRegionalDetalleChange}
+                        ></textarea>
+                      )}
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="macizoFacial"
+                          checked={examenRegional.macizoFacial}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Macizo facial
+                      </label>
+                      {examenRegional.macizoFacial && (
+                        <textarea
+                          name="macizoFacial"
+                          placeholder="Detalle aquí"
+                          value={examenRegionalDetalles.macizoFacial}
+                          onChange={handleExamenRegionalDetalleChange}
+                        ></textarea>
+                      )}
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="mandibula"
+                          checked={examenRegional.mandibula}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Mandíbula
+                      </label>
+                      {examenRegional.mandibula && (
+                        <textarea
+                          name="mandibula"
+                          placeholder="Detalle aquí"
+                          value={examenRegionalDetalles.mandibula}
+                          onChange={handleExamenRegionalDetalleChange}
+                        ></textarea>
+                      )}
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="musculos"
+                          checked={examenRegional.musculos}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Músculos
+                      </label>
+                      {examenRegional.musculos && (
+                        <textarea
+                          name="musculos"
+                          placeholder="Detalle aquí"
+                          value={examenRegionalDetalles.musculos}
+                          onChange={handleExamenRegionalDetalleChange}
+                        ></textarea>
+                      )}
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="meso"
+                          checked={examenRegional.meso}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Meso
+                      </label>
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="dolico"
+                          checked={examenRegional.dolico}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Dólico
+                      </label>
+                    </div>
+
+                    <div className="examen-item">
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="braqui"
+                          checked={examenRegional.braqui}
+                          onChange={handleExamenRegionalChange}
+                        />
+                        Braqui
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="historia-clinica-section">
+                  <h3 className="historia-clinica-section-title">Examen Local</h3>
+                  <div className="examen-local-columns">
+                    {/* CONTINENTE */}
+                    <div className="examen-local-column">
+                      <div className="examen-item">
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="continenteAlteraciones"
+                            checked={continenteAlteraciones}
+                            onChange={handleContinenteAlteracionesChange}
+                          />
+                          Continente: ¿Existen alteraciones?
+                        </label>
+                        {continenteAlteraciones && (
+                          <div className="nested-checkboxes">
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="esfinterOralAnterior"
+                                  checked={continenteOpciones.esfinterOralAnterior}
+                                  onChange={handleContinenteOpcionesChange}
+                                />
+                                Esfínter oral anterior
+                              </label>
+                              {continenteOpciones.esfinterOralAnterior && (
+                                <textarea
+                                  name="esfinterOralAnterior"
+                                  placeholder="Detalle"
+                                  value={continenteDetalles.esfinterOralAnterior}
+                                  onChange={handleContinenteDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="mejillas"
+                                  checked={continenteOpciones.mejillas}
+                                  onChange={handleContinenteOpcionesChange}
+                                />
+                                Mejillas
+                              </label>
+                              {continenteOpciones.mejillas && (
+                                <textarea
+                                  name="mejillas"
+                                  placeholder="Detalle"
+                                  value={continenteDetalles.mejillas}
+                                  onChange={handleContinenteDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="paladar"
+                                  checked={continenteOpciones.paladar}
+                                  onChange={handleContinenteOpcionesChange}
+                                />
+                                Paladar
+                              </label>
+                              {continenteOpciones.paladar && (
+                                <textarea
+                                  name="paladar"
+                                  placeholder="Detalle"
+                                  value={continenteDetalles.paladar}
+                                  onChange={handleContinenteDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="pisoDeBoca"
+                                  checked={continenteOpciones.pisoDeBoca}
+                                  onChange={handleContinenteOpcionesChange}
+                                />
+                                Piso de boca
+                              </label>
+                              {continenteOpciones.pisoDeBoca && (
+                                <textarea
+                                  name="pisoDeBoca"
+                                  placeholder="Detalle"
+                                  value={continenteDetalles.pisoDeBoca}
+                                  onChange={handleContinenteDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="esfinterOralPosterior"
+                                  checked={continenteOpciones.esfinterOralPosterior}
+                                  onChange={handleContinenteOpcionesChange}
+                                />
+                                Esfínter oral posterior
+                              </label>
+                              {continenteOpciones.esfinterOralPosterior && (
+                                <textarea
+                                  name="esfinterOralPosterior"
+                                  placeholder="Detalle"
+                                  value={continenteDetalles.esfinterOralPosterior}
+                                  onChange={handleContinenteDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {/* CONTENIDO */}
+                    <div className="examen-local-column">
+                      <div className="examen-item">
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="contenidoAlteraciones"
+                            checked={contenidoAlteraciones}
+                            onChange={handleContenidoAlteracionesChange}
+                          />
+                          Contenido: ¿Existen alteraciones?
+                        </label>
+                        {contenidoAlteraciones && (
+                          <div className="nested-checkboxes">
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="lenguaDorso"
+                                  checked={contenidoOpciones.lenguaDorso}
+                                  onChange={handleContenidoOpcionesChange}
+                                />
+                                Lengua dorso
+                              </label>
+                              {contenidoOpciones.lenguaDorso && (
+                                <textarea
+                                  name="lenguaDorso"
+                                  placeholder="Detalle"
+                                  value={contenidoDetalles.lenguaDorso}
+                                  onChange={handleContenidoDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="lenguaVientre"
+                                  checked={contenidoOpciones.lenguaVientre}
+                                  onChange={handleContenidoOpcionesChange}
+                                />
+                                Lengua vientre
+                              </label>
+                              {contenidoOpciones.lenguaVientre && (
+                                <textarea
+                                  name="lenguaVientre"
+                                  placeholder="Detalle"
+                                  value={contenidoDetalles.lenguaVientre}
+                                  onChange={handleContenidoDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="lenguaBordes"
+                                  checked={contenidoOpciones.lenguaBordes}
+                                  onChange={handleContenidoOpcionesChange}
+                                />
+                                Lengua bordes
+                              </label>
+                              {contenidoOpciones.lenguaBordes && (
+                                <textarea
+                                  name="lenguaBordes"
+                                  placeholder="Detalle"
+                                  value={contenidoDetalles.lenguaBordes}
+                                  onChange={handleContenidoDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="lenguaFrenillo"
+                                  checked={contenidoOpciones.lenguaFrenillo}
+                                  onChange={handleContenidoOpcionesChange}
+                                />
+                                Lengua frenillo
+                              </label>
+                              {contenidoOpciones.lenguaFrenillo && (
+                                <textarea
+                                  name="lenguaFrenillo"
+                                  placeholder="Detalle"
+                                  value={contenidoDetalles.lenguaFrenillo}
+                                  onChange={handleContenidoDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="saliva"
+                                  checked={contenidoOpciones.saliva}
+                                  onChange={handleContenidoOpcionesChange}
+                                />
+                                Saliva
+                              </label>
+                              {contenidoOpciones.saliva && (
+                                <textarea
+                                  name="saliva"
+                                  placeholder="Detalle"
+                                  value={contenidoDetalles.saliva}
+                                  onChange={handleContenidoDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="rebordesResiduales"
+                                  checked={contenidoOpciones.rebordesResiduales}
+                                  onChange={handleContenidoOpcionesChange}
+                                />
+                                Rebordes residuales
+                              </label>
+                              {contenidoOpciones.rebordesResiduales && (
+                                <textarea
+                                  name="rebordesResiduales"
+                                  placeholder="Detalle"
+                                  value={contenidoDetalles.rebordesResiduales}
+                                  onChange={handleContenidoDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+                            <div className="examen-item">
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="bridasyFrenillos"
+                                  checked={contenidoOpciones.bridasyFrenillos}
+                                  onChange={handleContenidoOpcionesChange}
+                                />
+                                Bridas y frenillos
+                              </label>
+                              {contenidoOpciones.bridasyFrenillos && (
+                                <textarea
+                                  name="bridasyFrenillos"
+                                  placeholder="Detalle"
+                                  value={contenidoDetalles.bridasyFrenillos}
+                                  onChange={handleContenidoDetalleChange}
+                                ></textarea>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
+
+            <div className="historia-clinica-actions">
+              <button
+                type="button"
+                onClick={handleCancel}
+                disabled={loading}
+                className="historia-clinica-button historia-clinica-button-secondary"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="historia-clinica-button historia-clinica-button-primary"
+              >
+                {loading ? 'Guardando...' : 'Guardar Historia Clínica'}
+              </button>
             </div>
           </form>
         </div>
@@ -1064,6 +1484,12 @@ const HistoriaClinica = () => {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {fechaUltimaActualizacion && (
+        <div className="fecha-historia-clinica" style={{textAlign: 'right', color: '#888', fontSize: '0.95rem', marginBottom: '1rem'}}>
+          Última actualización: {new Date(fechaUltimaActualizacion).toLocaleString()}
         </div>
       )}
     </div>

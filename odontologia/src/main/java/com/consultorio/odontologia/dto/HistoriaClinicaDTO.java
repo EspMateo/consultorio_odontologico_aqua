@@ -1,115 +1,46 @@
-package com.consultorio.odontologia.entity;
+package com.consultorio.odontologia.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "historiaClinica")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class HistoriaClinica {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class HistoriaClinicaDTO {
     private Long id;
-
-    @Column(nullable = true)
+    private PacienteDTO paciente;
     private String motivoConsulta;
-
-    @Column(nullable = true)
     private String cepilladoDental;
-
-    @Column(nullable = true)
     private String cepilladoEncias;
-
-    @Column(nullable = true)
     private String cepilladoLingual;
-
-    @Column(nullable = true)
     private String observacionesHigienicas;
-
-    @Column(nullable = true)
     private Boolean usaHiloDental;
-
-    @Column(nullable = true)
     private Boolean higieneProtesica;
-
-    @Column(nullable = true)
     private String enfermedadesActuales;
-
-    @Column(nullable = true)
     private String medicamentos;
-
-    @Column(nullable = true)
     private String alergias;
-
-    @Column(nullable = true)
     private String posologia;
-
-    @Column(nullable = true)
     private String antecedentesFamiliares;
-
-    @Column(nullable = true)
     private Boolean enTratamiento;
-
-    @Column(nullable = true)
     private Boolean tomaBifosfonatos;
-
-    @Column(nullable = true)
     private String apreciacionGeneral;
-
-    @Column(nullable = true)
     private String apreciacionGeneralDetalle;
-
-    @Column(nullable = true)
     private String examenRegional;
-
-    @Column(nullable = true)
     private String examenRegionalDetalle;
-
-    @Column(nullable = true)
     private String examenLocal;
-
-    @Column(nullable = true)
     private String examenLocalDetalle;
-
-    @Column(nullable = true)
-    private String examenRegionalDetalles;
-
-    @Column(nullable = true)
-    private String continenteDetalles;
-
-    @Column(nullable = true)
+    private Object examenRegionalDetalles; // Será convertido a JSON
+    private Object continenteDetalles; // Será convertido a JSON
+    private UsuarioDTO usuario;
     private Boolean fumador;
-
-    @Column(nullable = true)
     private Boolean consumeCafe;
-
-    @Column(nullable = true)
     private Boolean consumeTe;
-
-    @Column(nullable = true)
     private Boolean consumeMate;
-
-    @Column(nullable = true)
     private Boolean consumeAlcohol;
-
-    @Column(nullable = true)
     private Boolean consumeDrogas;
-
-    @OneToOne(mappedBy = "historiaClinica")
-    @JsonBackReference
-    private Paciente paciente;
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = true)
-    private Usuario usuario;
 
     public Long getId() {
         return id;
@@ -117,6 +48,14 @@ public class HistoriaClinica {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public PacienteDTO getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(PacienteDTO paciente) {
+        this.paciente = paciente;
     }
 
     public String getMotivoConsulta() {
@@ -279,20 +218,28 @@ public class HistoriaClinica {
         this.examenLocalDetalle = examenLocalDetalle;
     }
 
-    public String getExamenRegionalDetalles() {
+    public Object getExamenRegionalDetalles() {
         return examenRegionalDetalles;
     }
 
-    public void setExamenRegionalDetalles(String examenRegionalDetalles) {
+    public void setExamenRegionalDetalles(Object examenRegionalDetalles) {
         this.examenRegionalDetalles = examenRegionalDetalles;
     }
 
-    public String getContinenteDetalles() {
+    public Object getContinenteDetalles() {
         return continenteDetalles;
     }
 
-    public void setContinenteDetalles(String continenteDetalles) {
+    public void setContinenteDetalles(Object continenteDetalles) {
         this.continenteDetalles = continenteDetalles;
+    }
+
+    public UsuarioDTO getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioDTO usuario) {
+        this.usuario = usuario;
     }
 
     public Boolean getFumador() {
@@ -341,21 +288,5 @@ public class HistoriaClinica {
 
     public void setConsumeDrogas(Boolean consumeDrogas) {
         this.consumeDrogas = consumeDrogas;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 }

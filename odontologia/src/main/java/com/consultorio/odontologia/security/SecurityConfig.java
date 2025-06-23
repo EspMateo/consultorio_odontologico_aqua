@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/citas/**").permitAll() // Permitir agendar citas
                 .requestMatchers(HttpMethod.GET, "/api/citas/**").permitAll() // Permitir obtener citas
                 .requestMatchers(HttpMethod.POST, "/api/historia-clinica/**").permitAll() // Permitir guardar historia clinica
+                .requestMatchers(HttpMethod.GET, "/api/historia-clinica/**").permitAll() // Permitir obtener historia clínica
                 .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
             );
         

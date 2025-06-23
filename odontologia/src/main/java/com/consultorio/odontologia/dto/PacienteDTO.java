@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PacienteDTO {
+    private Long id;
     private String cedula;
     private String nombre;
     private String apellido;
@@ -88,5 +89,13 @@ public class PacienteDTO {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
