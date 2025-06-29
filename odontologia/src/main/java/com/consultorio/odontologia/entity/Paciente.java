@@ -2,11 +2,14 @@ package com.consultorio.odontologia.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "pacientes")
@@ -31,11 +34,7 @@ public class Paciente {
     private String generalMedicalHistory;
     private String dentalHistory;
     private String releaseSummary;
-    
-    @OneToOne
-    @JoinColumn(name="historiaClinica_id", referencedColumnName = "id", nullable = true)
-    @JsonManagedReference
-    private HistoriaClinica historiaClinica;
+
 
     public Long getId() {
         return id;
@@ -133,11 +132,5 @@ public class Paciente {
         this.releaseSummary = releaseSummary;
     }
 
-    public HistoriaClinica getHistoriaClinica() {
-        return historiaClinica;
-    }
 
-    public void setHistoriaClinica(HistoriaClinica historiaClinica) {
-        this.historiaClinica = historiaClinica;
-    }
 }

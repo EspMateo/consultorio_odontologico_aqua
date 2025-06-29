@@ -56,24 +56,20 @@ public class HistoriaClinicaController {
     @PostMapping
     public ResponseEntity<?> save(@RequestBody HistoriaClinicaDTO historiaClinicaDTO) {
         try {
-            // Convertir DTO a entidad
             HistoriaClinica historiaClinica = new HistoriaClinica();
             
-            // Establecer paciente
             if (historiaClinicaDTO.getPaciente() != null && historiaClinicaDTO.getPaciente().getId() != null) {
                 Paciente paciente = pacienteService.findById(historiaClinicaDTO.getPaciente().getId())
                     .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
                 historiaClinica.setPaciente(paciente);
             }
             
-            // Establecer usuario
             if (historiaClinicaDTO.getUsuario() != null && historiaClinicaDTO.getUsuario().getId() != null) {
                 Usuario usuario = usuarioService.findById(historiaClinicaDTO.getUsuario().getId())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
                 historiaClinica.setUsuario(usuario);
             }
             
-            // Establecer campos básicos
             historiaClinica.setMotivoConsulta(historiaClinicaDTO.getMotivoConsulta());
             historiaClinica.setCepilladoDental(historiaClinicaDTO.getCepilladoDental());
             historiaClinica.setCepilladoEncias(historiaClinicaDTO.getCepilladoEncias());
@@ -101,7 +97,6 @@ public class HistoriaClinicaController {
             historiaClinica.setConsumeAlcohol(historiaClinicaDTO.getConsumeAlcohol());
             historiaClinica.setConsumeDrogas(historiaClinicaDTO.getConsumeDrogas());
             
-            // Convertir objetos complejos a JSON
             if (historiaClinicaDTO.getExamenRegionalDetalles() != null) {
                 historiaClinica.setExamenRegionalDetalles(objectMapper.writeValueAsString(historiaClinicaDTO.getExamenRegionalDetalles()));
             }
@@ -119,13 +114,75 @@ public class HistoriaClinicaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HistoriaClinica> update(@PathVariable Long id, @RequestBody HistoriaClinica historiaClinica) {
-        return historiaClinicaService.findById(id)
-                .map(existingHistoria -> {
-                    historiaClinica.setId(id);
-                    return ResponseEntity.ok(historiaClinicaService.save(historiaClinica));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody HistoriaClinicaDTO historiaClinicaDTO) {
+        try {
+            return historiaClinicaService.findById(id)
+                    .map(existingHistoria -> {
+                        // Actualizar campos básicos
+                        existingHistoria.setMotivoConsulta(historiaClinicaDTO.getMotivoConsulta());
+                        existingHistoria.setCepilladoDental(historiaClinicaDTO.getCepilladoDental());
+                        existingHistoria.setCepilladoEncias(historiaClinicaDTO.getCepilladoEncias());
+                        existingHistoria.setCepilladoLingual(historiaClinicaDTO.getCepilladoLingual());
+                        existingHistoria.setObservacionesHigienicas(historiaClinicaDTO.getObservacionesHigienicas());
+                        existingHistoria.setUsaHiloDental(historiaClinicaDTO.getUsaHiloDental());
+                        existingHistoria.setHigieneProtesica(historiaClinicaDTO.getHigieneProtesica());
+                        existingHistoria.setEnfermedadesActuales(historiaClinicaDTO.getEnfermedadesActuales());
+                        existingHistoria.setMedicamentos(historiaClinicaDTO.getMedicamentos());
+                        existingHistoria.setAlergias(historiaClinicaDTO.getAlergias());
+                        existingHistoria.setPosologia(historiaClinicaDTO.getPosologia());
+                        existingHistoria.setAntecedentesFamiliares(historiaClinicaDTO.getAntecedentesFamiliares());
+                        existingHistoria.setEnTratamiento(historiaClinicaDTO.getEnTratamiento());
+                        existingHistoria.setTomaBifosfonatos(historiaClinicaDTO.getTomaBifosfonatos());
+                        existingHistoria.setApreciacionGeneral(historiaClinicaDTO.getApreciacionGeneral());
+                        existingHistoria.setApreciacionGeneralDetalle(historiaClinicaDTO.getApreciacionGeneralDetalle());
+                        existingHistoria.setExamenRegional(historiaClinicaDTO.getExamenRegional());
+                        existingHistoria.setExamenRegionalDetalle(historiaClinicaDTO.getExamenRegionalDetalle());
+                        existingHistoria.setExamenLocal(historiaClinicaDTO.getExamenLocal());
+                        existingHistoria.setExamenLocalDetalle(historiaClinicaDTO.getExamenLocalDetalle());
+                        existingHistoria.setFumador(historiaClinicaDTO.getFumador());
+                        existingHistoria.setConsumeCafe(historiaClinicaDTO.getConsumeCafe());
+                        existingHistoria.setConsumeTe(historiaClinicaDTO.getConsumeTe());
+                        existingHistoria.setConsumeMate(historiaClinicaDTO.getConsumeMate());
+                        existingHistoria.setConsumeAlcohol(historiaClinicaDTO.getConsumeAlcohol());
+                        existingHistoria.setConsumeDrogas(historiaClinicaDTO.getConsumeDrogas());
+                        
+                        // Actualizar campos JSON
+                        if (historiaClinicaDTO.getExamenRegionalDetalles() != null) {
+                            try {
+                                existingHistoria.setExamenRegionalDetalles(objectMapper.writeValueAsString(historiaClinicaDTO.getExamenRegionalDetalles()));
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        
+                        if (historiaClinicaDTO.getContinenteDetalles() != null) {
+                            try {
+                                existingHistoria.setContinenteDetalles(objectMapper.writeValueAsString(historiaClinicaDTO.getContinenteDetalles()));
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        
+                        // Mantener las relaciones existentes
+                        if (historiaClinicaDTO.getPaciente() != null && historiaClinicaDTO.getPaciente().getId() != null) {
+                            Paciente paciente = pacienteService.findById(historiaClinicaDTO.getPaciente().getId())
+                                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+                            existingHistoria.setPaciente(paciente);
+                        }
+                        
+                        if (historiaClinicaDTO.getUsuario() != null && historiaClinicaDTO.getUsuario().getId() != null) {
+                            Usuario usuario = usuarioService.findById(historiaClinicaDTO.getUsuario().getId())
+                                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                            existingHistoria.setUsuario(usuario);
+                        }
+                        
+                        HistoriaClinica updatedHistoria = historiaClinicaService.save(existingHistoria);
+                        return ResponseEntity.ok(updatedHistoria);
+                    })
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al actualizar la historia clínica: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

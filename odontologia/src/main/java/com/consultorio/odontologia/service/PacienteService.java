@@ -89,11 +89,8 @@ public class PacienteService {
                     return new RuntimeException("Paciente no encontrado");
                 });
 
-            // Verificar si el paciente tiene citas asociadas
-            if (paciente.getHistoriaClinica() != null) {
-                logger.info("Eliminando historia clínica asociada al paciente ID: {}", id);
-                // Aquí podrías agregar lógica para eliminar la historia clínica si es necesario
-            }
+
+
 
             logger.info("Eliminando paciente con ID: {}", id);
             pacienteRepository.deleteById(id);

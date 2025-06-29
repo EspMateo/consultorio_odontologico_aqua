@@ -23,20 +23,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF explícitamente
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permitir solicitudes OPTIONS
-                .requestMatchers("/api/usuarios/login", "/api/usuarios/register").permitAll() // Permitir acceso a login y register
-                .requestMatchers("/api/pacientes/**").permitAll() // Temporalmente permitimos todo acceso a pacientes
-                .requestMatchers(HttpMethod.POST, "/api/citas/**").permitAll() // Permitir agendar citas
-                .requestMatchers(HttpMethod.GET, "/api/citas/**").permitAll() // Permitir obtener citas
-                .requestMatchers(HttpMethod.POST, "/api/historia-clinica/**").permitAll() // Permitir guardar historia clinica
-                .requestMatchers(HttpMethod.GET, "/api/historia-clinica/**").permitAll() // Permitir obtener historia clínica
-                .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
-            );
-        
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/usuarios/login", "/api/usuarios/register").permitAll()
+                        .requestMatchers("/api/pacientes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/citas/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/citas/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/historia-clinica/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/historia-clinica/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/historia-clinica/paciente/**").permitAll() // <-- AGREGADO
+                        .requestMatchers(HttpMethod.GET, "/api/historia-clinica/**").permitAll()
+                        .anyRequest().authenticated());
+
         return http.build();
     }
 

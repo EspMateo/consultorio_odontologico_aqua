@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -41,6 +43,8 @@ public class HistoriaClinicaDTO {
     private Boolean consumeMate;
     private Boolean consumeAlcohol;
     private Boolean consumeDrogas;
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaActualizacion;
 
     public Long getId() {
         return id;
@@ -288,5 +292,21 @@ public class HistoriaClinicaDTO {
 
     public void setConsumeDrogas(Boolean consumeDrogas) {
         this.consumeDrogas = consumeDrogas;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public LocalDateTime getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
     }
 }

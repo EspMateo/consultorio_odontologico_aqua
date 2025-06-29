@@ -1,103 +1,152 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import MessageDisplay from './MessageDisplay';
 import './styles/HistoriaClinica.css';
 
+// Constantes para valores repetidos
+const INITIAL_ENFERMEDADES = {
+  cardiovasculares: false,
+  diabetes: false,
+  ets: false,
+  otros: false,
+};
+
+const INITIAL_APRECIACION = {
+  lucido: false,
+  apiretico: false,
+  colaborador: false,
+  ambulatorio: false,
+};
+
+const INITIAL_EXAMEN_REGIONAL = {
+  facies: false,
+  cuello: false,
+  ganglios: false,
+  atm: false,
+  macizoFacial: false,
+  mandibula: false,
+  musculos: false,
+  meso: false,
+  dolico: false,
+  braqui: false,
+};
+
+const INITIAL_CONTINENTE = {
+  esfinterOralAnterior: false,
+  mejillas: false,
+  paladar: false,
+  pisoDeBoca: false,
+  esfinterOralPosterior: false,
+};
+
+const INITIAL_CONTENIDO = {
+  lenguaDorso: false,
+  lenguaVientre: false,
+  lenguaBordes: false,
+  lenguaFrenillo: false,
+  saliva: false,
+  rebordesResiduales: false,
+  bridasyFrenillos: false,
+};
+
+// Hook personalizado para manejar estados booleanos
+const useBooleanState = (initialValue = false) => {
+  const [value, setValue] = useState(initialValue);
+  const toggle = useCallback(() => setValue(prev => !prev), []);
+  const setTrue = useCallback(() => setValue(true), []);
+  const setFalse = useCallback(() => setValue(false), []);
+  return [value, setValue, toggle, setTrue, setFalse];
+};
+
+// Hook personalizado para manejar objetos de estado
+const useObjectState = (initialState) => {
+  const [state, setState] = useState(initialState);
+  
+  const updateState = useCallback((updates) => {
+    setState(prev => ({ ...prev, ...updates }));
+  }, []);
+  
+  const resetState = useCallback(() => {
+    setState(initialState);
+  }, [initialState]);
+  
+  return [state, setState, updateState, resetState];
+};
+
+// Hook personalizado para manejar formularios
+const useFormData = (initialData) => {
+  const [formData, setFormData] = useState(initialData);
+  
+  const updateField = useCallback((field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  }, []);
+  
+  const updateMultipleFields = useCallback((updates) => {
+    setFormData(prev => ({ ...prev, ...updates }));
+  }, []);
+  
+  const resetForm = useCallback(() => {
+    setFormData(initialData);
+  }, [initialData]);
+  
+  return [formData, setFormData, updateField, updateMultipleFields, resetForm];
+};
+
 const HistoriaClinica = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Estados principales
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [paciente, setPaciente] = useState(null);
+  const [historiaClinicaId, setHistoriaClinicaId] = useState(null);
+  const [fechaUltimaActualizacion, setFechaUltimaActualizacion] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  
+  // Estados de notificación
+  const [notification, setNotification] = useState({ show: false, type: '', message: '' });
   const [displayMessage, setDisplayMessage] = useState(null);
   const [messageType, setMessageType] = useState('info');
-  const [consumeDrogas, setConsumeDrogas] = useState(false);
-  const [consumeBebidas, setConsumeBebidas] = useState(false);
-  const [higieneProtesica, setHigieneProtesica] = useState(false);
-  const [usaHiloDental, setUsaHiloDental] = useState(false);
-  const [alergias, setAlergias] = useState(false);
-  const [tomaMedicamentos, setTomaMedicamentos] = useState(false);
-  const [consumeTe, setConsumeTe] = useState(false);
-  const [consumeCafe, setConsumeCafe] = useState(false);
-  const [consumeMate, setConsumeMate] = useState(false);
-  const [noTomaMedicamentos, setNoTomaMedicamentos] = useState(false);
-  const [tieneEnfermedades, setTieneEnfermedades] = useState(false);
-  const [noTieneEnfermedades, setNoTieneEnfermedades] = useState(false);
-  const [enfermedadesSeleccionadas, setEnfermedadesSeleccionadas] = useState({
-    cardiovasculares: false,
-    diabetes: false,
-    ets: false,
-    otros: false,
-  });
+  
+  // Estados booleanos usando hook personalizado
+  const [consumeDrogas, setConsumeDrogas] = useBooleanState();
+  const [consumeBebidas, setConsumeBebidas] = useBooleanState();
+  const [higieneProtesica, setHigieneProtesica] = useBooleanState();
+  const [usaHiloDental, setUsaHiloDental] = useBooleanState();
+  const [alergias, setAlergias] = useBooleanState();
+  const [tomaMedicamentos, setTomaMedicamentos] = useBooleanState();
+  const [consumeTe, setConsumeTe] = useBooleanState();
+  const [consumeCafe, setConsumeCafe] = useBooleanState();
+  const [consumeMate, setConsumeMate] = useBooleanState();
+  const [noTomaMedicamentos, setNoTomaMedicamentos] = useBooleanState();
+  const [tieneEnfermedades, setTieneEnfermedades] = useBooleanState();
+  const [noTieneEnfermedades, setNoTieneEnfermedades] = useBooleanState();
+  const [enTratamiento, setEnTratamiento] = useBooleanState();
+  const [tomaBifosfonatos, setTomaBifosfonatos] = useBooleanState();
+  const [dietaCariogenica, setDietaCariogenica] = useBooleanState();
+  const [continenteAlteraciones, setContinenteAlteraciones] = useBooleanState();
+  const [contenidoAlteraciones, setContenidoAlteraciones] = useBooleanState();
+  const [fumador, setFumador] = useBooleanState();
+  const [consumeAlcohol, setConsumeAlcohol] = useBooleanState();
+  
+  // Estados de objetos usando hook personalizado
+  const [enfermedadesSeleccionadas, setEnfermedadesSeleccionadas, updateEnfermedades, resetEnfermedades] = useObjectState(INITIAL_ENFERMEDADES);
+  const [apreciacionGeneral, setApreciacionGeneral, updateApreciacion, resetApreciacion] = useObjectState(INITIAL_APRECIACION);
+  const [examenRegional, setExamenRegional, updateExamenRegional, resetExamenRegional] = useObjectState(INITIAL_EXAMEN_REGIONAL);
+  const [continenteOpciones, setContinenteOpciones, updateContinente, resetContinente] = useObjectState(INITIAL_CONTINENTE);
+  const [contenidoOpciones, setContenidoOpciones, updateContenido, resetContenido] = useObjectState(INITIAL_CONTENIDO);
+  
+  // Estados de detalles
   const [otrasEnfermedadesDetalle, setOtrasEnfermedadesDetalle] = useState('');
-  const [enTratamiento, setEnTratamiento] = useState(false);
-  const [tomaBifosfonatos, setTomaBifosfonatos] = useState(false);
-  const [dietaCariogenica, setDietaCariogenica] = useState(false);
-  const [apreciacionGeneral, setApreciacionGeneral] = useState({
-    lucido: false,
-    apiretico: false,
-    colaborador: false,
-    ambulatorio: false,
-  });
-  const [examenRegional, setExamenRegional] = useState({
-    facies: false,
-    cuello: false,
-    ganglios: false,
-    atm: false,
-    macizoFacial: false,
-    mandibula: false,
-    musculos: false,
-    meso: false,
-    dolico: false,
-    braqui: false,
-  });
-  const [examenRegionalDetalles, setExamenRegionalDetalles] = useState({
-    facies: '',
-    cuello: '',
-    ganglios: '',
-    atm: '',
-    macizoFacial: '',
-    mandibula: '',
-    musculos: '',
-  });
-  const [continenteAlteraciones, setContinenteAlteraciones] = useState(false);
-  const [continenteOpciones, setContinenteOpciones] = useState({
-    esfinterOralAnterior: false,
-    mejillas: false,
-    paladar: false,
-    pisoDeBoca: false,
-    esfinterOralPosterior: false,
-  });
-  const [continenteDetalles, setContinenteDetalles] = useState({
-    esfinterOralAnterior: '',
-    mejillas: '',
-    paladar: '',
-    pisoDeBoca: '',
-    esfinterOralPosterior: '',
-  });
-  const [contenidoAlteraciones, setContenidoAlteraciones] = useState(false);
-  const [contenidoOpciones, setContenidoOpciones] = useState({
-    lenguaDorso: false,
-    lenguaVientre: false,
-    lenguaBordes: false,
-    lenguaFrenillo: false,
-    saliva: false,
-    rebordesResiduales: false,
-    bridasyFrenillos: false,
-  });
-  const [contenidoDetalles, setContenidoDetalles] = useState({
-    lenguaDorso: '',
-    lenguaVientre: '',
-    lenguaBordes: '',
-    lenguaFrenillo: '',
-    saliva: '',
-    rebordesResiduales: '',
-    bridasyFrenillos: '',
-  });
-  const [notification, setNotification] = useState({ show: false, type: '', message: '' });
-  const [formData, setFormData] = useState({
+  const [examenRegionalDetalles, setExamenRegionalDetalles] = useState({});
+  const [continenteDetalles, setContinenteDetalles] = useState({});
+  const [contenidoDetalles, setContenidoDetalles] = useState({});
+  
+  // Formulario usando hook personalizado
+  const [formData, setFormData, updateField, updateMultipleFields, resetForm] = useFormData({
     motivoConsulta: '',
     cepilladoDental: '',
     cepilladoEncias: '',
@@ -115,11 +164,6 @@ const HistoriaClinica = () => {
     examenLocal: '',
     examenLocalDetalle: ''
   });
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [fumador, setFumador] = useState(false);
-  const [consumeAlcohol, setConsumeAlcohol] = useState(false);
-  const [historiaClinicaId, setHistoriaClinicaId] = useState(null);
-  const [fechaUltimaActualizacion, setFechaUltimaActualizacion] = useState(null);
 
   useEffect(() => {
     if (location.state?.paciente) {
@@ -136,11 +180,10 @@ const HistoriaClinica = () => {
     try {
       const response = await axios.get(`http://localhost:8080/api/pacientes/${id}`);
       setPaciente(response.data);
+      fetchHistoriaClinica(response.data.id);
     } catch (error) {
       console.error('Error al cargar paciente:', error);
       setError('Error al cargar los datos del paciente');
-      setDisplayMessage('Error al cargar los datos del paciente.');
-      setMessageType('error');
     } finally {
       setLoading(false);
     }
@@ -151,76 +194,170 @@ const HistoriaClinica = () => {
       const response = await axios.get(`http://localhost:8080/api/historia-clinica/paciente/${pacienteId}`);
       if (response.data) {
         setHistoriaClinicaId(response.data.id);
-        setFechaUltimaActualizacion(response.data.fecha);
-        setFormData({
-          motivoConsulta: response.data.motivoConsulta || '',
-          cepilladoDental: response.data.cepilladoDental || '',
-          cepilladoEncias: response.data.cepilladoEncias || '',
-          cepilladoLingual: response.data.cepilladoLingual || '',
-          observacionesHigienicas: response.data.observacionesHigienicas || '',
-          enfermedadesActuales: response.data.enfermedadesActuales || '',
-          medicamentos: response.data.medicamentos || '',
-          alergiasDetalle: response.data.alergias || '',
-          posologia: response.data.posologia || '',
-          antecedentesFamiliares: response.data.antecedentesFamiliares || '',
-          apreciacionGeneral: response.data.apreciacionGeneral || '',
-          apreciacionGeneralDetalle: response.data.apreciacionGeneralDetalle || '',
-          examenRegional: response.data.examenRegional || '',
-          examenRegionalDetalle: response.data.examenRegionalDetalle || '',
-          examenLocal: response.data.examenLocal || '',
-          examenLocalDetalle: response.data.examenLocalDetalle || ''
-        });
-        setUsaHiloDental(response.data.usaHiloDental || false);
-        setHigieneProtesica(response.data.higieneProtesica || false);
-        setFumador(response.data.fumador || false);
-        setConsumeCafe(response.data.consumeCafe || false);
-        setConsumeTe(response.data.consumeTe || false);
-        setConsumeMate(response.data.consumeMate || false);
-        setConsumeAlcohol(response.data.consumeAlcohol || false);
-        setConsumeDrogas(response.data.consumeDrogas || false);
-        // Aquí puedes setear otros estados booleanos/objetos si los tienes
+        setFechaUltimaActualizacion(response.data.fechaActualizacion || response.data.fechaCreacion);
+        loadHistoriaClinicaData(response.data);
       }
     } catch (error) {
       // Si no hay historia clínica, no hacer nada
     }
   };
 
-  const handleDismissMessage = () => {
-    setDisplayMessage(null);
-    setMessageType('info');
-  };
+ const loadHistoriaClinicaData = (data) => {
+  // Cargar campos de texto y numéricos
+  updateMultipleFields({
+    motivoConsulta: data.motivoConsulta || '',
+    cepilladoDental: data.cepilladoDental || '',
+    cepilladoEncias: data.cepilladoEncias || '',
+    cepilladoLingual: data.cepilladoLingual || '',
+    observacionesHigienicas: data.observacionesHigienicas || '',
+    enfermedadesActuales: data.enfermedadesActuales || '',
+    medicamentos: data.medicamentos || '',
+    alergiasDetalle: data.alergias || '',
+    posologia: data.posologia || '',
+    antecedentesFamiliares: data.antecedentesFamiliares || '',
+    apreciacionGeneral: data.apreciacionGeneral || '',
+    apreciacionGeneralDetalle: data.apreciacionGeneralDetalle || '',
+    examenRegional: data.examenRegional || '',
+    examenRegionalDetalle: data.examenRegionalDetalle || '',
+    examenLocal: data.examenLocal || '',
+    examenLocalDetalle: data.examenLocalDetalle || ''
+  });
 
-  const handleCheckboxChange = (setter) => (event) => {
-    setter(event.target.checked);
-  };
+  // Cargar checkboxes y booleanos (asegúrate de usar Boolean para convertir 0/1 a true/false)
+  setUsaHiloDental(Boolean(data.usaHiloDental));
+  setHigieneProtesica(Boolean(data.higieneProtesica));
+  setFumador(Boolean(data.fumador));
+  setConsumeCafe(Boolean(data.consumeCafe));
+  setConsumeTe(Boolean(data.consumeTe));
+  setConsumeMate(Boolean(data.consumeMate));
+  setConsumeAlcohol(Boolean(data.consumeAlcohol));
+  setConsumeDrogas(Boolean(data.consumeDrogas));
+  setEnTratamiento(Boolean(data.enTratamiento));
+  setTomaBifosfonatos(Boolean(data.tomaBifosfonatos));
 
-  const handleMedicacionChange = (field) => (event) => {
-    if (field === 'tomaMedicamentos') {
-      setTomaMedicamentos(event.target.checked);
-      if (event.target.checked) {
-        setNoTomaMedicamentos(false);
-      }
-    } else if (field === 'noTomaMedicamentos') {
-      setNoTomaMedicamentos(event.target.checked);
-      if (event.target.checked) {
-        setTomaMedicamentos(false);
+  // Enfermedades
+  if (data.enfermedadesActuales) {
+    setTieneEnfermedades(true);
+    setNoTieneEnfermedades(false);
+
+    const enfermedades = data.enfermedadesActuales.toLowerCase();
+    const nuevasEnfermedades = { ...INITIAL_ENFERMEDADES };
+
+    if (enfermedades.includes('cardiovasculares')) nuevasEnfermedades.cardiovasculares = true;
+    if (enfermedades.includes('diabetes')) nuevasEnfermedades.diabetes = true;
+    if (enfermedades.includes('ets')) nuevasEnfermedades.ets = true;
+    if (enfermedades.includes('otros:')) {
+      nuevasEnfermedades.otros = true;
+      const otrosMatch = data.enfermedadesActuales.match(/otros:\s*(.+)/i);
+      if (otrosMatch) {
+        setOtrasEnfermedadesDetalle(otrosMatch[1].trim());
       }
     }
-  };
+    setEnfermedadesSeleccionadas(nuevasEnfermedades);
+  } else {
+    setTieneEnfermedades(false);
+    setNoTieneEnfermedades(true);
+  }
 
-  const handleTieneEnfermedadesChange = (field) => (event) => {
+  // Medicamentos
+  if (data.medicamentos) {
+    setTomaMedicamentos(true);
+    setNoTomaMedicamentos(false);
+  } else {
+    setTomaMedicamentos(false);
+    setNoTomaMedicamentos(true);
+  }
+
+  // Alergias
+  setAlergias(Boolean(data.alergias));
+
+  // Apreciación general (checkboxes)
+  if (data.apreciacionGeneral) {
+    const apreciaciones = data.apreciacionGeneral.toLowerCase();
+    const nuevasApreciaciones = { ...INITIAL_APRECIACION };
+    if (apreciaciones.includes('lúcido')) nuevasApreciaciones.lucido = true;
+    if (apreciaciones.includes('apirético')) nuevasApreciaciones.apiretico = true;
+    if (apreciaciones.includes('colaborador')) nuevasApreciaciones.colaborador = true;
+    if (apreciaciones.includes('ambulatorio')) nuevasApreciaciones.ambulatorio = true;
+    setApreciacionGeneral(nuevasApreciaciones);
+  }
+
+  // Examen regional (checkboxes)
+  if (data.examenRegional) {
+    const examenes = data.examenRegional.toLowerCase();
+    const nuevosExamenes = { ...INITIAL_EXAMEN_REGIONAL };
+    if (examenes.includes('facies')) nuevosExamenes.facies = true;
+    if (examenes.includes('cuello')) nuevosExamenes.cuello = true;
+    if (examenes.includes('ganglios')) nuevosExamenes.ganglios = true;
+    if (examenes.includes('atm')) nuevosExamenes.atm = true;
+    if (examenes.includes('macizo facial')) nuevosExamenes.macizoFacial = true;
+    if (examenes.includes('mandíbula')) nuevosExamenes.mandibula = true;
+    if (examenes.includes('músculos')) nuevosExamenes.musculos = true;
+    if (examenes.includes('meso')) nuevosExamenes.meso = true;
+    if (examenes.includes('dólico')) nuevosExamenes.dolico = true;
+    if (examenes.includes('braqui')) nuevosExamenes.braqui = true;
+    setExamenRegional(nuevosExamenes);
+  }
+
+  // Examen local (continente)
+  if (data.examenLocal && data.examenLocal.includes('continente alterado:')) {
+    setContinenteAlteraciones(true);
+    const continente = data.examenLocal.toLowerCase();
+    const nuevosContinente = { ...INITIAL_CONTINENTE };
+    if (continente.includes('esfínter oral anterior')) nuevosContinente.esfinterOralAnterior = true;
+    if (continente.includes('mejillas')) nuevosContinente.mejillas = true;
+    if (continente.includes('paladar')) nuevosContinente.paladar = true;
+    if (continente.includes('piso de boca')) nuevosContinente.pisoDeBoca = true;
+    if (continente.includes('esfínter oral posterior')) nuevosContinente.esfinterOralPosterior = true;
+    setContinenteOpciones(nuevosContinente);
+  }
+
+  // Parsear detalles JSON si existen
+  try {
+    if (data.examenRegionalDetalles) {
+      const detalles = typeof data.examenRegionalDetalles === 'string'
+        ? JSON.parse(data.examenRegionalDetalles)
+        : data.examenRegionalDetalles;
+      setExamenRegionalDetalles(detalles);
+    }
+  } catch (error) {
+    console.warn('Error parsing examenRegionalDetalles:', error);
+  }
+
+  try {
+    if (data.continenteDetalles) {
+      const detalles = typeof data.continenteDetalles === 'string'
+        ? JSON.parse(data.continenteDetalles)
+        : data.continenteDetalles;
+      setContinenteDetalles(detalles);
+    }
+  } catch (error) {
+    console.warn('Error parsing continenteDetalles:', error);
+  }
+};
+
+  // Manejadores optimizados
+  const handleCheckboxChange = useCallback((setter) => (event) => {
+    setter(event.target.checked);
+  }, []);
+
+  const handleMedicacionChange = useCallback((field) => (event) => {
+    if (field === 'tomaMedicamentos') {
+      setTomaMedicamentos(event.target.checked);
+      if (event.target.checked) setNoTomaMedicamentos(false);
+    } else if (field === 'noTomaMedicamentos') {
+      setNoTomaMedicamentos(event.target.checked);
+      if (event.target.checked) setTomaMedicamentos(false);
+    }
+  }, [setTomaMedicamentos, setNoTomaMedicamentos]);
+
+  const handleTieneEnfermedadesChange = useCallback((field) => (event) => {
     if (field === 'tieneEnfermedades') {
       setTieneEnfermedades(event.target.checked);
       if (event.target.checked) {
         setNoTieneEnfermedades(false);
       } else {
-        // Resetear selecciones y detalles si se desmarca 'Sí'
-        setEnfermedadesSeleccionadas({
-          cardiovasculares: false,
-          diabetes: false,
-          ets: false,
-          otros: false,
-        });
+        resetEnfermedades();
         setOtrasEnfermedadesDetalle('');
         setEnTratamiento(false);
       }
@@ -228,215 +365,127 @@ const HistoriaClinica = () => {
       setNoTieneEnfermedades(event.target.checked);
       if (event.target.checked) {
         setTieneEnfermedades(false);
-        // Resetear selecciones y detalles si se marca 'No'
-        setEnfermedadesSeleccionadas({
-          cardiovasculares: false,
-          diabetes: false,
-          ets: false,
-          otros: false,
-        });
+        resetEnfermedades();
         setOtrasEnfermedadesDetalle('');
         setEnTratamiento(false);
       }
     }
-  };
+  }, [setTieneEnfermedades, setNoTieneEnfermedades, resetEnfermedades, setEnTratamiento]);
 
-  const handleEnfermedadSelection = (event) => {
-    setEnfermedadesSeleccionadas({
-      ...enfermedadesSeleccionadas,
-      [event.target.name]: event.target.checked,
-    });
-  };
+  const handleEnfermedadSelection = useCallback((event) => {
+    updateEnfermedades({ [event.target.name]: event.target.checked });
+  }, [updateEnfermedades]);
 
-  const handleApreciacionGeneralChange = (event) => {
-    setApreciacionGeneral({
-      ...apreciacionGeneral,
-      [event.target.name]: event.target.checked,
-    });
-  };
+  const handleApreciacionGeneralChange = useCallback((event) => {
+    updateApreciacion({ [event.target.name]: event.target.checked });
+  }, [updateApreciacion]);
 
-  const handleExamenRegionalChange = (event) => {
+  const handleExamenRegionalChange = useCallback((event) => {
     const { name, checked } = event.target;
-    setExamenRegional({
-      ...examenRegional,
-      [name]: checked,
-    });
+    updateExamenRegional({ [name]: checked });
     if (!checked && examenRegionalDetalles[name] !== undefined) {
-      setExamenRegionalDetalles((prevDetails) => ({
-        ...prevDetails,
-        [name]: '',
-      }));
+      setExamenRegionalDetalles(prev => ({ ...prev, [name]: '' }));
     }
-  };
+  }, [updateExamenRegional, examenRegionalDetalles]);
 
-  const handleExamenRegionalDetalleChange = (event) => {
-    setExamenRegionalDetalles({
-      ...examenRegionalDetalles,
+  const handleExamenRegionalDetalleChange = useCallback((event) => {
+    setExamenRegionalDetalles(prev => ({
+      ...prev,
       [event.target.name]: event.target.value,
-    });
-  };
+    }));
+  }, []);
 
-  const handleContinenteAlteracionesChange = (event) => {
+  const handleContinenteAlteracionesChange = useCallback((event) => {
     const { checked } = event.target;
     setContinenteAlteraciones(checked);
     if (!checked) {
-      setContinenteOpciones({
-        esfinterOralAnterior: false,
-        mejillas: false,
-        paladar: false,
-        pisoDeBoca: false,
-        esfinterOralPosterior: false,
-      });
-      setContinenteDetalles({
-        esfinterOralAnterior: '',
-        mejillas: '',
-        paladar: '',
-        pisoDeBoca: '',
-        esfinterOralPosterior: '',
-      });
+      resetContinente();
+      setContinenteDetalles({});
     }
-  };
+  }, [setContinenteAlteraciones, resetContinente]);
 
-  const handleContinenteOpcionesChange = (event) => {
+  const handleContinenteOpcionesChange = useCallback((event) => {
     const { name, checked } = event.target;
-    setContinenteOpciones({
-      ...continenteOpciones,
-      [name]: checked,
-    });
+    updateContinente({ [name]: checked });
     if (!checked) {
-      setContinenteDetalles((prevDetails) => ({
-        ...prevDetails,
-        [name]: '',
-      }));
+      setContinenteDetalles(prev => ({ ...prev, [name]: '' }));
     }
-  };
+  }, [updateContinente]);
 
-  const handleContinenteDetalleChange = (event) => {
-    setContinenteDetalles({
-      ...continenteDetalles,
+  const handleContinenteDetalleChange = useCallback((event) => {
+    setContinenteDetalles(prev => ({
+      ...prev,
       [event.target.name]: event.target.value,
-    });
-  };
+    }));
+  }, []);
 
-  const handleContenidoAlteracionesChange = (event) => {
+  const handleContenidoAlteracionesChange = useCallback((event) => {
     const { checked } = event.target;
     setContenidoAlteraciones(checked);
     if (!checked) {
-      setContenidoOpciones({
-        lenguaDorso: false,
-        lenguaVientre: false,
-        lenguaBordes: false,
-        lenguaFrenillo: false,
-        saliva: false,
-        rebordesResiduales: false,
-        bridasyFrenillos: false,
-      });
-      setContenidoDetalles({
-        lenguaDorso: '',
-        lenguaVientre: '',
-        lenguaBordes: '',
-        lenguaFrenillo: '',
-        saliva: '',
-        rebordesResiduales: '',
-        bridasyFrenillos: '',
-      });
+      resetContenido();
+      setContenidoDetalles({});
     }
-  };
+  }, [setContenidoAlteraciones, resetContenido]);
 
-  const handleContenidoOpcionesChange = (event) => {
+  const handleContenidoOpcionesChange = useCallback((event) => {
     const { name, checked } = event.target;
-    setContenidoOpciones({
-      ...contenidoOpciones,
-      [name]: checked,
-    });
+    updateContenido({ [name]: checked });
     if (!checked) {
-      setContenidoDetalles((prevDetails) => ({
-        ...prevDetails,
-        [name]: '',
-      }));
+      setContenidoDetalles(prev => ({ ...prev, [name]: '' }));
     }
-  };
+  }, [updateContenido]);
 
-  const handleContenidoDetalleChange = (event) => {
-    setContenidoDetalles({
-      ...contenidoDetalles,
+  const handleContenidoDetalleChange = useCallback((event) => {
+    setContenidoDetalles(prev => ({
+      ...prev,
       [event.target.name]: event.target.value,
-    });
-  };
+    }));
+  }, []);
 
-  const handleInputChange = (field, value) => {
-    console.log(`Actualizando campo ${field} con valor:`, value);
-    setFormData(prev => {
-      const newData = {
-        ...prev,
-        [field]: value
-      };
-      console.log('Nuevo formData:', newData);
-      return newData;
-    });
-  };
+  const handleInputChange = useCallback((field, value) => {
+    updateField(field, value);
+  }, [updateField]);
 
-  const handleCancel = () => {
-    setShowConfirmModal(true);
-  };
-
-  const confirmCancel = () => {
-    navigate(-1);
-  };
-
-  const showNotification = (type, message) => {
+  // Utilidades
+  const showNotification = useCallback((type, message) => {
     setNotification({ show: true, type, message });
     setTimeout(() => {
       setNotification({ show: false, type: '', message: '' });
-    }, 5000); // Aumentado a 5 segundos para mejor visibilidad
-  };
+    }, 5000);
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    if (!paciente || !paciente.id) {
-      showNotification('error', 'No se pudo obtener el ID del paciente. Por favor, recargue la página.');
-      setLoading(false);
-      return;
+  const buildEnfermedadesActuales = useCallback(() => {
+    if (!tieneEnfermedades) return '';
+    
+    const enfermedades = [];
+    if (enfermedadesSeleccionadas.cardiovasculares) enfermedades.push('Cardiovasculares');
+    if (enfermedadesSeleccionadas.diabetes) enfermedades.push('Diabetes');
+    if (enfermedadesSeleccionadas.ets) enfermedades.push('ETS');
+    if (enfermedadesSeleccionadas.otros && otrasEnfermedadesDetalle) {
+      enfermedades.push(`Otros: ${otrasEnfermedadesDetalle}`);
     }
+    return enfermedades.join(', ');
+  }, [tieneEnfermedades, enfermedadesSeleccionadas, otrasEnfermedadesDetalle]);
 
-    // Construir enfermedades actuales basado en las selecciones
-    let enfermedadesActuales = '';
-    if (tieneEnfermedades) {
-      const enfermedades = [];
-      if (enfermedadesSeleccionadas.cardiovasculares) enfermedades.push('Cardiovasculares');
-      if (enfermedadesSeleccionadas.diabetes) enfermedades.push('Diabetes');
-      if (enfermedadesSeleccionadas.ets) enfermedades.push('ETS');
-      if (enfermedadesSeleccionadas.otros && otrasEnfermedadesDetalle) {
-        enfermedades.push(`Otros: ${otrasEnfermedadesDetalle}`);
-      }
-      enfermedadesActuales = enfermedades.join(', ');
-    }
+  const buildMedicamentos = useCallback(() => {
+    return tomaMedicamentos ? (formData.medicamentos || 'Medicamentos especificados') : '';
+  }, [tomaMedicamentos, formData.medicamentos]);
 
-    // Construir medicamentos
-    let medicamentos = '';
-    if (tomaMedicamentos) {
-      medicamentos = formData.medicamentos || 'Medicamentos especificados';
-    }
+  const buildAlergias = useCallback(() => {
+    return alergias ? (formData.alergiasDetalle || 'Alergias especificadas') : '';
+  }, [alergias, formData.alergiasDetalle]);
 
-    // Construir alergias
-    let alergiasTexto = '';
-    if (alergias) {
-      alergiasTexto = formData.alergiasDetalle || 'Alergias especificadas';
-    }
-
-    // Construir apreciación general
-    let apreciacionGeneralTexto = '';
+  const buildApreciacionGeneral = useCallback(() => {
     const apreciaciones = [];
     if (apreciacionGeneral.lucido) apreciaciones.push('Lúcido');
     if (apreciacionGeneral.apiretico) apreciaciones.push('Apirético');
     if (apreciacionGeneral.colaborador) apreciaciones.push('Colaborador');
     if (apreciacionGeneral.ambulatorio) apreciaciones.push('Ambulatorio');
-    apreciacionGeneralTexto = apreciaciones.join(', ');
+    return apreciaciones.join(', ');
+  }, [apreciacionGeneral]);
 
-    // Construir examen regional
-    let examenRegionalTexto = '';
+  const buildExamenRegional = useCallback(() => {
     const examenesRegionales = [];
     if (examenRegional.facies) examenesRegionales.push('Facies');
     if (examenRegional.cuello) examenesRegionales.push('Cuello');
@@ -448,18 +497,38 @@ const HistoriaClinica = () => {
     if (examenRegional.meso) examenesRegionales.push('Meso');
     if (examenRegional.dolico) examenesRegionales.push('Dólico');
     if (examenRegional.braqui) examenesRegionales.push('Braqui');
-    examenRegionalTexto = examenesRegionales.join(', ');
+    return examenesRegionales.join(', ');
+  }, [examenRegional]);
 
-    // Construir examen local
-    let examenLocalTexto = '';
-    if (continenteAlteraciones) {
-      const continenteItems = [];
-      if (continenteOpciones.esfinterOralAnterior) continenteItems.push('Esfínter oral anterior');
-      if (continenteOpciones.mejillas) continenteItems.push('Mejillas');
-      if (continenteOpciones.paladar) continenteItems.push('Paladar');
-      if (continenteOpciones.pisoDeBoca) continenteItems.push('Piso de boca');
-      if (continenteOpciones.esfinterOralPosterior) continenteItems.push('Esfínter oral posterior');
-      examenLocalTexto = `Continente alterado: ${continenteItems.join(', ')}`;
+  const buildExamenLocal = useCallback(() => {
+    if (!continenteAlteraciones) return '';
+    
+    const continenteItems = [];
+    if (continenteOpciones.esfinterOralAnterior) continenteItems.push('Esfínter oral anterior');
+    if (continenteOpciones.mejillas) continenteItems.push('Mejillas');
+    if (continenteOpciones.paladar) continenteItems.push('Paladar');
+    if (continenteOpciones.pisoDeBoca) continenteItems.push('Piso de boca');
+    if (continenteOpciones.esfinterOralPosterior) continenteItems.push('Esfínter oral posterior');
+    return `Continente alterado: ${continenteItems.join(', ')}`;
+  }, [continenteAlteraciones, continenteOpciones]);
+
+  // Manejadores de acciones
+  const handleCancel = useCallback(() => {
+    setShowConfirmModal(true);
+  }, []);
+
+  const confirmCancel = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
+  const handleSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (!paciente?.id) {
+      showNotification('error', 'No se pudo obtener el ID del paciente. Por favor, recargue la página.');
+      setLoading(false);
+      return;
     }
 
     const historiaClinicaData = {
@@ -471,18 +540,18 @@ const HistoriaClinica = () => {
       observacionesHigienicas: formData.observacionesHigienicas,
       usaHiloDental: usaHiloDental,
       higieneProtesica: higieneProtesica,
-      enfermedadesActuales: enfermedadesActuales,
-      medicamentos: medicamentos,
-      alergias: alergiasTexto,
+      enfermedadesActuales: buildEnfermedadesActuales(),
+      medicamentos: buildMedicamentos(),
+      alergias: buildAlergias(),
       posologia: formData.posologia,
       antecedentesFamiliares: formData.antecedentesFamiliares,
       enTratamiento: enTratamiento,
       tomaBifosfonatos: tomaBifosfonatos,
-      apreciacionGeneral: apreciacionGeneralTexto,
+      apreciacionGeneral: buildApreciacionGeneral(),
       apreciacionGeneralDetalle: formData.apreciacionGeneralDetalle,
-      examenRegional: examenRegionalTexto,
+      examenRegional: buildExamenRegional(),
       examenRegionalDetalle: formData.examenRegionalDetalle,
-      examenLocal: examenLocalTexto,
+      examenLocal: buildExamenLocal(),
       examenLocalDetalle: formData.examenLocalDetalle,
       examenRegionalDetalles: examenRegionalDetalles,
       continenteDetalles: continenteDetalles,
@@ -492,27 +561,22 @@ const HistoriaClinica = () => {
       consumeMate: consumeMate,
       consumeAlcohol: consumeAlcohol,
       consumeDrogas: consumeDrogas,
-      usuario: { id: 1 } // Asegúrate de que este ID de usuario exista en tu DB
+      usuario: { id: 1 }
     };
-
-    // Debug: Mostrar los datos que se van a enviar
-    console.log('=== DATOS DEL FORMULARIO ===');
-    console.log('formData completo:', formData);
-    console.log('Datos a enviar al servidor:', historiaClinicaData);
-    console.log('=== FIN DEBUG ===');
 
     try {
       let response;
       if (historiaClinicaId) {
-        // PUT (actualizar)
         response = await axios.put(`http://localhost:8080/api/historia-clinica/${historiaClinicaId}`, historiaClinicaData);
       } else {
-        // POST (crear)
         response = await axios.post('http://localhost:8080/api/historia-clinica', historiaClinicaData);
       }
+      
       showNotification('success', '¡Historia clínica guardada con éxito!');
-      if (response.data.fecha) {
-        setFechaUltimaActualizacion(response.data.fecha);
+      if (response.data.fechaActualizacion) {
+        setFechaUltimaActualizacion(response.data.fechaActualizacion);
+      } else if (response.data.fechaCreacion) {
+        setFechaUltimaActualizacion(response.data.fechaCreacion);
       }
     } catch (error) {
       console.error('Error al guardar:', error);
@@ -521,7 +585,18 @@ const HistoriaClinica = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [
+    paciente, formData, usaHiloDental, higieneProtesica, enTratamiento, tomaBifosfonatos,
+    fumador, consumeCafe, consumeTe, consumeMate, consumeAlcohol, consumeDrogas,
+    examenRegionalDetalles, continenteDetalles, historiaClinicaId,
+    buildEnfermedadesActuales, buildMedicamentos, buildAlergias, buildApreciacionGeneral,
+    buildExamenRegional, buildExamenLocal, showNotification
+  ]);
+
+  const handleDismissMessage = useCallback(() => {
+    setDisplayMessage(null);
+    setMessageType('info');
+  }, []);
 
   if (loading && !paciente) return <p>Cargando...</p>;
   if (error) return <div className="error-message">{error}</div>;
@@ -534,7 +609,6 @@ const HistoriaClinica = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <MessageDisplay message={displayMessage} type={messageType} onDismiss={handleDismissMessage} />
             
-            {/* Notificación */}
             {notification.show && (
               <div className={`notification ${notification.type === 'success' ? 'success' : 'error'}`}>
                 {notification.message}
@@ -723,199 +797,197 @@ const HistoriaClinica = () => {
                 <div className="historia-clinica-section">
                   <h3 className="historia-clinica-section-title">Antecedentes Médicos</h3>
                   <div className="enfermedades-section">
-                    <h4 className="enfermedades-title">¿Tiene enfermedades?</h4>
-                    <div className="enfermedades-grid">
-                      <div className="enfermedades-item">
-                        <div className="enfermedades-checkbox-group">
-                          <label className="enfermedades-checkbox-label">
-                            <input
-                              type="checkbox"
-                              className="enfermedades-checkbox"
-                              name="tieneEnfermedades"
-                              checked={tieneEnfermedades}
-                              onChange={handleTieneEnfermedadesChange('tieneEnfermedades')}
-                            />
-                            Sí
-                          </label>
-                          <label className="enfermedades-checkbox-label">
-                            <input
-                              type="checkbox"
-                              className="enfermedades-checkbox"
-                              name="noTieneEnfermedades"
-                              checked={noTieneEnfermedades}
-                              onChange={handleTieneEnfermedadesChange('noTieneEnfermedades')}
-                            />
-                            No
-                          </label>
-                        </div>
-                      </div>
-
-                      {tieneEnfermedades && (
-                        <>
-                          <div className="enfermedades-item">
-                            <h4 className="enfermedades-title">Lista de Enfermedades:</h4>
-                            <div className="enfermedades-checkbox-group">
-                              <label className="enfermedades-checkbox-label">
-                                <input
-                                  type="checkbox"
-                                  className="enfermedades-checkbox"
-                                  name="cardiovasculares"
-                                  checked={enfermedadesSeleccionadas.cardiovasculares}
-                                  onChange={handleEnfermedadSelection}
-                                />
-                                Cardiovasculares
-                              </label>
-                              <label className="enfermedades-checkbox-label">
-                                <input
-                                  type="checkbox"
-                                  className="enfermedades-checkbox"
-                                  name="diabetes"
-                                  checked={enfermedadesSeleccionadas.diabetes}
-                                  onChange={handleEnfermedadSelection}
-                                />
-                                Diabetes
-                              </label>
-                              <label className="enfermedades-checkbox-label">
-                                <input
-                                  type="checkbox"
-                                  className="enfermedades-checkbox"
-                                  name="ets"
-                                  checked={enfermedadesSeleccionadas.ets}
-                                  onChange={handleEnfermedadSelection}
-                                />
-                                ETS
-                              </label>
-                              <label className="enfermedades-checkbox-label">
-                                <input
-                                  type="checkbox"
-                                  className="enfermedades-checkbox"
-                                  name="otros"
-                                  checked={enfermedadesSeleccionadas.otros}
-                                  onChange={handleEnfermedadSelection}
-                                />
-                                Otros
-                              </label>
-                            </div>
-                          </div>
-
-                          {enfermedadesSeleccionadas.otros && (
-                            <div className="enfermedades-item">
-                              <label className="enfermedades-checkbox-label">Especificar Otras Enfermedades:</label>
-                              <textarea
-                                className="enfermedades-textarea"
-                                name="otrasEnfermedadesDetalle"
-                                placeholder="Especifique las otras enfermedades"
-                                value={otrasEnfermedadesDetalle}
-                                onChange={(e) => setOtrasEnfermedadesDetalle(e.target.value)}
-                              ></textarea>
-                            </div>
-                          )}
-
-                          <div className="enfermedades-item">
-                            <label className="enfermedades-checkbox-label">
-                              <input
-                                type="checkbox"
-                                className="enfermedades-checkbox"
-                                name="enTratamiento"
-                                checked={enTratamiento}
-                                onChange={handleCheckboxChange(setEnTratamiento)}
-                              />
-                              Está en tratamiento
-                            </label>
-                          </div>
-                        </>
-                      )}
-
-                      <div className="enfermedades-item">
+                    <div className="enfermedades-item">
+                      <h4 className="enfermedades-title">¿Tiene enfermedades?</h4>
+                      <div className="enfermedades-checkbox-group">
                         <label className="enfermedades-checkbox-label">
                           <input
                             type="checkbox"
                             className="enfermedades-checkbox"
-                            name="alergias"
-                            checked={alergias}
-                            onChange={handleCheckboxChange(setAlergias)}
+                            name="tieneEnfermedades"
+                            checked={tieneEnfermedades}
+                            onChange={handleTieneEnfermedadesChange('tieneEnfermedades')}
                           />
-                          Alergias
+                          Sí
+                        </label>
+                        <label className="enfermedades-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="enfermedades-checkbox"
+                            name="noTieneEnfermedades"
+                            checked={noTieneEnfermedades}
+                            onChange={handleTieneEnfermedadesChange('noTieneEnfermedades')}
+                          />
+                          No
                         </label>
                       </div>
+                    </div>
 
-                      {alergias && (
+                    {tieneEnfermedades && (
+                      <>
                         <div className="enfermedades-item">
-                          <label className="enfermedades-checkbox-label">Especificar Alergias:</label>
-                          <textarea
-                            className="enfermedades-textarea"
-                            name="alergiasDetalle"
-                            value={formData.alergiasDetalle}
-                            onChange={(e) => handleInputChange('alergiasDetalle', e.target.value)}
-                            placeholder="Detalle las alergias"
-                          ></textarea>
-                        </div>
-                      )}
-
-                      <div className="enfermedades-item">
-                        <div className="enfermedades-checkbox-group">
-                          <label className="enfermedades-checkbox-label">
-                            <input
-                              type="checkbox"
-                              className="enfermedades-checkbox"
-                              name="tomaMedicamentos"
-                              checked={tomaMedicamentos}
-                              onChange={handleMedicacionChange('tomaMedicamentos')}
-                            />
-                            Toma medicaciones
-                          </label>
-                          <label className="enfermedades-checkbox-label">
-                            <input
-                              type="checkbox"
-                              className="enfermedades-checkbox"
-                              name="noTomaMedicamentos"
-                              checked={noTomaMedicamentos}
-                              onChange={handleMedicacionChange('noTomaMedicamentos')}
-                            />
-                            No toma medicaciones
-                          </label>
-                        </div>
-                      </div>
-
-                      {tomaMedicamentos && (
-                        <>
-                          <div className="enfermedades-item">
-                            <label className="enfermedades-checkbox-label">Medicamentos que toma:</label>
-                            <textarea
-                              className="enfermedades-textarea"
-                              name="medicamentos"
-                              value={formData.medicamentos}
-                              onChange={(e) => handleInputChange('medicamentos', e.target.value)}
-                              placeholder="Liste los medicamentos"
-                            ></textarea>
-                          </div>
-
-                          <div className="enfermedades-item">
-                            <label className="enfermedades-checkbox-label">Posología y Comentarios:</label>
-                            <textarea
-                              className="enfermedades-textarea"
-                              name="posologia"
-                              value={formData.posologia}
-                              onChange={(e) => handleInputChange('posologia', e.target.value)}
-                              placeholder="Detalle la posología y otros comentarios relevantes"
-                            ></textarea>
-                          </div>
-
-                          <div className="enfermedades-item">
+                          <h4 className="enfermedades-title">Lista de Enfermedades:</h4>
+                          <div className="enfermedades-checkbox-group">
                             <label className="enfermedades-checkbox-label">
                               <input
                                 type="checkbox"
                                 className="enfermedades-checkbox"
-                                name="tomaBifosfonatos"
-                                checked={tomaBifosfonatos}
-                                onChange={handleCheckboxChange(setTomaBifosfonatos)}
+                                name="cardiovasculares"
+                                checked={enfermedadesSeleccionadas.cardiovasculares}
+                                onChange={handleEnfermedadSelection}
                               />
-                              Toma Bifosfonatos
+                              Cardiovasculares
+                            </label>
+                            <label className="enfermedades-checkbox-label">
+                              <input
+                                type="checkbox"
+                                className="enfermedades-checkbox"
+                                name="diabetes"
+                                checked={enfermedadesSeleccionadas.diabetes}
+                                onChange={handleEnfermedadSelection}
+                              />
+                              Diabetes
+                            </label>
+                            <label className="enfermedades-checkbox-label">
+                              <input
+                                type="checkbox"
+                                className="enfermedades-checkbox"
+                                name="ets"
+                                checked={enfermedadesSeleccionadas.ets}
+                                onChange={handleEnfermedadSelection}
+                              />
+                              ETS
+                            </label>
+                            <label className="enfermedades-checkbox-label">
+                              <input
+                                type="checkbox"
+                                className="enfermedades-checkbox"
+                                name="otros"
+                                checked={enfermedadesSeleccionadas.otros}
+                                onChange={handleEnfermedadSelection}
+                              />
+                              Otros
                             </label>
                           </div>
-                        </>
-                      )}
+                        </div>
+
+                        {enfermedadesSeleccionadas.otros && (
+                          <div className="enfermedades-item">
+                            <label className="enfermedades-checkbox-label">Especificar Otras Enfermedades:</label>
+                            <textarea
+                              className="enfermedades-textarea"
+                              name="otrasEnfermedadesDetalle"
+                              placeholder="Especifique las otras enfermedades"
+                              value={otrasEnfermedadesDetalle}
+                              onChange={(e) => setOtrasEnfermedadesDetalle(e.target.value)}
+                            ></textarea>
+                          </div>
+                        )}
+
+                        <div className="enfermedades-item">
+                          <label className="enfermedades-checkbox-label">
+                            <input
+                              type="checkbox"
+                              className="enfermedades-checkbox"
+                              name="enTratamiento"
+                              checked={enTratamiento}
+                              onChange={handleCheckboxChange(setEnTratamiento)}
+                            />
+                            Está en tratamiento
+                          </label>
+                        </div>
+                      </>
+                    )}
+
+                    <div className="enfermedades-item">
+                      <label className="enfermedades-checkbox-label">
+                        <input
+                          type="checkbox"
+                          className="enfermedades-checkbox"
+                          name="alergias"
+                          checked={alergias}
+                          onChange={handleCheckboxChange(setAlergias)}
+                        />
+                        Alergias
+                      </label>
                     </div>
+
+                    {alergias && (
+                      <div className="enfermedades-item">
+                        <label className="enfermedades-checkbox-label">Especificar Alergias:</label>
+                        <textarea
+                          className="enfermedades-textarea"
+                          name="alergiasDetalle"
+                          value={formData.alergiasDetalle}
+                          onChange={(e) => handleInputChange('alergiasDetalle', e.target.value)}
+                          placeholder="Detalle las alergias"
+                        ></textarea>
+                      </div>
+                    )}
+
+                    <div className="enfermedades-item">
+                      <div className="enfermedades-checkbox-group">
+                        <label className="enfermedades-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="enfermedades-checkbox"
+                            name="tomaMedicamentos"
+                            checked={tomaMedicamentos}
+                            onChange={handleMedicacionChange('tomaMedicamentos')}
+                          />
+                          Toma medicaciones
+                        </label>
+                        <label className="enfermedades-checkbox-label">
+                          <input
+                            type="checkbox"
+                            className="enfermedades-checkbox"
+                            name="noTomaMedicamentos"
+                            checked={noTomaMedicamentos}
+                            onChange={handleMedicacionChange('noTomaMedicamentos')}
+                          />
+                          No toma medicaciones
+                        </label>
+                      </div>
+                    </div>
+
+                    {tomaMedicamentos && (
+                      <>
+                        <div className="enfermedades-item">
+                          <label className="enfermedades-checkbox-label">Medicamentos que toma:</label>
+                          <textarea
+                            className="enfermedades-textarea"
+                            name="medicamentos"
+                            value={formData.medicamentos}
+                            onChange={(e) => handleInputChange('medicamentos', e.target.value)}
+                            placeholder="Liste los medicamentos"
+                          ></textarea>
+                        </div>
+
+                        <div className="enfermedades-item">
+                          <label className="enfermedades-checkbox-label">Posología y Comentarios:</label>
+                          <textarea
+                            className="enfermedades-textarea"
+                            name="posologia"
+                            value={formData.posologia}
+                            onChange={(e) => handleInputChange('posologia', e.target.value)}
+                            placeholder="Detalle la posología y otros comentarios relevantes"
+                          ></textarea>
+                        </div>
+
+                        <div className="enfermedades-item">
+                          <label className="enfermedades-checkbox-label">
+                            <input
+                              type="checkbox"
+                              className="enfermedades-checkbox"
+                              name="tomaBifosfonatos"
+                              checked={tomaBifosfonatos}
+                              onChange={handleCheckboxChange(setTomaBifosfonatos)}
+                            />
+                            Toma Bifosfonatos
+                          </label>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
 

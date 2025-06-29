@@ -60,10 +60,23 @@ const PatientRegistration = () => {
   const fetchPacientes = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/pacientes');
-      setPacientes(response.data);
+      console.log('Respuesta del servidor:', response);
+      console.log('Tipo de response.data:', typeof response.data);
+      console.log('Es array?', Array.isArray(response.data));
+      console.log('Contenido de response.data:', response.data);
+      
+      const pacientesData = Array.isArray(response.data)
+        ? response.data
+        : (typeof response.data === 'string'
+            ? JSON.parse(response.data)
+            : []);
+      console.log('Pacientes procesados:', pacientesData);
+      setPacientes(pacientesData);
     } catch (error) {
       console.error('Error al obtener pacientes:', error);
       alert('Error al cargar la lista de pacientes');
+      // En caso de error, establecer un array vacío
+      setPacientes([]);
     }
   };
 
@@ -137,7 +150,12 @@ const PatientRegistration = () => {
     e.preventDefault();
     try {
       const userId = localStorage.getItem('userId');
-      const selectedPaciente = pacientes.find(p => p.id === parseInt(agendaFormData.pacienteId));
+      const selectedPaciente = Array.isArray(pacientes) ? pacientes.find(p => p.id === parseInt(agendaFormData.pacienteId)) : null;
+      
+      if (!selectedPaciente) {
+        alert('Por favor, seleccione un paciente válido');
+        return;
+      }
       
       const citaData = {
         paciente: {
@@ -346,11 +364,20 @@ const PatientRegistration = () => {
                   className="form-select"
                 >
                   <option value="">Seleccione un paciente</option>
-                  {pacientes.map(paciente => (
-                    <option key={paciente.id} value={paciente.id}>
-                      {paciente.name} {paciente.lastname} - CI: {paciente.ci}
-                    </option>
-                  ))}
+                  {(() => {
+                    console.log('Estado actual de pacientes:', pacientes);
+                    console.log('Tipo de pacientes:', typeof pacientes);
+                    console.log('Es array?', Array.isArray(pacientes));
+                    return Array.isArray(pacientes) && pacientes.length > 0 ? (
+                      pacientes.map(paciente => (
+                        <option key={paciente.id} value={paciente.id}>
+                          {paciente.name} {paciente.lastname} - CI: {paciente.ci}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" disabled>No hay pacientes disponibles</option>
+                    );
+                  })()}
                 </select>
               </div>
               <div className="form-group">
@@ -438,5 +465,4 @@ const PatientRegistration = () => {
     </div>
   );
 };
-
-export default PatientRegistration; 
+export default PatientRegistration;
