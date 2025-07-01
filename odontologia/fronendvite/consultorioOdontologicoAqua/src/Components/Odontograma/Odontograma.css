@@ -1,0 +1,434 @@
+.odontograma-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.message {
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+.message.success {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+}
+
+.message.error {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: white;
+}
+
+.message-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.message-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.odontograma-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  font-size: 18px;
+  color: #666;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.odontograma-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.odontograma-header h1 {
+  margin: 0 0 20px 0;
+  font-size: 2.5em;
+  font-weight: 300;
+  text-align: center;
+}
+
+.paciente-info {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.paciente-info p {
+  margin: 0;
+  font-size: 1.1em;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 20px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+}
+
+.odontograma-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+  align-items: start;
+}
+
+.odontograma-main {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.arcada {
+  margin-bottom: 40px;
+}
+
+.arcada:last-child {
+  margin-bottom: 0;
+}
+
+.titulo-arcada {
+  text-align: center;
+  color: #333;
+  font-size: 1.5em;
+  margin-bottom: 25px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.dientes-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.lado-derecho,
+.lado-izquierdo {
+  flex: 1;
+  text-align: center;
+}
+
+.lado-derecho h4,
+.lado-izquierdo h4 {
+  color: #555;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.dientes-fila {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.diente {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.diente:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.diente.selected {
+  transform: scale(1.15);
+  border: 4px solid #333;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.numero-diente {
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.odontograma-sidebar {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.condiciones-panel {
+  margin-bottom: 30px;
+}
+
+.condiciones-panel h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  font-weight: 500;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+.condiciones-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.condicion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.condicion-item:hover {
+  background: #f8f9fa;
+  transform: translateX(5px);
+}
+
+.condicion-item.selected {
+  background: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.condicion-color {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.condicion-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.condicion-nombre {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95em;
+}
+
+.condicion-descripcion {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 2px;
+}
+
+.diente-seleccionado {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.diente-seleccionado h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.diente-seleccionado p {
+  margin: 8px 0;
+  font-size: 0.95em;
+}
+
+.acciones-panel h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  font-weight: 500;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+.acciones-panel button {
+  width: 100%;
+  padding: 12px 20px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.acciones-panel button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-guardar {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+}
+
+.btn-guardar:hover {
+  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-limpiar {
+  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+  color: white;
+}
+
+.btn-limpiar:hover {
+  background: linear-gradient(135deg, #F57C00 0%, #E65100 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+}
+
+.btn-exportar {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+}
+
+.btn-exportar:hover {
+  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .odontograma-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .odontograma-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .odontograma-container {
+    padding: 15px;
+  }
+  
+  .odontograma-header {
+    padding: 20px;
+  }
+  
+  .odontograma-header h1 {
+    font-size: 2em;
+  }
+  
+  .paciente-info {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .dientes-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .diente {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .numero-diente {
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .odontograma-header h1 {
+    font-size: 1.5em;
+  }
+  
+  .diente {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .numero-diente {
+    font-size: 0.7em;
+  }
+  
+  .condicion-item {
+    padding: 10px;
+  }
+  
+  .condicion-color {
+    width: 20px;
+    height: 20px;
+  }
+} 

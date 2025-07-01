@@ -7,6 +7,7 @@ import EditarPaciente from './Components/EditarPaciente';
 import HistoriaClinica from './Components/HistoriaClinica';
 import TablaPacientes from './Components/TablaPacientes';
 import PatientRegistration from './Components/PatientRegistration';
+import Odontograma from './Components/Odontograma/Odontograma';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="pacientes" element={<TablaPacientes />} />
           <Route path="pacientes/editar/:id" element={<EditarPaciente />} />
           <Route path="pacientes/historia-clinica/:id" element={<HistoriaClinica />} />
+          <Route path="pacientes/odontograma/:id" element={<Odontograma />} />
         </Route>
       </Routes>
     </Router>

@@ -112,6 +112,10 @@ function TablaPacientes({ usuarioId }) {
     navigate(`/dashboard/pacientes/historia-clinica/${paciente.id}`, { state: { paciente } });
   };
 
+  const handleOdontograma = (paciente) => {
+    navigate(`/dashboard/pacientes/odontograma/${paciente.id}`, { state: { paciente } });
+  };
+
   const handleDismissMessage = () => {
     setDisplayMessage(null);
     setMessageType('info');
@@ -165,6 +169,12 @@ function TablaPacientes({ usuarioId }) {
                     className="btn-historia"
                   >
                     Historia Clínica
+                  </button>
+                  <button 
+                    onClick={() => handleOdontograma(p)}
+                    className="btn-odontograma"
+                  >
+                    Odontograma
                   </button>
                   <button 
                     onClick={() => handleEdit(p)}

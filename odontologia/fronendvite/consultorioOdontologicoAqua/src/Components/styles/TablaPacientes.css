@@ -83,6 +83,7 @@
 }
 
 .btn-historia,
+.btn-odontograma,
 .btn-editar,
 .btn-eliminar {
   padding: 6px 12px;
@@ -101,6 +102,15 @@
 
 .btn-historia:hover {
   background-color: #059669;
+}
+
+.btn-odontograma {
+  background-color: #8b5cf6;
+  color: white;
+}
+
+.btn-odontograma:hover {
+  background-color: #7c3aed;
 }
 
 .btn-editar {
@@ -149,6 +159,7 @@
   }
 
   .btn-historia,
+  .btn-odontograma,
   .btn-editar,
   .btn-eliminar {
     width: 100%;
