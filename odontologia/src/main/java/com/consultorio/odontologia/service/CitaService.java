@@ -58,6 +58,12 @@ public class CitaService {
                 .collect(Collectors.toList());
     }
 
+    public void eliminarCita(Long id) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + id));
+        citaRepository.delete(cita);
+    }
+
     private CitaDTO convertirADTO(Cita cita) {
         CitaDTO dto = new CitaDTO();
         dto.setId(cita.getId());

@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/pacientes/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/citas/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/citas/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/citas/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/historia-clinica/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/historia-clinica/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/historia-clinica/paciente/**").permitAll() // <-- AGREGADO

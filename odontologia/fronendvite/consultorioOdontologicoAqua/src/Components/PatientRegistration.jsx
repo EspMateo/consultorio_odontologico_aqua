@@ -31,6 +31,8 @@ const PatientRegistration = () => {
   const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showCitasModal, setShowCitasModal] = useState(false);
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+  const [citaToDelete, setCitaToDelete] = useState(null);
   const [pacientes, setPacientes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [citasDelDia, setCitasDelDia] = useState([]);
@@ -204,6 +206,37 @@ const PatientRegistration = () => {
     }));
   };
 
+  const handleDeleteCita = (cita) => {
+    setCitaToDelete(cita);
+    setShowDeleteConfirmModal(true);
+  };
+
+  const confirmDeleteCita = async () => {
+    if (!citaToDelete) return;
+    
+    try {
+      await axios.delete(`http://localhost:8080/api/citas/${citaToDelete.id}`);
+      
+      // Actualizar la lista de eventos
+      setEvents(prevEvents => prevEvents.filter(event => event.id !== citaToDelete.id));
+      
+      // Cerrar modales
+      setShowDeleteConfirmModal(false);
+      setShowCitasModal(false);
+      setCitaToDelete(null);
+      
+      alert('Cita eliminada exitosamente');
+    } catch (error) {
+      console.error('Error al eliminar la cita:', error);
+      alert('Error al eliminar la cita. Por favor, intente nuevamente.');
+    }
+  };
+
+  const cancelDeleteCita = () => {
+    setShowDeleteConfirmModal(false);
+    setCitaToDelete(null);
+  };
+
   return (
     <div className="main-container">
       {/* Sección del Calendario */}
@@ -264,6 +297,15 @@ const PatientRegistration = () => {
                   <div className="cita-info">
                     <h4>{cita.title}</h4>
                     <p>{cita.description}</p>
+                  </div>
+                  <div className="cita-actions">
+                    <button 
+                      className="delete-cita-btn"
+                      onClick={() => handleDeleteCita(cita)}
+                      title="Eliminar cita"
+                    >
+                      🗑️
+                    </button>
                   </div>
                 </div>
               ))}
@@ -430,9 +472,20 @@ const PatientRegistration = () => {
               <div className="citas-list">
                 {citasDelDia.map((cita, index) => (
                   <div key={index} className="cita-item">
-                    <h4>{cita.title}</h4>
-                    <p><strong>Hora:</strong> {cita.start.split('T')[1]}</p>
-                    <p><strong>Motivo:</strong> {cita.description}</p>
+                    <div className="cita-item-content">
+                      <h4>{cita.title}</h4>
+                      <p><strong>Hora:</strong> {cita.start.split('T')[1]}</p>
+                      <p><strong>Motivo:</strong> {cita.description}</p>
+                    </div>
+                    <div className="cita-item-actions">
+                      <button 
+                        className="delete-cita-btn"
+                        onClick={() => handleDeleteCita(cita)}
+                        title="Eliminar cita"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -457,6 +510,40 @@ const PatientRegistration = () => {
                 onClick={() => setShowCitasModal(false)}
               >
                 Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación para eliminar cita */}
+      {showDeleteConfirmModal && (
+        <div className="modal-overlay">
+          <div className="modal-content delete-confirm-modal">
+            <h2>Confirmar Eliminación</h2>
+            <p>¿Está seguro de que desea eliminar esta cita?</p>
+            {citaToDelete && (
+              <div className="cita-to-delete">
+                <p><strong>Paciente:</strong> {citaToDelete.title}</p>
+                <p><strong>Fecha:</strong> {citaToDelete.start.split('T')[0]}</p>
+                <p><strong>Hora:</strong> {citaToDelete.start.split('T')[1]}</p>
+                <p><strong>Motivo:</strong> {citaToDelete.description}</p>
+              </div>
+            )}
+            <div className="modal-actions">
+              <button 
+                type="button" 
+                className="btn-danger"
+                onClick={confirmDeleteCita}
+              >
+                Eliminar
+              </button>
+              <button 
+                type="button" 
+                className="btn-secondary" 
+                onClick={cancelDeleteCita}
+              >
+                Cancelar
               </button>
             </div>
           </div>

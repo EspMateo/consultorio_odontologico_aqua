@@ -37,4 +37,14 @@ public class CitaController {
         List<CitaDTO> citas = citaService.obtenerCitasPorFecha(fecha);
         return ResponseEntity.ok(citas);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> eliminarCita(@PathVariable Long id) {
+        try {
+            citaService.eliminarCita(id);
+            return ResponseEntity.ok("Cita eliminada exitosamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 } 
