@@ -13,9 +13,9 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     List<Cita> findByFecha(LocalDate fecha);
     List<Cita> findByPacienteId(Long pacienteId);
     
-    @Query("SELECT c FROM Cita c LEFT JOIN FETCH c.paciente WHERE c.fecha = :fecha")
+    @Query("SELECT c FROM Cita c LEFT JOIN FETCH c.paciente LEFT JOIN FETCH c.usuario WHERE c.fecha = :fecha")
     List<Cita> findByFechaWithPaciente(LocalDate fecha);
     
-    @Query("SELECT c FROM Cita c LEFT JOIN FETCH c.paciente")
+    @Query("SELECT c FROM Cita c LEFT JOIN FETCH c.paciente LEFT JOIN FETCH c.usuario")
     List<Cita> findAllWithPaciente();
 } 

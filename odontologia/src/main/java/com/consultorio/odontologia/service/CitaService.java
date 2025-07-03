@@ -78,6 +78,8 @@ public class CitaService {
         dto.setHora(cita.getHora().toString());
         dto.setMotivo(cita.getMotivo());
         dto.setUsuarioId(cita.getUsuario().getId());
+        dto.setUsuarioName(cita.getUsuario().getName());
+        dto.setUsuarioEmail(cita.getUsuario().getEmail());
         return dto;
     }
 }

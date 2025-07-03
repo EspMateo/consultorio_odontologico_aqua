@@ -29,6 +29,12 @@
   font-size: 1.5rem;
 }
 
+.calendar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .agendar-cita-btn {
   background-color: #3b82f6;
   color: white;
@@ -300,11 +306,30 @@
 }
 
 .cita-item {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 1rem;
-  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+}
+
+.cita-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cita-item-content {
+  flex: 1;
+}
+
+.cita-item-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
 }
 
 .cita-item h4 {
@@ -343,17 +368,19 @@
 
 .cita-hoy-item {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 0.75rem;
-  background-color: white;
-  border-radius: 6px;
+  align-items: center;
+  padding: 1rem;
   border: 1px solid #e2e8f0;
-  transition: box-shadow 0.2s;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+  position: relative;
 }
 
 .cita-hoy-item:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .cita-hora {
@@ -408,6 +435,23 @@
     flex-direction: column;
     gap: 1rem;
     align-items: stretch;
+  }
+  
+  .calendar-actions {
+    justify-content: center;
+  }
+  
+  .color-legend {
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+  }
+  
+  .legend-items {
+    gap: 0.5rem;
+  }
+  
+  .legend-item {
+    font-size: 0.8rem;
   }
   
   .patient-form-row {
@@ -528,38 +572,50 @@
   margin-left: auto;
 }
 
-/* Actualizar estilos existentes para citas de hoy */
-.cita-hoy-item {
+/* Leyenda de colores */
+.color-legend {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.color-legend h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.legend-item {
   display: flex;
   align-items: center;
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  background-color: #f8fafc;
-  transition: all 0.2s;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #374151;
 }
 
-/* Actualizar estilos existentes para citas del modal */
-.cita-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  background-color: #f8fafc;
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
 }
 
-.cita-item-content {
-  flex: 1;
-}
-
-.cita-item-actions {
-  display: flex;
-  align-items: center;
-  margin-left: 1rem;
+/* Estilos para citas con colores */
+.cita-usuario {
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: 0.25rem;
+  display: block;
 }
 
 /* Estilos para el modal de confirmación de eliminación */

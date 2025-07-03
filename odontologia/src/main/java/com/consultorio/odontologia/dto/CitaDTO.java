@@ -15,6 +15,8 @@ public class CitaDTO {
     private String hora;
     private String motivo;
     private Long usuarioId;
+    private String usuarioName;
+    private String usuarioEmail;
 
     public Long getId() {
         return id;
@@ -62,5 +64,21 @@ public class CitaDTO {
 
     public void setUsuarioId(Long usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public String getUsuarioName() {
+        return usuarioName;
+    }
+
+    public void setUsuarioName(String usuarioName) {
+        this.usuarioName = usuarioName;
+    }
+
+    public String getUsuarioEmail() {
+        return usuarioEmail;
+    }
+
+    public void setUsuarioEmail(String usuarioEmail) {
+        this.usuarioEmail = usuarioEmail;
     }
 }

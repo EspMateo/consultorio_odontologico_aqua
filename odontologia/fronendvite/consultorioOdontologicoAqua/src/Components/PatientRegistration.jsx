@@ -11,7 +11,37 @@ const steps = [
   { key: 'consulta', label: 'Información de la Consulta' },
 ];
 
+// Función para generar colores por usuario
+const generateUserColors = () => {
+  const colors = [
+    '#3b82f6', // Azul
+    '#dc2626', // Rojo
+    '#059669', // Verde
+    '#7c3aed', // Púrpura
+    '#ea580c', // Naranja
+    '#be185d', // Rosa
+    '#0891b2', // Cian
+    '#65a30d', // Lima
+    '#dc2626', // Rojo oscuro
+    '#1d4ed8', // Azul oscuro
+  ];
+  
+  const userColorMap = new Map();
+  let colorIndex = 0;
+  
+  return (userId) => {
+    if (!userColorMap.has(userId)) {
+      userColorMap.set(userId, colors[colorIndex % colors.length]);
+      colorIndex++;
+    }
+    return userColorMap.get(userId);
+  };
+};
+
 const PatientRegistration = () => {
+  // Función para obtener color por usuario
+  const getUserColor = generateUserColors();
+  
   // Estados para el formulario de registro de pacientes
   const [formData, setFormData] = useState({
     nombre: '',
@@ -89,7 +119,13 @@ const PatientRegistration = () => {
         id: cita.id,
         title: `${cita.paciente.name} ${cita.paciente.lastname} - CI: ${cita.paciente.ci}`,
         start: `${cita.fecha}T${cita.hora}`,
-        description: cita.motivo
+        description: cita.motivo,
+        usuarioId: cita.usuarioId,
+        usuarioName: cita.usuarioName,
+        usuarioEmail: cita.usuarioEmail,
+        backgroundColor: getUserColor(cita.usuarioId),
+        borderColor: getUserColor(cita.usuarioId),
+        textColor: '#ffffff'
       }));
       setEvents(formattedEvents);
     } catch (error) {
@@ -243,12 +279,42 @@ const PatientRegistration = () => {
       <div className="calendar-section">
         <div className="calendar-header">
           <h2>Calendario de Citas</h2>
-          <button 
-            className="agendar-cita-btn"
-            onClick={handleAgendarCitaClick}
-          >
-            Agendar Cita
-          </button>
+          <div className="calendar-actions">
+            <button 
+              className="agendar-cita-btn"
+              onClick={handleAgendarCitaClick}
+            >
+              Agendar Cita
+            </button>
+          </div>
+        </div>
+        
+        {/* Leyenda de colores por doctor */}
+        <div className="color-legend">
+          <h4>Doctores:</h4>
+          <div className="legend-items">
+            {(() => {
+              const uniqueUsers = new Map();
+              events.forEach(event => {
+                if (event.usuarioId && event.usuarioName) {
+                  uniqueUsers.set(event.usuarioId, {
+                    name: event.usuarioName,
+                    color: event.backgroundColor
+                  });
+                }
+              });
+              
+              return Array.from(uniqueUsers.values()).map((user, index) => (
+                <div key={index} className="legend-item">
+                  <div 
+                    className="legend-color" 
+                    style={{ backgroundColor: user.color }}
+                  ></div>
+                  <span>Dr. {user.name}</span>
+                </div>
+              ));
+            })()}
+          </div>
         </div>
         <div className="calendar-container">
           <FullCalendar
@@ -292,11 +358,23 @@ const PatientRegistration = () => {
           {citasHoy.length > 0 ? (
             <div className="citas-hoy-list">
               {citasHoy.map((cita, index) => (
-                <div key={index} className="cita-hoy-item">
-                  <div className="cita-hora">{cita.start.split('T')[1]}</div>
+                <div 
+                  key={index} 
+                  className="cita-hoy-item"
+                  style={{ 
+                    borderLeft: `4px solid ${cita.backgroundColor || '#3b82f6'}`,
+                    backgroundColor: `${cita.backgroundColor || '#3b82f6'}10`
+                  }}
+                >
+                  <div className="cita-hora" style={{ backgroundColor: cita.backgroundColor || '#3b82f6' }}>
+                    {cita.start.split('T')[1]}
+                  </div>
                   <div className="cita-info">
                     <h4>{cita.title}</h4>
                     <p>{cita.description}</p>
+                    <small className="cita-usuario">
+                      Dr. {cita.usuarioName || 'Usuario'}
+                    </small>
                   </div>
                   <div className="cita-actions">
                     <button 
@@ -471,11 +549,19 @@ const PatientRegistration = () => {
             {citasDelDia.length > 0 ? (
               <div className="citas-list">
                 {citasDelDia.map((cita, index) => (
-                  <div key={index} className="cita-item">
+                  <div 
+                    key={index} 
+                    className="cita-item"
+                    style={{ 
+                      borderLeft: `4px solid ${cita.backgroundColor || '#3b82f6'}`,
+                      backgroundColor: `${cita.backgroundColor || '#3b82f6'}10`
+                    }}
+                  >
                     <div className="cita-item-content">
                       <h4>{cita.title}</h4>
                       <p><strong>Hora:</strong> {cita.start.split('T')[1]}</p>
                       <p><strong>Motivo:</strong> {cita.description}</p>
+                      <p><strong>Doctor:</strong> Dr. {cita.usuarioName || 'Usuario'}</p>
                     </div>
                     <div className="cita-item-actions">
                       <button 
