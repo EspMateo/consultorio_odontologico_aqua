@@ -114,6 +114,96 @@
   backdrop-filter: blur(10px);
 }
 
+/* Estilos para la sección de tipo de dentición */
+.tipo-denticion-section {
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tipo-denticion-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 1.3em;
+  font-weight: 500;
+  text-align: center;
+  color: white;
+}
+
+.tipo-denticion-options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.tipo-denticion-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  backdrop-filter: blur(10px);
+  min-width: 180px;
+}
+
+.tipo-denticion-option:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.tipo-denticion-option.selected {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.tipo-denticion-square {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  background: transparent;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tipo-denticion-option.selected .tipo-denticion-square {
+  background: #fff;
+}
+
+.tipo-denticion-option.selected .tipo-denticion-square::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #667eea;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tipo-denticion-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tipo-denticion-label {
+  font-weight: 600;
+  color: white;
+  font-size: 1em;
+}
+
+.tipo-denticion-descripcion {
+  font-size: 0.8em;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 2px;
+}
+
 .odontograma-content {
   display: grid;
   grid-template-columns: 1fr 350px;
@@ -392,6 +482,17 @@
   .paciente-info {
     flex-direction: column;
     gap: 15px;
+  }
+  
+  .tipo-denticion-options {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .tipo-denticion-option {
+    min-width: auto;
+    width: 100%;
+    justify-content: center;
   }
   
   .dientes-container {

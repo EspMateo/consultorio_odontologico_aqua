@@ -14,6 +14,7 @@ const Odontograma = () => {
   const [selectedCondition, setSelectedCondition] = useState('sano');
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
+  const [tipoDenticion, setTipoDenticion] = useState('permanente');
 
   // Estados posibles para los dientes
   const condiciones = {
@@ -25,6 +26,13 @@ const Odontograma = () => {
     implante: { nombre: 'Implante', color: '#607D8B', descripcion: 'Implante dental' },
     tratamiento: { nombre: 'En Tratamiento', color: '#FF5722', descripcion: 'Diente en tratamiento' }
   };
+
+  // Opciones de tipo de dentición
+  const tiposDenticion = [
+    { key: 'temporaria', label: 'Temporaria', descripcion: 'Dentición de leche' },
+    { key: 'mixta', label: 'Mixta', descripcion: 'Dentición mixta' },
+    { key: 'permanente', label: 'Permanente', descripcion: 'Dentición permanente' }
+  ];
 
   // Configuración de los dientes (32 dientes total)
   const configuracionDientes = {
@@ -112,6 +120,10 @@ const Odontograma = () => {
     setSelectedCondition('sano');
   };
 
+  const handleTipoDenticionChange = (tipo) => {
+    setTipoDenticion(tipo);
+  };
+
   const handleExportOdontograma = () => {
     // Implementar exportación del odontograma
     const odontogramaData = {
@@ -188,12 +200,32 @@ const Odontograma = () => {
       )}
       <div className="odontograma-header">
         <h1>Odontograma del Paciente</h1>
-                  {paciente && (
-            <div className="paciente-info">
-              <p><strong>Nombre:</strong> {paciente.nombre}</p>
-              <p><strong>Fecha:</strong> {paciente.fecha}</p>
-            </div>
-          )}
+        {paciente && (
+          <div className="paciente-info">
+            <p><strong>Nombre:</strong> {paciente.nombre}</p>
+            <p><strong>Fecha:</strong> {paciente.fecha}</p>
+          </div>
+        )}
+        
+        {/* Sección de Tipo de Dentición */}
+        <div className="tipo-denticion-section">
+          <h3>Tipo de Dentición</h3>
+          <div className="tipo-denticion-options">
+            {tiposDenticion.map((tipo) => (
+              <div
+                key={tipo.key}
+                className={`tipo-denticion-option ${tipoDenticion === tipo.key ? 'selected' : ''}`}
+                onClick={() => handleTipoDenticionChange(tipo.key)}
+              >
+                <div className="tipo-denticion-square"></div>
+                <div className="tipo-denticion-info">
+                  <span className="tipo-denticion-label">{tipo.label}</span>
+                  <span className="tipo-denticion-descripcion">{tipo.descripcion}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="odontograma-content">
