@@ -297,6 +297,148 @@
   font-weight: 600;
 }
 
+/* Nuevos estilos para dientes divididos en partes */
+.diente-container {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  margin: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.diente-container:hover {
+  transform: scale(1.05);
+}
+
+.diente-container.selected {
+  transform: scale(1.1);
+}
+
+.diente-numero {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: bold;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.diente-partes {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.diente-partes.con-oclusal {
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.parte-diente {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  color: white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  min-height: 0;
+}
+
+.parte-diente:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.parte-diente.selected {
+  transform: scale(1.1);
+  border: 2px solid #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 6;
+}
+
+.parte-label {
+  font-size: 0.8em;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+}
+
+/* Posicionamiento específico de las partes del diente */
+.parte-diente.vestibular {
+  grid-column: 1;
+  grid-row: 1;
+  border-radius: 8px 0 0 0;
+}
+
+.parte-diente.mesial {
+  grid-column: 1;
+  grid-row: 2;
+  border-radius: 0 0 0 8px;
+}
+
+.parte-diente.distal {
+  grid-column: 2;
+  grid-row: 1;
+  border-radius: 0 8px 0 0;
+}
+
+.parte-diente.palatal {
+  grid-column: 2;
+  grid-row: 2;
+  border-radius: 0 0 8px 0;
+}
+
+.parte-diente.oclusal {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+  border-radius: 0 0 8px 8px;
+  font-size: 0.6em;
+}
+
+/* Ajustes para dientes sin oclusal */
+.diente-partes.sin-oclusal .parte-diente.mesial {
+  border-radius: 0 0 0 8px;
+}
+
+.diente-partes.sin-oclusal .parte-diente.palatal {
+  border-radius: 0 0 8px 0;
+}
+
+/* Estilos para mostrar el estado en cada parte */
+.parte-diente::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+  border-radius: inherit;
+  background: inherit;
+  opacity: 0.9;
+}
+
 .odontograma-sidebar {
   background: white;
   border-radius: 15px;
@@ -455,6 +597,91 @@
   box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
 }
 
+/* Estilos para el panel de partes del diente */
+.partes-diente-panel {
+  margin-bottom: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.partes-diente-panel h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  font-weight: 500;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+.partes-diente-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.parte-diente-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  background: #f8f9fa;
+}
+
+.parte-diente-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.parte-diente-item.selected {
+  background: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.parte-diente-color {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(45deg, #667eea, #764ba2);
+}
+
+.parte-diente-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.parte-diente-nombre {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95em;
+}
+
+.parte-diente-descripcion {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 2px;
+}
+
+.partes-info {
+  margin-top: 15px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.partes-info p {
+  margin: 0;
+  font-size: 0.85em;
+  color: #555;
+  line-height: 1.4;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
   .odontograma-content {
@@ -500,13 +727,23 @@
     gap: 30px;
   }
   
-  .diente {
-    width: 45px;
-    height: 45px;
+  .diente-container {
+    width: 60px;
+    height: 60px;
   }
   
-  .numero-diente {
-    font-size: 0.8em;
+  .diente-numero {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7em;
+  }
+  
+  .parte-diente {
+    font-size: 0.6em;
+  }
+  
+  .parte-label {
+    font-size: 0.7em;
   }
 }
 
@@ -515,13 +752,23 @@
     font-size: 1.5em;
   }
   
-  .diente {
-    width: 40px;
-    height: 40px;
+  .diente-container {
+    width: 50px;
+    height: 50px;
   }
   
-  .numero-diente {
-    font-size: 0.7em;
+  .diente-numero {
+    width: 18px;
+    height: 18px;
+    font-size: 0.6em;
+  }
+  
+  .parte-diente {
+    font-size: 0.5em;
+  }
+  
+  .parte-label {
+    font-size: 0.6em;
   }
   
   .condicion-item {
@@ -531,5 +778,230 @@
   .condicion-color {
     width: 20px;
     height: 20px;
+  }
+}
+
+/* Diente formato cuadricular 3x3 */
+.diente-cubo {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  margin: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.diente-cubo.selected {
+  transform: scale(1.08);
+}
+.diente-cubo .diente-numero {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: bold;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.diente-cubo-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  border: 2px solid #222;
+  border-radius: 8px;
+  background: #fff;
+  position: relative;
+}
+.cubo-vacio {
+  background: transparent;
+}
+.cubo-cara {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  min-width: 0;
+  min-height: 0;
+  z-index: 1;
+  user-select: none;
+}
+.cubo-cara.selected {
+  outline: 2px solid #333;
+  z-index: 2;
+}
+.cubo-vestibular {
+  grid-column: 2;
+  grid-row: 1;
+  border-bottom: 1.5px solid #222;
+}
+.cubo-mesial {
+  grid-column: 1;
+  grid-row: 2;
+  border-right: 1.5px solid #222;
+}
+.cubo-distal {
+  grid-column: 3;
+  grid-row: 2;
+  border-left: 1.5px solid #222;
+}
+.cubo-palatal {
+  grid-column: 2;
+  grid-row: 3;
+  border-top: 1.5px solid #222;
+}
+.cubo-oclusal {
+  grid-column: 2;
+  grid-row: 2;
+  border: 1.5px solid #222;
+  border-radius: 3px;
+  font-size: 0.9em;
+  z-index: 2;
+}
+/* Líneas divisorias en cruz */
+.diente-cubo-grid::before, .diente-cubo-grid::after {
+  content: '';
+  position: absolute;
+  background: #222;
+  z-index: 0;
+}
+.diente-cubo-grid::before {
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+.diente-cubo-grid::after {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+/* Contraste de letras automático (ya se maneja inline) */
+
+@media (max-width: 768px) {
+  .diente-cubo {
+    width: 55px;
+    height: 55px;
+  }
+  .diente-cubo .diente-numero {
+    width: 18px;
+    height: 18px;
+    font-size: 0.6em;
+  }
+}
+@media (max-width: 480px) {
+  .diente-cubo {
+    width: 40px;
+    height: 40px;
+  }
+  .diente-cubo .diente-numero {
+    width: 14px;
+    height: 14px;
+    font-size: 0.5em;
+  }
+}
+
+/* Diente formato circular tipo pastel */
+.diente-circular {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  margin: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.diente-circular.selected {
+  transform: scale(1.08);
+}
+.diente-circular .diente-numero {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: bold;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.diente-svg {
+  width: 64px;
+  height: 64px;
+  display: block;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.sector-diente {
+  cursor: pointer;
+  stroke: #222;
+  stroke-width: 1.5px;
+  transition: filter 0.2s, stroke-width 0.2s;
+}
+.sector-diente.selected {
+  filter: brightness(1.2) drop-shadow(0 0 4px #3338);
+  stroke-width: 3px;
+}
+.sector-oclusal {
+  stroke: #222;
+  stroke-width: 1.5px;
+}
+@media (max-width: 768px) {
+  .diente-circular {
+    width: 55px;
+    height: 55px;
+  }
+  .diente-circular .diente-numero {
+    width: 18px;
+    height: 18px;
+    font-size: 0.6em;
+  }
+  .diente-svg {
+    width: 48px;
+    height: 48px;
+  }
+}
+@media (max-width: 480px) {
+  .diente-circular {
+    width: 40px;
+    height: 40px;
+  }
+  .diente-circular .diente-numero {
+    width: 14px;
+    height: 14px;
+    font-size: 0.5em;
+  }
+  .diente-svg {
+    width: 32px;
+    height: 32px;
   }
 } 

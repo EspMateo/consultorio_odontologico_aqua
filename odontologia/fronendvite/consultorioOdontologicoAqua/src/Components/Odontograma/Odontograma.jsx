@@ -11,6 +11,7 @@ const Odontograma = () => {
   const [dientes, setDientes] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedTooth, setSelectedTooth] = useState(null);
+  const [selectedPart, setSelectedPart] = useState(null);
   const [selectedCondition, setSelectedCondition] = useState('sano');
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
@@ -25,6 +26,16 @@ const Odontograma = () => {
     extraido: { nombre: 'Extraído', color: '#F44336', descripcion: 'Diente extraído' },
     implante: { nombre: 'Implante', color: '#607D8B', descripcion: 'Implante dental' },
     tratamiento: { nombre: 'En Tratamiento', color: '#FF5722', descripcion: 'Diente en tratamiento' }
+  };
+
+  // Partes del diente
+  const partesDiente = {
+    vestibular: { nombre: 'Vestibular', descripcion: 'Cara externa del diente' },
+    mesial: { nombre: 'Mesial', descripcion: 'Cara hacia la línea media' },
+    distal: { nombre: 'Distal', descripcion: 'Cara alejada de la línea media' },
+    palatal: { nombre: 'Palatal', descripcion: 'Cara hacia el paladar (superior)' },
+    lingual: { nombre: 'Lingual', descripcion: 'Cara hacia la lengua (inferior)' },
+    oclusal: { nombre: 'Oclusal', descripcion: 'Superficie de masticación' }
   };
 
   // Opciones de tipo de dentición
@@ -46,6 +57,35 @@ const Odontograma = () => {
     }
   };
 
+  // Determinar si un diente es premolar o molar (tiene 5 caras)
+  const esDienteConOclusal = (numero) => {
+    // Premolares: 14, 15, 24, 25, 34, 35, 44, 45
+    // Molares: 16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48
+    const premolares = [14, 15, 24, 25, 34, 35, 44, 45];
+    const molares = [16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48];
+    return premolares.includes(numero) || molares.includes(numero);
+  };
+
+  // Obtener las partes de un diente específico
+  const obtenerPartesDiente = (numero) => {
+    if (esDienteConOclusal(numero)) {
+      return {
+        vestibular: 'sano',
+        mesial: 'sano',
+        distal: 'sano',
+        palatal: 'sano',
+        oclusal: 'sano'
+      };
+    } else {
+      return {
+        vestibular: 'sano',
+        mesial: 'sano',
+        distal: 'sano',
+        palatal: 'sano'
+      };
+    }
+  };
+
   useEffect(() => {
     const fetchPacienteData = async () => {
       try {
@@ -64,12 +104,12 @@ const Odontograma = () => {
           fecha: new Date().toLocaleDateString()
         });
         
-        // Inicializar todos los dientes como sanos
+        // Inicializar todos los dientes con sus partes como sanas
         const dientesIniciales = {};
         Object.values(configuracionDientes).forEach(arcada => {
           Object.values(arcada).forEach(lado => {
             lado.forEach(numero => {
-              dientesIniciales[numero] = 'sano';
+              dientesIniciales[numero] = obtenerPartesDiente(numero);
             });
           });
         });
@@ -85,15 +125,19 @@ const Odontograma = () => {
     fetchPacienteData();
   }, [id, location.state]);
 
-  const handleToothClick = (numeroDiente) => {
+  const handleToothPartClick = (numeroDiente, parte) => {
     setSelectedTooth(numeroDiente);
+    setSelectedPart(parte);
   };
 
   const handleConditionChange = (condicion) => {
-    if (selectedTooth) {
+    if (selectedTooth && selectedPart) {
       setDientes(prev => ({
         ...prev,
-        [selectedTooth]: condicion
+        [selectedTooth]: {
+          ...prev[selectedTooth],
+          [selectedPart]: condicion
+        }
       }));
       setSelectedCondition(condicion);
     }
@@ -117,6 +161,7 @@ const Odontograma = () => {
 
   const handleClearSelection = () => {
     setSelectedTooth(null);
+    setSelectedPart(null);
     setSelectedCondition('sano');
   };
 
@@ -142,19 +187,118 @@ const Odontograma = () => {
     URL.revokeObjectURL(url);
   };
 
-  const renderTooth = (numero, condicion) => {
+  // Utilidad para contraste de color de letra
+  function getContrastingTextColor(bgColor) {
+    if (!bgColor) return '#000';
+    const color = bgColor.charAt(0) === '#' ? bgColor.substring(1, 7) : bgColor;
+    const r = parseInt(color.substring(0, 2), 16);
+    const g = parseInt(color.substring(2, 4), 16);
+    const b = parseInt(color.substring(4, 6), 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5 ? '#222' : '#fff';
+  }
+
+  // Definir los sectores para todos los dientes (siempre 4 en el círculo exterior)
+  const sectoresDiente = [
+    { key: 'vestibular', label: 'V', angle: [0, 90] },
+    { key: 'mesial', label: 'M', angle: [90, 180] },
+    { key: 'palatal', label: 'P', angle: [180, 270] },
+    { key: 'distal', label: 'D', angle: [270, 360] }
+  ];
+
+  const renderTooth = (numero) => {
+    const dienteData = dientes[numero] || {};
     const isSelected = selectedTooth === numero;
-    const color = condiciones[condicion]?.color || '#4CAF50';
-    
+    const tieneOclusal = esDienteConOclusal(numero);
+    const size = 64;
+    const center = size / 2;
+    const radius = size / 2 - 2;
+    const oclusalRadius = size / 4;
+    const sectores = sectoresDiente;
+
+    // Colores de fondo para cada cara
+    const getColor = (key) => condiciones[dienteData[key]]?.color || '#4CAF50';
+    const getText = (key) => getContrastingTextColor(getColor(key));
+
+    // Función para crear un sector SVG
+    function describeArc(cx, cy, r, startAngle, endAngle) {
+      const start = polarToCartesian(cx, cy, r, endAngle);
+      const end = polarToCartesian(cx, cy, r, startAngle);
+      const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
+      return [
+        'M', cx, cy,
+        'L', start.x, start.y,
+        'A', r, r, 0, largeArcFlag, 0, end.x, end.y,
+        'Z'
+      ].join(' ');
+    }
+    function polarToCartesian(cx, cy, r, angle) {
+      const rad = (angle - 90) * Math.PI / 180.0;
+      return {
+        x: cx + r * Math.cos(rad),
+        y: cy + r * Math.sin(rad)
+      };
+    }
+
     return (
-      <div
-        key={numero}
-        className={`diente ${isSelected ? 'selected' : ''}`}
-        style={{ backgroundColor: color }}
-        onClick={() => handleToothClick(numero)}
-        title={`Diente ${numero}: ${condiciones[condicion]?.nombre}`}
-      >
-        <span className="numero-diente">{numero}</span>
+      <div key={numero} className={`diente-circular ${isSelected ? 'selected' : ''}`}> 
+        <div className="diente-numero">{numero}</div>
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="diente-svg">
+          {/* Sectores exteriores (siempre 4) */}
+          {sectores.map((sector, idx) => (
+            <path
+              key={sector.key}
+              d={describeArc(center, center, radius, sector.angle[0], sector.angle[1])}
+              fill={getColor(sector.key)}
+              className={`sector-diente sector-${sector.key} ${(selectedTooth === numero && selectedPart === sector.key) ? 'selected' : ''}`}
+              onClick={() => handleToothPartClick(numero, sector.key)}
+            />
+          ))}
+          {/* Oclusal (centro) solo para premolares/molares */}
+          {tieneOclusal && (
+            <circle
+              cx={center}
+              cy={center}
+              r={oclusalRadius}
+              fill={getColor('oclusal')}
+              className={`sector-diente sector-oclusal ${(selectedTooth === numero && selectedPart === 'oclusal') ? 'selected' : ''}`}
+              onClick={() => handleToothPartClick(numero, 'oclusal')}
+            />
+          )}
+          {/* Letras */}
+          {sectores.map((sector, idx) => {
+            // Calcular ángulo medio para posicionar la letra
+            const angle = (sector.angle[0] + sector.angle[1]) / 2;
+            const rad = (angle - 90) * Math.PI / 180.0;
+            const r = tieneOclusal ? (radius + oclusalRadius) / 2 : radius * 0.65;
+            const x = center + r * Math.cos(rad);
+            const y = center + r * Math.sin(rad) + 5;
+            return (
+              <text
+                key={sector.key}
+                x={x}
+                y={y}
+                textAnchor="middle"
+                fontSize="16"
+                fontWeight="bold"
+                fill={getText(sector.key)}
+                pointerEvents="none"
+              >{sector.label}</text>
+            );
+          })}
+          {/* Letra O en el centro si tiene oclusal */}
+          {tieneOclusal && (
+            <text
+              x={center}
+              y={center + 5}
+              textAnchor="middle"
+              fontSize="16"
+              fontWeight="bold"
+              fill={getText('oclusal')}
+              pointerEvents="none"
+            >O</text>
+          )}
+        </svg>
       </div>
     );
   };
@@ -167,13 +311,13 @@ const Odontograma = () => {
           <div className="lado-derecho">
             <h4>Derecha</h4>
             <div className="dientes-fila">
-              {arcada.derecha.map(numero => renderTooth(numero, dientes[numero]))}
+              {arcada.derecha.map(numero => renderTooth(numero))}
             </div>
           </div>
           <div className="lado-izquierdo">
             <h4>Izquierda</h4>
             <div className="dientes-fila">
-              {arcada.izquierda.map(numero => renderTooth(numero, dientes[numero]))}
+              {arcada.izquierda.map(numero => renderTooth(numero))}
             </div>
           </div>
         </div>
@@ -257,10 +401,32 @@ const Odontograma = () => {
             </div>
           </div>
 
-          {selectedTooth && (
+          <div className="partes-diente-panel">
+            <h3>Partes del Diente</h3>
+            <div className="partes-diente-lista">
+              {Object.entries(partesDiente).map(([key, parte]) => (
+                <div
+                  key={key}
+                  className={`parte-diente-item ${selectedPart === key ? 'selected' : ''}`}
+                >
+                  <div className="parte-diente-color"></div>
+                  <div className="parte-diente-info">
+                    <span className="parte-diente-nombre">{parte.nombre}</span>
+                    <span className="parte-diente-descripcion">{parte.descripcion}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="partes-info">
+              <p><strong>Nota:</strong> Los premolares y molares tienen 5 caras (incluyendo oclusal), mientras que los demás dientes tienen 4 caras.</p>
+            </div>
+          </div>
+
+          {selectedTooth && selectedPart && (
             <div className="diente-seleccionado">
               <h3>Diente Seleccionado: {selectedTooth}</h3>
-              <p>Estado actual: <strong>{condiciones[dientes[selectedTooth]]?.nombre}</strong></p>
+              <p>Parte: <strong>{partesDiente[selectedPart]?.nombre}</strong></p>
+              <p>Estado actual: <strong>{condiciones[dientes[selectedTooth]?.[selectedPart]]?.nombre}</strong></p>
               <p>Haz clic en un estado para cambiarlo</p>
             </div>
           )}
