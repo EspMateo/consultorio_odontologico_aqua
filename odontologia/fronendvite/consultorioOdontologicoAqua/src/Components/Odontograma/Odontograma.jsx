@@ -57,6 +57,12 @@ const Odontograma = () => {
     }
   };
 
+  // Números de dientes permanentes en el orden clásico
+  const filaSuperiorDerecha = [18, 17, 16, 15, 14, 13, 12, 11];
+  const filaSuperiorIzquierda = [21, 22, 23, 24, 25, 26, 27, 28];
+  const filaInferiorDerecha = [48, 47, 46, 45, 44, 43, 42, 41];
+  const filaInferiorIzquierda = [31, 32, 33, 34, 35, 36, 37, 38];
+
   // Determinar si un diente es premolar o molar (tiene 5 caras)
   const esDienteConOclusal = (numero) => {
     // Premolares: 14, 15, 24, 25, 34, 35, 44, 45
@@ -335,7 +341,7 @@ const Odontograma = () => {
   }
 
   return (
-    <div className="odontograma-container">
+    <div className="odontograma-container odontograma-vertical">
       {message && (
         <div className={`message ${message.includes('Error') ? 'error' : 'success'}`}>
           {message}
@@ -371,88 +377,98 @@ const Odontograma = () => {
           </div>
         </div>
       </div>
-
-      <div className="odontograma-content">
-        <div className="odontograma-main">
-          {renderArcada(configuracionDientes.superior, 'superior')}
-          {renderArcada(configuracionDientes.inferior, 'inferior')}
+      <div className="odontograma-main" style={{ textAlign: 'center' }}>
+        {/* Fila superior */}
+        <div className="fila-dientes">
+          {filaSuperiorDerecha.map(num => renderTooth(num))}
+          <div style={{ width: 32 }} />
+          {filaSuperiorIzquierda.map(num => renderTooth(num))}
         </div>
-
-        <div className="odontograma-sidebar">
-          <div className="condiciones-panel">
-            <h3>Estados de los Dientes</h3>
-            <div className="condiciones-lista">
-              {Object.entries(condiciones).map(([key, condicion]) => (
-                <div
-                  key={key}
-                  className={`condicion-item ${selectedCondition === key ? 'selected' : ''}`}
-                  onClick={() => handleConditionChange(key)}
-                >
-                  <div 
-                    className="condicion-color" 
-                    style={{ backgroundColor: condicion.color }}
-                  ></div>
-                  <div className="condicion-info">
-                    <span className="condicion-nombre">{condicion.nombre}</span>
-                    <span className="condicion-descripcion">{condicion.descripcion}</span>
-                  </div>
+        {/* Fila inferior */}
+        <div className="fila-dientes">
+          {filaInferiorDerecha.map(num => renderTooth(num))}
+          <div style={{ width: 32 }} />
+          {filaInferiorIzquierda.map(num => renderTooth(num))}
+        </div>
+      </div>
+      {/* Sección: Estados de los Dientes y Partes del Diente en una fila */}
+      <div className="odontograma-section odontograma-row">
+        <div className="condiciones-panel">
+          <h3>Estados de los Dientes</h3>
+          <div className="condiciones-lista">
+            {Object.entries(condiciones).map(([key, condicion]) => (
+              <div
+                key={key}
+                className={`condicion-item ${selectedCondition === key ? 'selected' : ''}`}
+                onClick={() => handleConditionChange(key)}
+              >
+                <div 
+                  className="condicion-color" 
+                  style={{ backgroundColor: condicion.color }}
+                ></div>
+                <div className="condicion-info">
+                  <span className="condicion-nombre">{condicion.nombre}</span>
+                  <span className="condicion-descripcion">{condicion.descripcion}</span>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-
-          <div className="partes-diente-panel">
-            <h3>Partes del Diente</h3>
-            <div className="partes-diente-lista">
-              {Object.entries(partesDiente).map(([key, parte]) => (
-                <div
-                  key={key}
-                  className={`parte-diente-item ${selectedPart === key ? 'selected' : ''}`}
-                >
-                  <div className="parte-diente-color"></div>
-                  <div className="parte-diente-info">
-                    <span className="parte-diente-nombre">{parte.nombre}</span>
-                    <span className="parte-diente-descripcion">{parte.descripcion}</span>
-                  </div>
+        </div>
+        <div className="partes-diente-panel">
+          <h3>Partes del Diente</h3>
+          <div className="partes-diente-lista">
+            {Object.entries(partesDiente).map(([key, parte]) => (
+              <div
+                key={key}
+                className={`parte-diente-item ${selectedPart === key ? 'selected' : ''}`}
+              >
+                <div className="parte-diente-color"></div>
+                <div className="parte-diente-info">
+                  <span className="parte-diente-nombre">{parte.nombre}</span>
+                  <span className="parte-diente-descripcion">{parte.descripcion}</span>
                 </div>
-              ))}
-            </div>
-            <div className="partes-info">
-              <p><strong>Nota:</strong> Los premolares y molares tienen 5 caras (incluyendo oclusal), mientras que los demás dientes tienen 4 caras.</p>
-            </div>
+              </div>
+            ))}
           </div>
-
-          {selectedTooth && selectedPart && (
-            <div className="diente-seleccionado">
-              <h3>Diente Seleccionado: {selectedTooth}</h3>
-              <p>Parte: <strong>{partesDiente[selectedPart]?.nombre}</strong></p>
-              <p>Estado actual: <strong>{condiciones[dientes[selectedTooth]?.[selectedPart]]?.nombre}</strong></p>
-              <p>Haz clic en un estado para cambiarlo</p>
-            </div>
-          )}
-
-          <div className="acciones-panel">
-            <h3>Acciones</h3>
-            <button 
-              className="btn-guardar" 
-              onClick={handleSaveChanges}
-              disabled={saving}
-            >
-              {saving ? 'Guardando...' : 'Guardar Cambios'}
-            </button>
-            <button 
-              className="btn-limpiar" 
-              onClick={handleClearSelection}
-            >
-              Limpiar Selección
-            </button>
-            <button 
-              className="btn-exportar" 
-              onClick={handleExportOdontograma}
-            >
-              Exportar Odontograma
-            </button>
+          <div className="partes-info">
+            <p><strong>Nota:</strong> Los premolares y molares tienen 5 caras (incluyendo oclusal), mientras que los demás dientes tienen 4 caras.</p>
           </div>
+        </div>
+      </div>
+      {/* Sección: Diente seleccionado */}
+      {selectedTooth && selectedPart && (
+        <div className="odontograma-section">
+          <div className="diente-seleccionado">
+            <h3>Diente Seleccionado: {selectedTooth}</h3>
+            <p>Parte: <strong>{partesDiente[selectedPart]?.nombre}</strong></p>
+            <p>Estado actual: <strong>{condiciones[dientes[selectedTooth]?.[selectedPart]]?.nombre}</strong></p>
+            <p>Haz clic en un estado para cambiarlo</p>
+          </div>
+        </div>
+      )}
+      {/* Sección: Acciones */}
+      <div className="odontograma-section">
+        <div className="acciones-panel">
+          <h3>Acciones</h3>
+          <button 
+            className="btn-guardar" 
+            onClick={handleSaveChanges}
+            disabled={saving}
+          >
+            {saving ? 'Guardando...' : 'Guardar Cambios'}
+          </button>
+          <button 
+            className="btn-limpiar" 
+            onClick={handleClearSelection}
+          >
+            Limpiar Selección
+          </button>
+          <button 
+            className="btn-exportar" 
+            onClick={handleExportOdontograma}
+          >
+            Exportar Odontograma
+          </button>
         </div>
       </div>
     </div>
