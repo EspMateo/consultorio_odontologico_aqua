@@ -35,8 +35,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/citas/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/historia-clinica/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/historia-clinica/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/historia-clinica/paciente/**").permitAll() // <-- AGREGADO
+                        .requestMatchers(HttpMethod.GET, "/api/historia-clinica/paciente/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/historia-clinica/**").permitAll()
+                        .requestMatchers("/api/odontogramas/**").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();

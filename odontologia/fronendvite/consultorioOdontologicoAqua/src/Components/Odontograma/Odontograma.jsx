@@ -7,6 +7,8 @@ const Odontograma = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // Estados principales
   const [paciente, setPaciente] = useState(null);
   const [dientes, setDientes] = useState({});
   const [loading, setLoading] = useState(true);
@@ -16,6 +18,7 @@ const Odontograma = () => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
   const [tipoDenticion, setTipoDenticion] = useState('permanente');
+  const [observaciones, setObservaciones] = useState('');
 
   // Estados posibles para los dientes
   const condiciones = {
@@ -45,18 +48,6 @@ const Odontograma = () => {
     { key: 'permanente', label: 'Permanente', descripcion: 'Dentición permanente' }
   ];
 
-  // Configuración de los dientes (32 dientes total)
-  const configuracionDientes = {
-    superior: {
-      derecha: [18, 17, 16, 15, 14, 13, 12, 11], // 8 dientes
-      izquierda: [21, 22, 23, 24, 25, 26, 27, 28] // 8 dientes
-    },
-    inferior: {
-      derecha: [48, 47, 46, 45, 44, 43, 42, 41], // 8 dientes
-      izquierda: [31, 32, 33, 34, 35, 36, 37, 38] // 8 dientes
-    }
-  };
-
   // Números de dientes permanentes en el orden clásico
   const filaSuperiorDerecha = [18, 17, 16, 15, 14, 13, 12, 11];
   const filaSuperiorIzquierda = [21, 22, 23, 24, 25, 26, 27, 28];
@@ -65,8 +56,6 @@ const Odontograma = () => {
 
   // Determinar si un diente es premolar o molar (tiene 5 caras)
   const esDienteConOclusal = (numero) => {
-    // Premolares: 14, 15, 24, 25, 34, 35, 44, 45
-    // Molares: 16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48
     const premolares = [14, 15, 24, 25, 34, 35, 44, 45];
     const molares = [16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48];
     return premolares.includes(numero) || molares.includes(numero);
@@ -92,10 +81,28 @@ const Odontograma = () => {
     }
   };
 
+  // Utilidad para contraste de color de letra
+  const getContrastingTextColor = (bgColor) => {
+    if (!bgColor) return '#000';
+    const color = bgColor.charAt(0) === '#' ? bgColor.substring(1, 7) : bgColor;
+    const r = parseInt(color.substring(0, 2), 16);
+    const g = parseInt(color.substring(2, 4), 16);
+    const b = parseInt(color.substring(4, 6), 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5 ? '#222' : '#fff';
+  };
+
+  // Definir los sectores para todos los dientes (siempre 4 en el círculo exterior)
+  const sectoresDiente = [
+    { key: 'vestibular', label: 'V', angle: [0, 90] },
+    { key: 'mesial', label: 'M', angle: [90, 180] },
+    { key: 'palatal', label: 'P', angle: [180, 270] },
+    { key: 'distal', label: 'D', angle: [270, 360] }
+  ];
+
   useEffect(() => {
     const fetchPacienteData = async () => {
       try {
-        // Obtener datos del paciente desde el estado de navegación o hacer una petición
         let pacienteData;
         if (location.state?.paciente) {
           pacienteData = location.state.paciente;
@@ -110,16 +117,9 @@ const Odontograma = () => {
           fecha: new Date().toLocaleDateString()
         });
         
-        // Inicializar todos los dientes con sus partes como sanas
-        const dientesIniciales = {};
-        Object.values(configuracionDientes).forEach(arcada => {
-          Object.values(arcada).forEach(lado => {
-            lado.forEach(numero => {
-              dientesIniciales[numero] = obtenerPartesDiente(numero);
-            });
-          });
-        });
-        setDientes(dientesIniciales);
+        // Cargar el odontograma más reciente del paciente
+        await cargarOdontogramaMasReciente(pacienteData.id);
+        
         setLoading(false);
       } catch (error) {
         console.error('Error al cargar datos del paciente:', error);
@@ -130,6 +130,51 @@ const Odontograma = () => {
 
     fetchPacienteData();
   }, [id, location.state]);
+
+  // Función para cargar el odontograma más reciente
+  const cargarOdontogramaMasReciente = async (pacienteId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/odontogramas/paciente/${pacienteId}/reciente`);
+      const odontograma = response.data;
+      
+      if (odontograma) {
+        // Cargar los datos del odontograma
+        setTipoDenticion(odontograma.tipoDenticion || 'permanente');
+        setObservaciones(odontograma.observaciones || '');
+        
+        // Parsear los datos de los dientes desde JSON
+        if (odontograma.datosDientes) {
+          try {
+            const datosDientes = JSON.parse(odontograma.datosDientes);
+            setDientes(datosDientes);
+            console.log('Odontograma cargado:', odontograma);
+          } catch (parseError) {
+            console.error('Error al parsear datos de dientes:', parseError);
+            // Si hay error al parsear, inicializar dientes vacíos
+            inicializarDientesVacios();
+          }
+        } else {
+          inicializarDientesVacios();
+        }
+      } else {
+        // Si no hay odontograma guardado, inicializar vacío
+        inicializarDientesVacios();
+      }
+    } catch (error) {
+      console.error('Error al cargar odontograma:', error);
+      // Si hay error, inicializar dientes vacíos
+      inicializarDientesVacios();
+    }
+  };
+
+  // Función para inicializar dientes vacíos
+  const inicializarDientesVacios = () => {
+    const dientesIniciales = {};
+    [...filaSuperiorDerecha, ...filaSuperiorIzquierda, ...filaInferiorDerecha, ...filaInferiorIzquierda].forEach(numero => {
+      dientesIniciales[numero] = obtenerPartesDiente(numero);
+    });
+    setDientes(dientesIniciales);
+  };
 
   const handleToothPartClick = (numeroDiente, parte) => {
     setSelectedTooth(numeroDiente);
@@ -150,16 +195,29 @@ const Odontograma = () => {
   };
 
   const handleSaveChanges = async () => {
+    if (!paciente?.id) {
+      setMessage('Error: No se pudo identificar al paciente');
+      return;
+    }
+
     setSaving(true);
     try {
-      // Aquí puedes implementar la lógica para guardar en el backend
-      // Por ahora solo simulamos el guardado
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const odontogramaData = {
+        pacienteId: paciente.id,
+        tipoDenticion: tipoDenticion,
+        datosDientes: dientes,
+        observaciones: observaciones || 'Odontograma actualizado'
+      };
+
+      const response = await axios.post('http://localhost:8080/api/odontogramas', odontogramaData);
+      
       setMessage('Odontograma guardado exitosamente');
       setTimeout(() => setMessage(null), 3000);
+      
+      console.log('Odontograma guardado:', response.data);
     } catch (error) {
       console.error('Error al guardar:', error);
-      setMessage('Error al guardar el odontograma');
+      setMessage('Error al guardar el odontograma: ' + (error.response?.data || error.message));
     } finally {
       setSaving(false);
     }
@@ -176,10 +234,11 @@ const Odontograma = () => {
   };
 
   const handleExportOdontograma = () => {
-    // Implementar exportación del odontograma
     const odontogramaData = {
       paciente: paciente,
       dientes: dientes,
+      tipoDenticion: tipoDenticion,
+      observaciones: observaciones,
       fecha: new Date().toISOString()
     };
     
@@ -193,24 +252,25 @@ const Odontograma = () => {
     URL.revokeObjectURL(url);
   };
 
-  // Utilidad para contraste de color de letra
-  function getContrastingTextColor(bgColor) {
-    if (!bgColor) return '#000';
-    const color = bgColor.charAt(0) === '#' ? bgColor.substring(1, 7) : bgColor;
-    const r = parseInt(color.substring(0, 2), 16);
-    const g = parseInt(color.substring(2, 4), 16);
-    const b = parseInt(color.substring(4, 6), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5 ? '#222' : '#fff';
-  }
+  // Función para recargar el odontograma más reciente
+  const handleRecargarOdontograma = async () => {
+    if (!paciente?.id) {
+      setMessage('Error: No se pudo identificar al paciente');
+      return;
+    }
 
-  // Definir los sectores para todos los dientes (siempre 4 en el círculo exterior)
-  const sectoresDiente = [
-    { key: 'vestibular', label: 'V', angle: [0, 90] },
-    { key: 'mesial', label: 'M', angle: [90, 180] },
-    { key: 'palatal', label: 'P', angle: [180, 270] },
-    { key: 'distal', label: 'D', angle: [270, 360] }
-  ];
+    setLoading(true);
+    try {
+      await cargarOdontogramaMasReciente(paciente.id);
+      setMessage('Odontograma recargado exitosamente');
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      console.error('Error al recargar odontograma:', error);
+      setMessage('Error al recargar el odontograma');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const renderTooth = (numero) => {
     const dienteData = dientes[numero] || {};
@@ -309,28 +369,6 @@ const Odontograma = () => {
     );
   };
 
-  const renderArcada = (arcada, nombre) => {
-    return (
-      <div className={`arcada ${nombre}`}>
-        <h3 className="titulo-arcada">{nombre === 'superior' ? 'Arcada Superior' : 'Arcada Inferior'}</h3>
-        <div className="dientes-container">
-          <div className="lado-derecho">
-            <h4>Derecha</h4>
-            <div className="dientes-fila">
-              {arcada.derecha.map(numero => renderTooth(numero))}
-            </div>
-          </div>
-          <div className="lado-izquierdo">
-            <h4>Izquierda</h4>
-            <div className="dientes-fila">
-              {arcada.izquierda.map(numero => renderTooth(numero))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   if (loading) {
     return (
       <div className="odontograma-loading">
@@ -391,7 +429,7 @@ const Odontograma = () => {
           {filaInferiorIzquierda.map(num => renderTooth(num))}
         </div>
       </div>
-      {/* Sección: Estados de los Dientes y Partes del Diente en una fila */}
+      {/* Sección: Estados de los Dientes y Diente Seleccionado en una fila */}
       <div className="odontograma-section odontograma-row">
         <div className="condiciones-panel">
           <h3>Estados de los Dientes</h3>
@@ -414,38 +452,28 @@ const Odontograma = () => {
             ))}
           </div>
         </div>
-        <div className="partes-diente-panel">
-          <h3>Partes del Diente</h3>
-          <div className="partes-diente-lista">
-            {Object.entries(partesDiente).map(([key, parte]) => (
-              <div
-                key={key}
-                className={`parte-diente-item ${selectedPart === key ? 'selected' : ''}`}
-              >
-                <div className="parte-diente-color"></div>
-                <div className="parte-diente-info">
-                  <span className="parte-diente-nombre">{parte.nombre}</span>
-                  <span className="parte-diente-descripcion">{parte.descripcion}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="partes-info">
-            <p><strong>Nota:</strong> Los premolares y molares tienen 5 caras (incluyendo oclusal), mientras que los demás dientes tienen 4 caras.</p>
-          </div>
-        </div>
-      </div>
-      {/* Sección: Diente seleccionado */}
-      {selectedTooth && selectedPart && (
-        <div className="odontograma-section">
-          <div className="diente-seleccionado">
+        {selectedTooth && selectedPart && (
+          <div className="diente-seleccionado" style={{ minWidth: 220 }}>
             <h3>Diente Seleccionado: {selectedTooth}</h3>
             <p>Parte: <strong>{partesDiente[selectedPart]?.nombre}</strong></p>
             <p>Estado actual: <strong>{condiciones[dientes[selectedTooth]?.[selectedPart]]?.nombre}</strong></p>
             <p>Haz clic en un estado para cambiarlo</p>
           </div>
+        )}
+      </div>
+      {/* Sección: Observaciones */}
+      <div className="odontograma-section">
+        <div className="observaciones-panel">
+          <h3>Observaciones</h3>
+          <textarea
+            value={observaciones}
+            onChange={(e) => setObservaciones(e.target.value)}
+            placeholder="Agregar observaciones sobre el odontograma..."
+            rows="3"
+            className="observaciones-textarea"
+          />
         </div>
-      )}
+      </div>
       {/* Sección: Acciones */}
       <div className="odontograma-section">
         <div className="acciones-panel">
@@ -468,6 +496,12 @@ const Odontograma = () => {
             onClick={handleExportOdontograma}
           >
             Exportar Odontograma
+          </button>
+          <button 
+            className="btn-recargar" 
+            onClick={handleRecargarOdontograma}
+          >
+            Recargar Odontograma
           </button>
         </div>
       </div>
