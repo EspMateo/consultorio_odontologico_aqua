@@ -438,7 +438,25 @@ const Odontograma = () => {
           </div>
         </div>
       </div>
-      <div className="odontograma-main" style={{ textAlign: 'center' }}>
+      <div className="odontograma-main">
+        {/* Botón limpiar selección (esquina superior izquierda) */}
+        <button
+          className="btn-icon limpiar-icon"
+          title="Limpiar selección"
+          onClick={handleClearSelection}
+          type="button"
+        >
+          🧹
+        </button>
+        {/* Botón recargar odontograma (esquina superior derecha) */}
+        <button
+          className="btn-icon recargar-icon"
+          title="Recargar odontograma"
+          onClick={handleRecargarOdontograma}
+          type="button"
+        >
+          ⟳
+        </button>
         {/* Fila superior permanente */}
         <div className="fila-dientes">
           {filaSuperiorDerecha.map(num => renderTooth(num))}
@@ -529,22 +547,10 @@ const Odontograma = () => {
             {saving ? 'Guardando...' : 'Guardar Cambios'}
           </button>
           <button 
-            className="btn-limpiar" 
-            onClick={handleClearSelection}
-          >
-            Limpiar Selección
-          </button>
-          <button 
             className="btn-exportar" 
             onClick={handleExportOdontograma}
           >
             Exportar Odontograma
-          </button>
-          <button 
-            className="btn-recargar" 
-            onClick={handleRecargarOdontograma}
-          >
-            Recargar Odontograma
           </button>
         </div>
       </div>

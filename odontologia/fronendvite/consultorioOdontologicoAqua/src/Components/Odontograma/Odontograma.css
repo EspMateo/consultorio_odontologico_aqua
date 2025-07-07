@@ -236,6 +236,7 @@
   padding: 70px 0 70px 0;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   width: 100%;
+  position: relative;
 }
 
 .condiciones-panel {
@@ -344,18 +345,27 @@
   border-bottom: 2px solid #eee;
 }
 
+.acciones-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .acciones-panel button {
-  width: 100%;
-  padding: 12px 20px;
-  margin-bottom: 10px;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.95em;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
+  max-width: 420px;
+  width: 90%;
+  min-width: 220px;
+  margin: 0 0 16px 0;
+  padding: 14px 0;
+  font-size: 1.08em;
+  font-weight: 600;
+  border-radius: 12px;
   letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+}
+
+.acciones-panel button:last-child {
+  margin-bottom: 0;
 }
 
 .acciones-panel button:disabled {
@@ -1070,4 +1080,38 @@
 
 .observaciones-textarea::placeholder {
   color: #999;
+} 
+
+.btn-icon {
+  position: absolute;
+  z-index: 10;
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  color: #444;
+  font-size: 1.5em;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s, color 0.2s;
+}
+
+.btn-icon:hover {
+  background: #f3f3f3;
+  color: #1976d2;
+  border-color: #bdbdbd;
+}
+
+.limpiar-icon {
+  top: 18px;
+  left: 18px;
+}
+
+.recargar-icon {
+  top: 18px;
+  right: 18px;
 } 
