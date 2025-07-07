@@ -23,9 +23,6 @@ const Dashboard = () => {
   const menuItems = [
     { id: 'inicio', label: 'Inicio', path: '' }, // Ruta por defecto para /dashboard
     { id: 'pacientes', label: 'Pacientes', path: 'pacientes' },
-    { id: 'odontograma', label: 'Odontograma', path: 'odontograma' },
-    { id: 'tratamientos', label: 'Tratamientos', path: 'tratamientos' },
-    { id: 'reportes', label: 'Reportes', path: 'reportes' },
   ];
 
   // Determinar la pestaña activa basada en la ruta actual

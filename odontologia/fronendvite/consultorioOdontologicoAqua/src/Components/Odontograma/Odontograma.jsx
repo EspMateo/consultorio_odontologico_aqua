@@ -54,11 +54,28 @@ const Odontograma = () => {
   const filaInferiorDerecha = [48, 47, 46, 45, 44, 43, 42, 41];
   const filaInferiorIzquierda = [31, 32, 33, 34, 35, 36, 37, 38];
 
+  // Números de dientes temporales (de leche)
+  const filaSuperiorDerechaTemporal = [55, 54, 53, 52, 51];
+  const filaSuperiorIzquierdaTemporal = [61, 62, 63, 64, 65];
+  const filaInferiorDerechaTemporal = [85, 84, 83, 82, 81];
+  const filaInferiorIzquierdaTemporal = [71, 72, 73, 74, 75];
+
   // Determinar si un diente es premolar o molar (tiene 5 caras)
   const esDienteConOclusal = (numero) => {
     const premolares = [14, 15, 24, 25, 34, 35, 44, 45];
     const molares = [16, 17, 18, 26, 27, 28, 36, 37, 38, 46, 47, 48];
-    return premolares.includes(numero) || molares.includes(numero);
+    // Para dientes temporales, solo los molares tienen oclusal
+    const molaresTemporales = [55, 54, 65, 64, 75, 74, 85, 84];
+    return premolares.includes(numero) || molares.includes(numero) || molaresTemporales.includes(numero);
+  };
+
+  // Determinar si un diente es temporal
+  const esDienteTemporal = (numero) => {
+    const dientesTemporales = [
+      ...filaSuperiorDerechaTemporal, ...filaSuperiorIzquierdaTemporal,
+      ...filaInferiorDerechaTemporal, ...filaInferiorIzquierdaTemporal
+    ];
+    return dientesTemporales.includes(numero);
   };
 
   // Obtener las partes de un diente específico
@@ -170,7 +187,14 @@ const Odontograma = () => {
   // Función para inicializar dientes vacíos
   const inicializarDientesVacios = () => {
     const dientesIniciales = {};
-    [...filaSuperiorDerecha, ...filaSuperiorIzquierda, ...filaInferiorDerecha, ...filaInferiorIzquierda].forEach(numero => {
+    const todosLosDientes = [
+      ...filaSuperiorDerecha, ...filaSuperiorIzquierda, 
+      ...filaInferiorDerecha, ...filaInferiorIzquierda,
+      ...filaSuperiorDerechaTemporal, ...filaSuperiorIzquierdaTemporal,
+      ...filaInferiorDerechaTemporal, ...filaInferiorIzquierdaTemporal
+    ];
+    
+    todosLosDientes.forEach(numero => {
       dientesIniciales[numero] = obtenerPartesDiente(numero);
     });
     setDientes(dientesIniciales);
@@ -276,7 +300,8 @@ const Odontograma = () => {
     const dienteData = dientes[numero] || {};
     const isSelected = selectedTooth === numero;
     const tieneOclusal = esDienteConOclusal(numero);
-    const size = 64;
+    const esTemporal = esDienteTemporal(numero);
+    const size = esTemporal ? 56 : 64; // Tamaño original
     const center = size / 2;
     const radius = size / 2 - 2;
     const oclusalRadius = size / 4;
@@ -307,9 +332,9 @@ const Odontograma = () => {
     }
 
     return (
-      <div key={numero} className={`diente-circular ${isSelected ? 'selected' : ''}`}> 
-        <div className="diente-numero">{numero}</div>
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="diente-svg">
+      <div key={numero} className={`diente-circular ${isSelected ? 'selected' : ''} ${esTemporal ? 'diente-temporal' : ''}`}> 
+        <div className={`diente-numero ${esTemporal ? 'numero-temporal' : ''}`}>{numero}</div>
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className={`diente-svg ${esTemporal ? 'svg-temporal' : ''}`}>
           {/* Sectores exteriores (siempre 4) */}
           {sectores.map((sector, idx) => (
             <path
@@ -416,16 +441,28 @@ const Odontograma = () => {
         </div>
       </div>
       <div className="odontograma-main" style={{ textAlign: 'center' }}>
-        {/* Fila superior */}
+        {/* Fila superior permanente */}
         <div className="fila-dientes">
           {filaSuperiorDerecha.map(num => renderTooth(num))}
-          <div style={{ width: 32 }} />
+          <div style={{ width: 40 }} />
           {filaSuperiorIzquierda.map(num => renderTooth(num))}
         </div>
-        {/* Fila inferior */}
+        {/* Fila superior temporal */}
+        <div className="fila-dientes fila-temporal">
+          {filaSuperiorDerechaTemporal.map(num => renderTooth(num))}
+          <div style={{ width: 40 }} />
+          {filaSuperiorIzquierdaTemporal.map(num => renderTooth(num))}
+        </div>
+        {/* Fila inferior temporal */}
+        <div className="fila-dientes fila-temporal">
+          {filaInferiorDerechaTemporal.map(num => renderTooth(num))}
+          <div style={{ width: 40 }} />
+          {filaInferiorIzquierdaTemporal.map(num => renderTooth(num))}
+        </div>
+        {/* Fila inferior permanente */}
         <div className="fila-dientes">
           {filaInferiorDerecha.map(num => renderTooth(num))}
-          <div style={{ width: 32 }} />
+          <div style={{ width: 40 }} />
           {filaInferiorIzquierda.map(num => renderTooth(num))}
         </div>
       </div>

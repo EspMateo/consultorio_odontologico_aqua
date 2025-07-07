@@ -704,6 +704,85 @@
   }
 }
 
+/* Estilos para secciones de dientes */
+.seccion-dientes {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+}
+
+.seccion-temporales {
+  background: #fff3cd;
+  border-color: #ffeaa7;
+  margin-top: 30px;
+}
+
+.titulo-seccion {
+  text-align: center;
+  color: #333;
+  font-size: 1.4em;
+  margin-bottom: 25px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.seccion-temporales .titulo-seccion {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  color: #6c5ce7;
+}
+
+/* Estilos para dientes temporales */
+.diente-temporal {
+  opacity: 0.9;
+}
+
+.diente-temporal .diente-numero {
+  background: #6c5ce7;
+  color: white;
+  font-size: 0.7em;
+  width: 18px;
+  height: 18px;
+  top: -6px;
+}
+
+.diente-temporal .diente-svg {
+  border: 2px solid #6c5ce7;
+  background: #fff;
+}
+
+.diente-temporal:hover {
+  transform: scale(1.05);
+}
+
+.diente-temporal.selected {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+}
+
+.fila-temporal {
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.fila-temporal .diente-circular {
+  width: 28px;
+  height: 28px;
+}
+
+.fila-temporal .diente-svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Ajustes para el texto en dientes temporales */
+.diente-temporal .sector-diente text {
+  font-size: 12px;
+}
+
 @media (max-width: 768px) {
   .odontograma-container {
     padding: 15px;
@@ -748,6 +827,8 @@
     height: 20px;
     font-size: 0.7em;
   }
+
+
   
   .parte-diente {
     font-size: 0.6em;
@@ -755,6 +836,22 @@
   
   .parte-label {
     font-size: 0.7em;
+  }
+
+  .fila-temporal .diente-circular {
+    width: 24px;
+    height: 24px;
+  }
+
+  .fila-temporal .diente-svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .diente-temporal .diente-numero {
+    width: 16px;
+    height: 16px;
+    font-size: 0.6em;
   }
 }
 
@@ -773,6 +870,23 @@
     height: 18px;
     font-size: 0.6em;
   }
+
+  .diente-circular {
+    width: 40px;
+    height: 40px;
+  }
+
+  .diente-svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .diente-circular .diente-numero {
+    width: 18px;
+    height: 18px;
+    font-size: 0.6em;
+    top: -8px;
+  }
   
   .parte-diente {
     font-size: 0.5em;
@@ -789,6 +903,22 @@
   .condicion-color {
     width: 20px;
     height: 20px;
+  }
+
+  .fila-temporal .diente-circular {
+    width: 20px;
+    height: 20px;
+  }
+
+  .fila-temporal .diente-svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .diente-temporal .diente-numero {
+    width: 14px;
+    height: 14px;
+    font-size: 0.5em;
   }
 }
 
