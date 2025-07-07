@@ -203,6 +203,7 @@ const Odontograma = () => {
   const handleToothPartClick = (numeroDiente, parte) => {
     setSelectedTooth(numeroDiente);
     setSelectedPart(parte);
+    setMessage(null);
   };
 
   const handleConditionChange = (condicion) => {
@@ -215,6 +216,7 @@ const Odontograma = () => {
         }
       }));
       setSelectedCondition(condicion);
+      setMessage(null);
     }
   };
 
@@ -251,10 +253,12 @@ const Odontograma = () => {
     setSelectedTooth(null);
     setSelectedPart(null);
     setSelectedCondition('sano');
+    setMessage(null);
   };
 
   const handleTipoDenticionChange = (tipo) => {
     setTipoDenticion(tipo);
+    setMessage(null);
   };
 
   const handleExportOdontograma = () => {
@@ -405,12 +409,6 @@ const Odontograma = () => {
 
   return (
     <div className="odontograma-container odontograma-vertical">
-      {message && (
-        <div className={`message ${message.includes('Error') ? 'error' : 'success'}`}>
-          {message}
-          <button onClick={() => setMessage(null)} className="message-close">×</button>
-        </div>
-      )}
       <div className="odontograma-header">
         <h1>Odontograma del Paciente</h1>
         {paciente && (
@@ -504,7 +502,10 @@ const Odontograma = () => {
           <h3>Observaciones</h3>
           <textarea
             value={observaciones}
-            onChange={(e) => setObservaciones(e.target.value)}
+            onChange={(e) => {
+              setObservaciones(e.target.value);
+              setMessage(null);
+            }}
             placeholder="Agregar observaciones sobre el odontograma..."
             rows="3"
             className="observaciones-textarea"
@@ -515,6 +516,11 @@ const Odontograma = () => {
       <div className="odontograma-section">
         <div className="acciones-panel">
           <h3>Acciones</h3>
+          {message && (
+            <div className={`message ${message.includes('Error') ? 'error' : 'success'}`}>
+              {message}
+            </div>
+          )}
           <button 
             className="btn-guardar" 
             onClick={handleSaveChanges}
