@@ -163,7 +163,26 @@ const Odontograma = () => {
         if (odontograma.datosDientes) {
           try {
             const datosDientes = JSON.parse(odontograma.datosDientes);
-            setDientes(datosDientes);
+            
+            // Preservar todos los datos guardados, incluyendo dientes temporales
+            const dientesCompletos = {};
+            const todosLosDientes = [
+              ...filaSuperiorDerecha, ...filaSuperiorIzquierda, 
+              ...filaInferiorDerecha, ...filaInferiorIzquierda,
+              ...filaSuperiorDerechaTemporal, ...filaSuperiorIzquierdaTemporal,
+              ...filaInferiorDerechaTemporal, ...filaInferiorIzquierdaTemporal
+            ];
+            
+            // Cargar todos los dientes guardados
+            todosLosDientes.forEach(numero => {
+              if (datosDientes[numero]) {
+                dientesCompletos[numero] = datosDientes[numero];
+              } else {
+                dientesCompletos[numero] = obtenerPartesDiente(numero);
+              }
+            });
+            
+            setDientes(dientesCompletos);
             console.log('Odontograma cargado:', odontograma);
           } catch (parseError) {
             console.error('Error al parsear datos de dientes:', parseError);
@@ -194,9 +213,11 @@ const Odontograma = () => {
       ...filaInferiorDerechaTemporal, ...filaInferiorIzquierdaTemporal
     ];
     
+    // Inicializar todos los dientes
     todosLosDientes.forEach(numero => {
       dientesIniciales[numero] = obtenerPartesDiente(numero);
     });
+    
     setDientes(dientesIniciales);
   };
 
@@ -259,6 +280,24 @@ const Odontograma = () => {
   const handleTipoDenticionChange = (tipo) => {
     setTipoDenticion(tipo);
     setMessage(null);
+    
+    // Preservar datos existentes y solo agregar dientes temporales si es necesario
+    const dientesActuales = { ...dientes };
+    const dientesTemporales = [
+      ...filaSuperiorDerechaTemporal, ...filaSuperiorIzquierdaTemporal,
+      ...filaInferiorDerechaTemporal, ...filaInferiorIzquierdaTemporal
+    ];
+    
+    // Si cambia a temporaria o mixta, agregar dientes temporales si no existen
+    if (tipo === 'temporaria' || tipo === 'mixta') {
+      dientesTemporales.forEach(numero => {
+        if (!dientesActuales[numero]) {
+          dientesActuales[numero] = obtenerPartesDiente(numero);
+        }
+      });
+    }
+    
+    setDientes(dientesActuales);
   };
 
   const handleExportOdontograma = () => {
@@ -463,18 +502,22 @@ const Odontograma = () => {
           <div style={{ width: 40 }} />
           {filaSuperiorIzquierda.map(num => renderTooth(num))}
         </div>
-        {/* Fila superior temporal */}
-        <div className="fila-dientes fila-temporal">
-          {filaSuperiorDerechaTemporal.map(num => renderTooth(num))}
-          <div style={{ width: 40 }} />
-          {filaSuperiorIzquierdaTemporal.map(num => renderTooth(num))}
-        </div>
-        {/* Fila inferior temporal */}
-        <div className="fila-dientes fila-temporal">
-          {filaInferiorDerechaTemporal.map(num => renderTooth(num))}
-          <div style={{ width: 40 }} />
-          {filaInferiorIzquierdaTemporal.map(num => renderTooth(num))}
-        </div>
+        {/* Fila superior temporal - solo mostrar si es temporaria o mixta */}
+        {(tipoDenticion === 'temporaria' || tipoDenticion === 'mixta') && (
+          <div className="fila-dientes fila-temporal">
+            {filaSuperiorDerechaTemporal.map(num => renderTooth(num))}
+            <div style={{ width: 40 }} />
+            {filaSuperiorIzquierdaTemporal.map(num => renderTooth(num))}
+          </div>
+        )}
+        {/* Fila inferior temporal - solo mostrar si es temporaria o mixta */}
+        {(tipoDenticion === 'temporaria' || tipoDenticion === 'mixta') && (
+          <div className="fila-dientes fila-temporal">
+            {filaInferiorDerechaTemporal.map(num => renderTooth(num))}
+            <div style={{ width: 40 }} />
+            {filaInferiorIzquierdaTemporal.map(num => renderTooth(num))}
+          </div>
+        )}
         {/* Fila inferior permanente */}
         <div className="fila-dientes">
           {filaInferiorDerecha.map(num => renderTooth(num))}
