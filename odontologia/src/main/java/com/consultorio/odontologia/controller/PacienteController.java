@@ -12,10 +12,6 @@ import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/pacientes")
-@CrossOrigin(origins = "http://localhost:5173", 
-             methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
-             allowedHeaders = "*",
-             allowCredentials = "true")
 public class PacienteController {
     private static final Logger logger = LoggerFactory.getLogger(PacienteController.class);
 

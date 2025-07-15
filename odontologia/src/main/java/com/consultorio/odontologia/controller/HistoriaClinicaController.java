@@ -17,10 +17,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/historia-clinica")
-@CrossOrigin(origins = {"http://localhost:5173"}, 
-             methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
-             allowedHeaders = "*",
-             allowCredentials = "true")
 public class HistoriaClinicaController {
 
     @Autowired
