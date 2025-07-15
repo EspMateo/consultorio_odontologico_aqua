@@ -1,0 +1,49 @@
+:root {
+    --color-primary: #A7CDBD;    /* Soft mint green */
+    --color-secondary: #426B69;  /* Dark teal */
+    --color-accent: #FFEAEE;     /* Soft pink */
+    --color-tertiary: #A37A74;   /* Dusty rose */
+    --color-dark: #664E4C;       /* Deep brown */
+}
+
+/* Usage examples */
+.primary-bg {
+    background-color: var(--color-primary);
+}
+
+.secondary-bg {
+    background-color: var(--color-secondary);
+}
+
+.accent-bg {
+    background-color: var(--color-accent);
+}
+
+.tertiary-bg {
+    background-color: var(--color-tertiary);
+}
+
+.dark-bg {
+    background-color: var(--color-dark);
+}
+
+/* Text colors */
+.primary-text {
+    color: var(--color-primary);
+}
+
+.secondary-text {
+    color: var(--color-secondary);
+}
+
+.accent-text {
+    color: var(--color-accent);
+}
+
+.tertiary-text {
+    color: var(--color-tertiary);
+}
+
+.dark-text {
+    color: var(--color-dark);
+} 

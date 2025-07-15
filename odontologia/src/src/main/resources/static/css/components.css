@@ -1,0 +1,35 @@
+/* Main background */
+body {
+    background-color: #A7CDBD;
+}
+
+/* History button styles */
+.btn-historia-clinica {
+    background-color: #426B69;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.btn-historia-clinica:hover {
+    opacity: 0.9;
+}
+
+/* Calendar buttons styles */
+.calendar-button {
+    background-color: #FFEAEE;
+    color: #664E4C;
+    border: 1px solid #A37A74;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.calendar-button:hover {
+    background-color: #A37A74;
+    color: #FFEAEE;
+} 
