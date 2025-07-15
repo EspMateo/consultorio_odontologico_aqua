@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:8080/api';
+export const API_URL = 'consultorioodontologicoaqua-production-a166.up.railway.app';
 
 export const ENDPOINTS = {
   REGISTER: `${API_URL}/usuarios/register`,
