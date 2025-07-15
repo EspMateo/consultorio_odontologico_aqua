@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = {"http://localhost:5173"}, 
+@CrossOrigin(origins = {"http://localhost:5173","https://consultorio-odontologico-aqua.vercel.app"},
              methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS},
              allowedHeaders = "*",
              allowCredentials = "true")
