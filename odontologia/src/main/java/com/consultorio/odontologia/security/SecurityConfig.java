@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/historia-clinica/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/historia-clinica/paciente/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/historia-clinica/**").permitAll()
+                        .requestMatchers("/", "/error").permitAll()
                         .requestMatchers("/api/odontogramas/**").permitAll()
                         .anyRequest().authenticated());
 
