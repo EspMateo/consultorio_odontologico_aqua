@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { buildApiUrl } from '../../config';
 import '../styles/Login.css';
 import Loader from '../Loader';
 import logoAqua from '../../assets/logo-aqua.png';
@@ -15,7 +16,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8080/api/usuarios/login', {
+      const res = await axios.post(buildApiUrl('usuarios/login'), {
         email,
         password,
       });

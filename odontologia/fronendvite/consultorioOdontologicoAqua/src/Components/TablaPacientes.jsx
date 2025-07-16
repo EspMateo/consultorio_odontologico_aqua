@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { buildApiUrl } from '../config';
 import MessageDisplay from './MessageDisplay';
 import './styles/TablaPacientes.css';
 
@@ -20,7 +21,7 @@ function TablaPacientes({ usuarioId }) {
   const fetchPacientes = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8080/api/pacientes', {
+      const response = await axios.get(buildApiUrl('pacientes'), {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -38,7 +39,7 @@ function TablaPacientes({ usuarioId }) {
   const handleSearch = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8080/api/pacientes/buscar', {
+      const response = await axios.get(buildApiUrl('pacientes/buscar'), {
         params: {
           nombre: searchTerm || null,
           apellido: searchTerm || null,
@@ -71,7 +72,7 @@ function TablaPacientes({ usuarioId }) {
     if (confirmDelete) {
       setDeletingId(id);
       try {
-        await axios.delete(`http://localhost:8080/api/pacientes/${id}`, {
+        await axios.delete(buildApiUrl(`pacientes/${id}`), {
           headers: {
             'Content-Type': 'application/json'
           }

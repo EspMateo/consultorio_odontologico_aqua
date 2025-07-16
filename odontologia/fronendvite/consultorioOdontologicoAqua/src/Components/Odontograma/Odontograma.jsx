@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { buildApiUrl } from '../../config';
 import './Odontograma.css';
 
 const Odontograma = () => {
   const { id } = useParams();
   const location = useLocation();
-  const navigate = useNavigate();
   
   // Estados principales
   const [paciente, setPaciente] = useState(null);
@@ -124,7 +124,7 @@ const Odontograma = () => {
         if (location.state?.paciente) {
           pacienteData = location.state.paciente;
         } else {
-          const response = await axios.get(`http://localhost:8080/api/pacientes/${id}`);
+          const response = await axios.get(buildApiUrl(`pacientes/${id}`));
           pacienteData = response.data;
         }
         
@@ -151,7 +151,7 @@ const Odontograma = () => {
   // Función para cargar el odontograma más reciente
   const cargarOdontogramaMasReciente = async (pacienteId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/odontogramas/paciente/${pacienteId}/reciente`);
+      const response = await axios.get(buildApiUrl(`odontogramas/paciente/${pacienteId}/reciente`));
       const odontograma = response.data;
       
       if (odontograma) {
@@ -256,7 +256,7 @@ const Odontograma = () => {
         observaciones: observaciones || 'Odontograma actualizado'
       };
 
-      const response = await axios.post('http://localhost:8080/api/odontogramas', odontogramaData);
+      const response = await axios.post(buildApiUrl('odontogramas'), odontogramaData);
       
       setMessage('Odontograma guardado exitosamente');
       setTimeout(() => setMessage(null), 3000);
@@ -379,7 +379,7 @@ const Odontograma = () => {
         <div className={`diente-numero ${esTemporal ? 'numero-temporal' : ''}`}>{numero}</div>
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className={`diente-svg ${esTemporal ? 'svg-temporal' : ''}`}>
           {/* Sectores exteriores (siempre 4) */}
-          {sectores.map((sector, idx) => (
+          {sectores.map((sector) => (
             <path
               key={sector.key}
               d={describeArc(center, center, radius, sector.angle[0], sector.angle[1])}
@@ -400,7 +400,7 @@ const Odontograma = () => {
             />
           )}
           {/* Letras */}
-          {sectores.map((sector, idx) => {
+          {sectores.map((sector) => {
             // Calcular ángulo medio para posicionar la letra
             const angle = (sector.angle[0] + sector.angle[1]) / 2;
             const rad = (angle - 90) * Math.PI / 180.0;

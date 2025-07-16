@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { buildApiUrl } from '../config';
 import MessageDisplay from './MessageDisplay';
 import './styles/HistoriaClinica.css';
 
@@ -178,7 +179,7 @@ const HistoriaClinica = () => {
   const fetchPaciente = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8080/api/pacientes/${id}`);
+      const response = await axios.get(buildApiUrl(`pacientes/${id}`));
       setPaciente(response.data);
       fetchHistoriaClinica(response.data.id);
     } catch (error) {
@@ -191,7 +192,7 @@ const HistoriaClinica = () => {
 
   const fetchHistoriaClinica = async (pacienteId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/historia-clinica/paciente/${pacienteId}`);
+      const response = await axios.get(buildApiUrl(`historia-clinica/paciente/${pacienteId}`));
       if (response.data) {
         setHistoriaClinicaId(response.data.id);
         setFechaUltimaActualizacion(response.data.fechaActualizacion || response.data.fechaCreacion);
@@ -567,9 +568,9 @@ const HistoriaClinica = () => {
     try {
       let response;
       if (historiaClinicaId) {
-        response = await axios.put(`http://localhost:8080/api/historia-clinica/${historiaClinicaId}`, historiaClinicaData);
+        response = await axios.put(buildApiUrl(`historia-clinica/${historiaClinicaId}`), historiaClinicaData);
       } else {
-        response = await axios.post('http://localhost:8080/api/historia-clinica', historiaClinicaData);
+        response = await axios.post(buildApiUrl('historia-clinica'), historiaClinicaData);
       }
       
       showNotification('success', '¡Historia clínica guardada con éxito!');

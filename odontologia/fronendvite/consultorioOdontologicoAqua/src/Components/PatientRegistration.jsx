@@ -3,6 +3,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import axios from 'axios';
+import { buildApiUrl } from '../config';
 import './PatientRegistration.css';
 
 const steps = [
@@ -91,7 +92,7 @@ const PatientRegistration = () => {
 
   const fetchPacientes = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/pacientes');
+      const response = await axios.get(buildApiUrl('pacientes'));
       console.log('Respuesta del servidor:', response);
       console.log('Tipo de response.data:', typeof response.data);
       console.log('Es array?', Array.isArray(response.data));
@@ -114,7 +115,7 @@ const PatientRegistration = () => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/citas');
+      const response = await axios.get(buildApiUrl('citas'));
       const formattedEvents = response.data.map(cita => ({
         id: cita.id,
         title: `${cita.paciente.name} ${cita.paciente.lastname} - CI: ${cita.paciente.ci}`,
@@ -157,7 +158,7 @@ const PatientRegistration = () => {
     setError(null);
     
     try {
-      const response = await axios.post('http://localhost:8080/api/pacientes/registro', formData);
+      const response = await axios.post(buildApiUrl('pacientes/registro'), formData);
       
       if (response.data) {
         // Limpiar el formulario después de un registro exitoso
@@ -205,7 +206,7 @@ const PatientRegistration = () => {
         usuarioId: parseInt(userId)
       };
 
-      await axios.post('http://localhost:8080/api/citas', citaData, {
+      await axios.post(buildApiUrl('citas'), citaData, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -251,7 +252,7 @@ const PatientRegistration = () => {
     if (!citaToDelete) return;
     
     try {
-      await axios.delete(`http://localhost:8080/api/citas/${citaToDelete.id}`);
+              await axios.delete(buildApiUrl(`citas/${citaToDelete.id}`));
       
       // Actualizar la lista de eventos
       setEvents(prevEvents => prevEvents.filter(event => event.id !== citaToDelete.id));

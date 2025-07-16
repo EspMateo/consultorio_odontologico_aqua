@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { buildApiUrl } from '../config';
 import MessageDisplay from './MessageDisplay';
 import './styles/EditarPaciente.css';
 
@@ -46,7 +47,7 @@ const EditarPaciente = () => {
   const fetchPaciente = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8080/api/pacientes/${id}`);
+      const response = await axios.get(buildApiUrl(`pacientes/${id}`));
       const paciente = response.data;
       setFormData({
         nombre: paciente.name || '',
@@ -84,7 +85,7 @@ const EditarPaciente = () => {
     setDisplayMessage(null);
     
     try {
-      await axios.put(`http://localhost:8080/api/pacientes/${id}`, formData);
+      await axios.put(buildApiUrl(`pacientes/${id}`), formData);
       setDisplayMessage('Paciente actualizado exitosamente.');
       setMessageType('success');
       setTimeout(() => {
