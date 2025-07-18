@@ -573,6 +573,7 @@ const Odontograma = () => {
           />
         </div>
       </div>
+
       {/* Sección: Acciones */}
       <div className="odontograma-section">
         <div className="acciones-panel">

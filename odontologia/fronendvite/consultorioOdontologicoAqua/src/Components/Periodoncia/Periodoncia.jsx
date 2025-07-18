@@ -6,6 +6,7 @@ const Periodoncia = () => {
   const [fechaRegistro, setFechaRegistro] = useState('');
   const [tipoFicha, setTipoFicha] = useState('');
   const [dientesSeleccionados, setDientesSeleccionados] = useState({});
+  const [indiceSarro, setIndiceSarro] = useState({});
 
   // Calcular porcentaje de placa
   const calcularPorcentajePlaca = () => {
@@ -50,6 +51,42 @@ const Periodoncia = () => {
   const getDienteClass = (numeroDiente, sector) => {
     const key = `${numeroDiente}-${sector}`;
     return dientesSeleccionados[key] ? 'selected' : '';
+  };
+
+  // Funciones para el índice de sarro
+  const handleSarroClick = (numeroDiente, sector) => {
+    setIndiceSarro(prev => ({
+      ...prev,
+      [numeroDiente]: {
+        ...prev[numeroDiente],
+        [sector]: !prev[numeroDiente]?.[sector]
+      }
+    }));
+  };
+
+  const getSarroClass = (numeroDiente, sector) => {
+    return indiceSarro[numeroDiente]?.[sector] ? 'selected' : '';
+  };
+
+  const calcularPorcentajeSarro = () => {
+    const todosLosDientes = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28, 48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
+    
+    let sectoresConSarro = 0;
+    let totalSectores = 0;
+    
+    todosLosDientes.forEach(numero => {
+      const dienteSarro = indiceSarro[numero];
+      if (dienteSarro) {
+        Object.values(dienteSarro).forEach(tieneSarro => {
+          totalSectores++;
+          if (tieneSarro) sectoresConSarro++;
+        });
+      } else {
+        totalSectores += 2; // 2 sectores por diente (superior e inferior)
+      }
+    });
+    
+    return totalSectores > 0 ? Math.round((sectoresConSarro / totalSectores) * 100) : 0;
   };
 
   return (
@@ -137,7 +174,6 @@ const Periodoncia = () => {
               <div className="fila-dientes-superior">
                 {[18, 17, 16, 15, 14, 13, 12, 11].map(numero => (
                   <div key={numero} className="diente-cubo">
-                    <div className="diente-numero">{numero}</div>
                     <div className="diente-cubo-grid">
                       <button 
                         className={`cubo-cara cubo-superior-izquierdo ${getDienteClass(numero, 'superior-izquierdo')}`}
@@ -156,11 +192,11 @@ const Periodoncia = () => {
                         onClick={() => handleDienteClick(numero, 'inferior-derecho')}
                       ></button>
                     </div>
+                    <div className="diente-numero-placa">{numero}</div>
                   </div>
                 ))}
                 {[21, 22, 23, 24, 25, 26, 27, 28].map(numero => (
                   <div key={numero} className="diente-cubo">
-                    <div className="diente-numero">{numero}</div>
                     <div className="diente-cubo-grid">
                       <button 
                         className={`cubo-cara cubo-superior-izquierdo ${getDienteClass(numero, 'superior-izquierdo')}`}
@@ -179,6 +215,7 @@ const Periodoncia = () => {
                         onClick={() => handleDienteClick(numero, 'inferior-derecho')}
                       ></button>
                     </div>
+                    <div className="diente-numero-placa">{numero}</div>
                   </div>
                 ))}
               </div>
@@ -187,7 +224,6 @@ const Periodoncia = () => {
               <div className="fila-dientes-inferior">
                 {[48, 47, 46, 45, 44, 43, 42, 41].map(numero => (
                   <div key={numero} className="diente-cubo">
-                    <div className="diente-numero">{numero}</div>
                     <div className="diente-cubo-grid">
                       <button 
                         className={`cubo-cara cubo-superior-izquierdo ${getDienteClass(numero, 'superior-izquierdo')}`}
@@ -206,11 +242,11 @@ const Periodoncia = () => {
                         onClick={() => handleDienteClick(numero, 'inferior-derecho')}
                       ></button>
                     </div>
+                    <div className="diente-numero-placa">{numero}</div>
                   </div>
                 ))}
                 {[31, 32, 33, 34, 35, 36, 37, 38].map(numero => (
                   <div key={numero} className="diente-cubo">
-                    <div className="diente-numero">{numero}</div>
                     <div className="diente-cubo-grid">
                       <button 
                         className={`cubo-cara cubo-superior-izquierdo ${getDienteClass(numero, 'superior-izquierdo')}`}
@@ -229,6 +265,7 @@ const Periodoncia = () => {
                         onClick={() => handleDienteClick(numero, 'inferior-derecho')}
                       ></button>
                     </div>
+                    <div className="diente-numero-placa">{numero}</div>
                   </div>
                 ))}
               </div>
@@ -236,12 +273,89 @@ const Periodoncia = () => {
             
             <div className="indice-placa-info">
               <div className="porcentaje-item">
-                <span className="porcentaje-label">Índice de placa por sectores:</span>
-                <span className="porcentaje-valor">{calcularPorcentajePlaca()}%</span>
-              </div>
-              <div className="porcentaje-item">
                 <span className="porcentaje-label">Índice de placa por dientes:</span>
                 <span className="porcentaje-valor">{calcularPorcentajeTotal()}%</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Sección: Índice de Sarro */}
+          <div className="indice-sarro-section">
+            <h3>Índice de Sarro</h3>
+            <div className="odontograma-sarro">
+              {/* Fila superior - dientes 18-11 y 21-28 en una sola línea */}
+              <div className="fila-dientes-superior">
+                {[18, 17, 16, 15, 14, 13, 12, 11].map(numero => (
+                  <div key={numero} className="diente-sarro-cubo">
+                    <div className="diente-sarro-grid">
+                      <button 
+                        className={`sarro-cara sarro-superior ${getSarroClass(numero, 'superior')}`}
+                        onClick={() => handleSarroClick(numero, 'superior')}
+                      ></button>
+                      <button 
+                        className={`sarro-cara sarro-inferior ${getSarroClass(numero, 'inferior')}`}
+                        onClick={() => handleSarroClick(numero, 'inferior')}
+                      ></button>
+                    </div>
+                    <div className="diente-numero">{numero}</div>
+                  </div>
+                ))}
+                {[21, 22, 23, 24, 25, 26, 27, 28].map(numero => (
+                  <div key={numero} className="diente-sarro-cubo">
+                    <div className="diente-sarro-grid">
+                      <button 
+                        className={`sarro-cara sarro-superior ${getSarroClass(numero, 'superior')}`}
+                        onClick={() => handleSarroClick(numero, 'superior')}
+                      ></button>
+                      <button 
+                        className={`sarro-cara sarro-inferior ${getSarroClass(numero, 'inferior')}`}
+                        onClick={() => handleSarroClick(numero, 'inferior')}
+                      ></button>
+                    </div>
+                    <div className="diente-numero">{numero}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Fila inferior - dientes 48-41 y 31-38 en una sola línea */}
+              <div className="fila-dientes-inferior">
+                {[48, 47, 46, 45, 44, 43, 42, 41].map(numero => (
+                  <div key={numero} className="diente-sarro-cubo">
+                    <div className="diente-sarro-grid">
+                      <button 
+                        className={`sarro-cara sarro-superior ${getSarroClass(numero, 'superior')}`}
+                        onClick={() => handleSarroClick(numero, 'superior')}
+                      ></button>
+                      <button 
+                        className={`sarro-cara sarro-inferior ${getSarroClass(numero, 'inferior')}`}
+                        onClick={() => handleSarroClick(numero, 'inferior')}
+                      ></button>
+                    </div>
+                    <div className="diente-numero">{numero}</div>
+                  </div>
+                ))}
+                {[31, 32, 33, 34, 35, 36, 37, 38].map(numero => (
+                  <div key={numero} className="diente-sarro-cubo">
+                    <div className="diente-sarro-grid">
+                      <button 
+                        className={`sarro-cara sarro-superior ${getSarroClass(numero, 'superior')}`}
+                        onClick={() => handleSarroClick(numero, 'superior')}
+                      ></button>
+                      <button 
+                        className={`sarro-cara sarro-inferior ${getSarroClass(numero, 'inferior')}`}
+                        onClick={() => handleSarroClick(numero, 'inferior')}
+                      ></button>
+                    </div>
+                    <div className="diente-numero">{numero}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="indice-sarro-info">
+              <div className="porcentaje-item">
+                <span className="porcentaje-label">Índice de sarro:</span>
+                <span className="porcentaje-valor">{calcularPorcentajeSarro()}%</span>
               </div>
             </div>
           </div>

@@ -696,7 +696,7 @@
     width: 18px;
     height: 18px;
     font-size: 0.6em;
-    top: -8px;
+    bottom: -8px;
   }
   
   .parte-diente {
@@ -1115,3 +1115,4 @@
   top: 18px;
   right: 18px;
 } 
+

@@ -216,21 +216,7 @@
   transform: scale(1.05);
 }
 
-.diente-cubo .diente-numero {
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #666;
-  font-size: 0.7em;
-  font-weight: bold;
-  z-index: 10;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  padding: 1px 3px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
+
 
 .diente-cubo-grid {
   width: 100%;
@@ -243,6 +229,22 @@
   background: #fff;
   position: relative;
   overflow: hidden;
+}
+
+.diente-numero-placa {
+  position: absolute;
+  bottom: -23px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #666;
+  font-size: 0.7em;
+  font-weight: bold;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 1px 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .diente-cubo-grid::before {
@@ -399,9 +401,10 @@
     height: 35px;
   }
 
-  .diente-cubo .diente-numero {
+  .diente-numero-placa {
     font-size: 0.6em;
     padding: 1px 2px;
+    bottom: -12px;
   }
 
   .porcentaje-item {
@@ -439,9 +442,10 @@
     height: 25px;
   }
 
-  .diente-cubo .diente-numero {
+  .diente-numero-placa {
     font-size: 0.5em;
     padding: 1px 2px;
+    bottom: -10px;
   }
 
   .porcentaje-item {
@@ -453,4 +457,167 @@
     font-size: 1.1em;
     padding: 4px 8px;
   }
-} 
+}
+
+/* Estilos para el índice de sarro */
+.indice-sarro-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #eee;
+}
+
+.indice-sarro-section h3 {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.3em;
+  font-weight: 500;
+  text-align: center;
+}
+
+.odontograma-sarro {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+}
+
+.diente-sarro-cubo {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  margin: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.diente-sarro-cubo:hover {
+  transform: scale(1.05);
+}
+
+.diente-sarro-cubo .diente-numero {
+  position: absolute;
+  bottom: -23px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #666;
+  font-size: 0.7em;
+  font-weight: bold;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 1px 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.diente-sarro-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  border: 1px solid #222;
+  border-radius: 0;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.diente-sarro-grid::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #222;
+  z-index: 1;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.sarro-vacio {
+  background: transparent;
+}
+
+.sarro-cara {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  min-width: 0;
+  min-height: 0;
+  z-index: 2;
+  user-select: none;
+  background: transparent;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sarro-cara:hover {
+  background: rgba(255, 193, 7, 0.2);
+}
+
+.sarro-cara.selected {
+  background: #ffc107;
+  opacity: 0.8;
+}
+
+.sarro-superior {
+  grid-row: 1;
+  border-bottom: 1px solid #222;
+}
+
+.sarro-inferior {
+  grid-row: 2;
+}
+
+.indice-sarro-info {
+  margin-top: 20px;
+  text-align: center;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Responsive Design para índice de sarro */
+@media (max-width: 768px) {
+  .odontograma-sarro {
+    padding: 20px;
+  }
+  
+  .diente-sarro-cubo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .diente-sarro-cubo .diente-numero {
+    font-size: 0.6em;
+    bottom: -12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .diente-sarro-cubo {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .diente-sarro-cubo .diente-numero {
+    font-size: 0.5em;
+    bottom: -10px;
+  }
+}
