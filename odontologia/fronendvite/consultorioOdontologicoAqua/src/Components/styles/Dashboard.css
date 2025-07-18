@@ -2,8 +2,9 @@
   min-height: 100vh;
   background-color: #f5f7fa;
   display: flex;
-width: 1100px;
   flex-direction: column;
+  width: 100%;
+  max-width: 100%;
 }
 
 .dashboard-header {
@@ -106,6 +107,7 @@ width: 1100px;
   width: 100%;
   box-sizing: border-box;
   background-color: #f5f7fa;
+  max-width: 100%;
 }
 
 .content-section {

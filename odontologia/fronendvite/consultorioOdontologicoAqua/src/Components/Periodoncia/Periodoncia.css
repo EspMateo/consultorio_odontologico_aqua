@@ -1,0 +1,456 @@
+.periodoncia-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+}
+
+.periodoncia-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px;
+  border-radius: 15px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.periodoncia-header h1 {
+  margin: 0;
+  font-size: 2.5em;
+  font-weight: 300;
+}
+
+.periodoncia-content {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.form-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  align-items: flex-end;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1em;
+}
+
+.form-select,
+.form-input {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+  background: white;
+}
+
+.form-select:focus,
+.form-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.tipo-ficha-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #eee;
+}
+
+.tipo-ficha-section h3 {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.3em;
+  font-weight: 500;
+  text-align: center;
+}
+
+.tipo-ficha-options {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.tipo-ficha-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  min-width: 180px;
+  position: relative;
+}
+
+.tipo-ficha-option:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.radio-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radio-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  background: white;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tipo-ficha-option:hover .radio-custom {
+  border-color: #667eea;
+}
+
+.radio-input:checked + .radio-custom {
+  border-color: #667eea;
+  background: #667eea;
+}
+
+.radio-input:checked + .radio-custom::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+.option-text {
+  font-weight: 600;
+  color: #333;
+  font-size: 1em;
+  margin-left: 8px;
+}
+
+.tipo-ficha-option.selected {
+  background: #e3f2fd;
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+/* Estilos para el índice de placa */
+.indice-placa-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #eee;
+}
+
+.indice-placa-section h3 {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.3em;
+  font-weight: 500;
+  text-align: center;
+}
+
+.odontograma-permanente {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+}
+
+.fila-dientes-superior,
+.fila-dientes-inferior {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fila-dientes-superior {
+  margin-bottom: 40px;
+}
+
+.diente-cubo {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  margin: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.diente-cubo:hover {
+  transform: scale(1.05);
+}
+
+.diente-cubo .diente-numero {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #666;
+  font-size: 0.7em;
+  font-weight: bold;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 1px 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.diente-cubo-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  border: 1px solid #222;
+  border-radius: 0;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.diente-cubo-grid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 45%, #222 45%, #222 55%, transparent 55%),
+              linear-gradient(-45deg, transparent 45%, #222 45%, #222 55%, transparent 55%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cubo-vacio {
+  background: transparent;
+}
+
+.cubo-cara {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  min-width: 0;
+  min-height: 0;
+  z-index: 2;
+  user-select: none;
+  background: transparent;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cubo-cara:hover {
+  background: rgba(102, 126, 234, 0.2);
+}
+
+.cubo-cara.selected {
+  background: #667eea;
+  opacity: 0.8;
+}
+
+.cubo-superior-izquierdo {
+  grid-column: 1;
+  grid-row: 1;
+  border-right: 1px solid #222;
+  border-bottom: 1px solid #222;
+}
+
+.cubo-superior-derecho {
+  grid-column: 2;
+  grid-row: 1;
+  border-bottom: 1px solid #222;
+}
+
+.cubo-inferior-izquierdo {
+  grid-column: 1;
+  grid-row: 2;
+  border-right: 1px solid #222;
+}
+
+.cubo-inferior-derecho {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.indice-placa-info {
+  margin-top: 20px;
+  text-align: center;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.porcentaje-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 25px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  min-width: 200px;
+}
+
+.porcentaje-label {
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #666;
+  text-align: center;
+}
+
+.porcentaje-valor {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #667eea;
+  background: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 2px solid #667eea;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .periodoncia-container {
+    padding: 15px;
+  }
+  
+  .periodoncia-header {
+    padding: 20px;
+  }
+  
+  .periodoncia-header h1 {
+    font-size: 2em;
+  }
+  
+  .periodoncia-content {
+    padding: 20px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tipo-ficha-options {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .tipo-ficha-option {
+    min-width: auto;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .odontograma-permanente {
+    padding: 15px;
+  }
+
+  .diente-cubo {
+    width: 35px;
+    height: 35px;
+  }
+
+  .diente-cubo .diente-numero {
+    font-size: 0.6em;
+    padding: 1px 2px;
+  }
+
+  .porcentaje-item {
+    min-width: 150px;
+    padding: 12px 20px;
+  }
+
+  .porcentaje-valor {
+    font-size: 1.3em;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .periodoncia-header h1 {
+    font-size: 1.5em;
+  }
+  
+  .tipo-ficha-section h3 {
+    font-size: 1.1em;
+  }
+
+  .option-text {
+    font-size: 0.9em;
+  }
+
+  .form-select,
+  .form-input {
+    padding: 10px 12px;
+    font-size: 0.9em;
+  }
+
+  .diente-cubo {
+    width: 25px;
+    height: 25px;
+  }
+
+  .diente-cubo .diente-numero {
+    font-size: 0.5em;
+    padding: 1px 2px;
+  }
+
+  .porcentaje-item {
+    min-width: 120px;
+    padding: 10px 15px;
+  }
+
+  .porcentaje-valor {
+    font-size: 1.1em;
+    padding: 4px 8px;
+  }
+} 
