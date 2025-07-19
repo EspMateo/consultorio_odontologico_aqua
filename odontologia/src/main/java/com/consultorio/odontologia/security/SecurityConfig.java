@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/historia-clinica/**").permitAll()
                         .requestMatchers("/", "/error").permitAll()
                         .requestMatchers("/api/odontogramas/**").permitAll()
+                        .requestMatchers("/api/periodoncia/**").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();
