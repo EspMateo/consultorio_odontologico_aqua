@@ -35,6 +35,22 @@ public class Paciente {
     private String dentalHistory;
     private String releaseSummary;
 
+    // Relaciones con eliminación en cascada
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<HistoriaClinica> historiasClinicas;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Cita> citas;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Odontograma> odontogramas;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Periodoncia> periodoncias;
 
     public Long getId() {
         return id;
@@ -131,6 +147,5 @@ public class Paciente {
     public void setReleaseSummary(String releaseSummary) {
         this.releaseSummary = releaseSummary;
     }
-
 
 }

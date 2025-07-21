@@ -1,5 +1,6 @@
 package com.consultorio.odontologia.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Map;
@@ -14,6 +15,7 @@ public class Periodoncia {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paciente_id", nullable = false)
+    @JsonBackReference
     private Paciente paciente;
     
     @Column(name = "fecha_registro", nullable = false)

@@ -6,6 +6,19 @@
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   font-family: 'Segoe UI', Arial, sans-serif;
+  height: fit-content;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 400px;
 }
 
 .register-title {
@@ -20,6 +33,13 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  flex: 1;
+}
+
+.input-group {
+  position: relative;
+  min-height: 48px;
+  margin-bottom: 8px;
 }
 
 .register-input {
@@ -28,12 +48,70 @@
   border-radius: 8px;
   font-size: 1rem;
   transition: border 0.2s, box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
 }
 
 .register-input:focus {
   border-color: #1e88e5;
   outline: none;
   box-shadow: 0 0 0 2px #90caf9;
+}
+
+.register-input.error {
+  border-color: #f44336;
+  box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2);
+}
+
+.checking-email {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+
+.email-error {
+  color: #f44336;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: rgba(244, 67, 54, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+.password-container {
+  position: relative;
+  min-height: 48px;
+  margin-bottom: 8px;
+}
+
+.password-error {
+  color: #f44336;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  text-align: center;
+  background: rgba(244, 67, 54, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(244, 67, 54, 0.2);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
 }
 
 .register-btn {
@@ -46,11 +124,24 @@
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
+  height: 48px;
+  margin-top: 16px;
 }
 
-.register-btn:hover {
+.register-btn:hover:not(:disabled) {
   background: linear-gradient(90deg, #1565c0 0%, #1e88e5 100%);
   transform: translateY(-2px) scale(1.03);
+}
+
+.register-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.register-btn.loading {
+  background: #4caf50;
+  cursor: not-allowed;
 }
 
 .login-link {

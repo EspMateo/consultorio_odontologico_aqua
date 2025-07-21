@@ -242,7 +242,7 @@ const Periodoncia = () => {
   };
 
   const handleVolver = () => {
-    navigate('/');
+    navigate('/dashboard');
   };
 
   const renderDienteCubo = (numero) => (

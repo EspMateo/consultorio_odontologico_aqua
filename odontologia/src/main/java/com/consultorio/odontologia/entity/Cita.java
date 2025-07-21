@@ -1,5 +1,6 @@
 package com.consultorio.odontologia.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Cita {
 
     @ManyToOne
     @JoinColumn(name = "paciente_id", nullable = false)
+    @JsonBackReference
     private Paciente paciente;
 
     @Column(nullable = false)

@@ -203,7 +203,7 @@ const HistoriaClinica = () => {
     }
   };
 
- const loadHistoriaClinicaData = (data) => {
+  const loadHistoriaClinicaData = (data) => {
   // Cargar campos de texto y numéricos
   updateMultipleFields({
     motivoConsulta: data.motivoConsulta || '',

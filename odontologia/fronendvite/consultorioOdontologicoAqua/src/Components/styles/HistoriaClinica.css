@@ -720,3 +720,90 @@
     margin-right: 0;
   }
 } 
+
+/* Selector de historias clínicas */
+.historia-selector {
+  position: relative;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.historia-selector-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.historia-selector-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.historia-selector-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+}
+
+.historia-selector-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.historia-selector-item:last-child {
+  border-bottom: none;
+}
+
+.historia-selector-item:hover {
+  background-color: #f9fafb;
+}
+
+.historia-selector-item span:first-child {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.historia-fecha {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Responsive para el selector */
+@media (max-width: 768px) {
+  .historia-selector {
+    width: 100%;
+  }
+  
+  .historia-selector-dropdown {
+    width: 100%;
+    left: 0;
+  }
+  
+  .historia-selector-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+} 

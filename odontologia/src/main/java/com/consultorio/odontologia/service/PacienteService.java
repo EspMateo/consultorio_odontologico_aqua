@@ -89,11 +89,8 @@ public class PacienteService {
                     return new RuntimeException("Paciente no encontrado");
                 });
 
-
-
-
-            logger.info("Eliminando paciente con ID: {}", id);
-            pacienteRepository.deleteById(id);
+            logger.info("Eliminando paciente con ID: {} y todas sus referencias relacionadas", id);
+            pacienteRepository.delete(paciente);
             logger.info("Paciente eliminado exitosamente con ID: {}", id);
         } catch (Exception e) {
             logger.error("Error al eliminar paciente con ID: {} - Error: {}", id, e.getMessage());

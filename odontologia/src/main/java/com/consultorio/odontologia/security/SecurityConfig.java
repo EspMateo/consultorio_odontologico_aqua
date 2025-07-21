@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/usuarios/login", "/api/usuarios/register").permitAll()
+                        .requestMatchers("/api/usuarios/login", "/api/usuarios/register", "/api/usuarios/check-email/**").permitAll()
                         .requestMatchers("/api/pacientes/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/citas/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/citas/**").permitAll()
@@ -51,11 +51,20 @@ public class SecurityConfig {
         
         configuration.setAllowedOrigins(Arrays.asList(
             "http://localhost:5173",
+            "http://localhost:3000",
             "https://consultorio-odontologico-aqua.vercel.app"
         ));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
-        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList(
+            "Authorization", 
+            "Content-Type", 
+            "X-Requested-With",
+            "Accept",
+            "Origin",
+            "Access-Control-Request-Method",
+            "Access-Control-Request-Headers"
+        ));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         

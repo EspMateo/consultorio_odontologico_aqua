@@ -1,5 +1,6 @@
 package com.consultorio.odontologia.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ public class Odontograma {
     
     @ManyToOne
     @JoinColumn(name = "paciente_id")
+    @JsonBackReference
     private Paciente paciente;
     
     @Column(name = "fecha_creacion")
