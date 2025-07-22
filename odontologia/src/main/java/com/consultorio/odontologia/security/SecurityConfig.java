@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/error").permitAll()
                         .requestMatchers("/api/odontogramas/**").permitAll()
                         .requestMatchers("/api/periodoncia/**").permitAll()
+                        .requestMatchers("/api/periodontograma/**").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();
