@@ -114,7 +114,6 @@ const HistoriaClinica = () => {
   
   // Estados booleanos usando hook personalizado
   const [consumeDrogas, setConsumeDrogas] = useBooleanState();
-  const [consumeBebidas, setConsumeBebidas] = useBooleanState();
   const [higieneProtesica, setHigieneProtesica] = useBooleanState();
   const [usaHiloDental, setUsaHiloDental] = useBooleanState();
   const [alergias, setAlergias] = useBooleanState();
@@ -127,7 +126,6 @@ const HistoriaClinica = () => {
   const [noTieneEnfermedades, setNoTieneEnfermedades] = useBooleanState();
   const [enTratamiento, setEnTratamiento] = useBooleanState();
   const [tomaBifosfonatos, setTomaBifosfonatos] = useBooleanState();
-  const [dietaCariogenica, setDietaCariogenica] = useBooleanState();
   const [continenteAlteraciones, setContinenteAlteraciones] = useBooleanState();
   const [contenidoAlteraciones, setContenidoAlteraciones] = useBooleanState();
   const [fumador, setFumador] = useBooleanState();
@@ -135,10 +133,10 @@ const HistoriaClinica = () => {
   
   // Estados de objetos usando hook personalizado
   const [enfermedadesSeleccionadas, setEnfermedadesSeleccionadas, updateEnfermedades, resetEnfermedades] = useObjectState(INITIAL_ENFERMEDADES);
-  const [apreciacionGeneral, setApreciacionGeneral, updateApreciacion, resetApreciacion] = useObjectState(INITIAL_APRECIACION);
-  const [examenRegional, setExamenRegional, updateExamenRegional, resetExamenRegional] = useObjectState(INITIAL_EXAMEN_REGIONAL);
+  const [apreciacionGeneral, setApreciacionGeneral, updateApreciacion] = useObjectState(INITIAL_APRECIACION);
+  const [examenRegional, setExamenRegional, updateExamenRegional] = useObjectState(INITIAL_EXAMEN_REGIONAL);
   const [continenteOpciones, setContinenteOpciones, updateContinente, resetContinente] = useObjectState(INITIAL_CONTINENTE);
-  const [contenidoOpciones, setContenidoOpciones, updateContenido, resetContenido] = useObjectState(INITIAL_CONTENIDO);
+  const [contenidoOpciones, updateContenido, resetContenido] = useObjectState(INITIAL_CONTENIDO);
   
   // Estados de detalles
   const [otrasEnfermedadesDetalle, setOtrasEnfermedadesDetalle] = useState('');
@@ -147,7 +145,7 @@ const HistoriaClinica = () => {
   const [contenidoDetalles, setContenidoDetalles] = useState({});
   
   // Formulario usando hook personalizado
-  const [formData, setFormData, updateField, updateMultipleFields, resetForm] = useFormData({
+  const [formData, updateField, updateMultipleFields] = useFormData({
     motivoConsulta: '',
     cepilladoDental: '',
     cepilladoEncias: '',
@@ -198,7 +196,7 @@ const HistoriaClinica = () => {
         setFechaUltimaActualizacion(response.data.fechaActualizacion || response.data.fechaCreacion);
         loadHistoriaClinicaData(response.data);
       }
-    } catch (error) {
+    } catch {
       // Si no hay historia clínica, no hacer nada
     }
   };

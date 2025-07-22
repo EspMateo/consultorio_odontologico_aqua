@@ -84,6 +84,7 @@
 
 .btn-historia,
 .btn-odontograma,
+.btn-periodontograma,
 .btn-editar,
 .btn-eliminar {
   padding: 6px 12px;
@@ -111,6 +112,15 @@
 
 .btn-odontograma:hover {
   background-color: #7c3aed;
+}
+
+.btn-periodontograma {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.btn-periodontograma:hover {
+  background-color: #d97706;
 }
 
 .btn-editar {
@@ -160,6 +170,7 @@
 
   .btn-historia,
   .btn-odontograma,
+  .btn-periodontograma,
   .btn-editar,
   .btn-eliminar {
     width: 100%;
