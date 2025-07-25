@@ -1,19 +1,16 @@
 package com.consultorio.odontologia.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.consultorio.odontologia.entity.HistoriaClinica;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HistoriaClinicaDTO {
     private Long id;
-    private PacienteDTO paciente;
+    private Long pacienteId;
+    private String pacienteNombre;
     private String motivoConsulta;
     private String cepilladoDental;
     private String cepilladoEncias;
@@ -21,6 +18,12 @@ public class HistoriaClinicaDTO {
     private String observacionesHigienicas;
     private Boolean usaHiloDental;
     private Boolean higieneProtesica;
+    private Boolean fumador;
+    private Boolean consumeCafe;
+    private Boolean consumeTe;
+    private Boolean consumeMate;
+    private Boolean consumeAlcohol;
+    private Boolean consumeDrogas;
     private String enfermedadesActuales;
     private String medicamentos;
     private String alergias;
@@ -34,18 +37,61 @@ public class HistoriaClinicaDTO {
     private String examenRegionalDetalle;
     private String examenLocal;
     private String examenLocalDetalle;
-    private Object examenRegionalDetalles; // Será convertido a JSON
-    private Object continenteDetalles; // Será convertido a JSON
-    private UsuarioDTO usuario;
-    private Boolean fumador;
-    private Boolean consumeCafe;
-    private Boolean consumeTe;
-    private Boolean consumeMate;
-    private Boolean consumeAlcohol;
-    private Boolean consumeDrogas;
+    private Object examenRegionalDetalles;
+    private Object continenteDetalles;
+    private Long usuarioId;
+    private String usuarioNombre;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime fechaCreacion;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime fechaActualizacion;
 
+    // Constructors
+    public HistoriaClinicaDTO() {}
+
+    public HistoriaClinicaDTO(HistoriaClinica historiaClinica) {
+        this.id = historiaClinica.getId();
+        this.pacienteId = historiaClinica.getPaciente() != null ? historiaClinica.getPaciente().getId() : null;
+        this.pacienteNombre = historiaClinica.getPaciente() != null ? 
+            historiaClinica.getPaciente().getName() + " " + historiaClinica.getPaciente().getLastname() : null;
+        this.motivoConsulta = historiaClinica.getMotivoConsulta();
+        this.cepilladoDental = historiaClinica.getCepilladoDental();
+        this.cepilladoEncias = historiaClinica.getCepilladoEncias();
+        this.cepilladoLingual = historiaClinica.getCepilladoLingual();
+        this.observacionesHigienicas = historiaClinica.getObservacionesHigienicas();
+        this.usaHiloDental = historiaClinica.getUsaHiloDental();
+        this.higieneProtesica = historiaClinica.getHigieneProtesica();
+        this.fumador = historiaClinica.getFumador();
+        this.consumeCafe = historiaClinica.getConsumeCafe();
+        this.consumeTe = historiaClinica.getConsumeTe();
+        this.consumeMate = historiaClinica.getConsumeMate();
+        this.consumeAlcohol = historiaClinica.getConsumeAlcohol();
+        this.consumeDrogas = historiaClinica.getConsumeDrogas();
+        this.enfermedadesActuales = historiaClinica.getEnfermedadesActuales();
+        this.medicamentos = historiaClinica.getMedicamentos();
+        this.alergias = historiaClinica.getAlergias();
+        this.posologia = historiaClinica.getPosologia();
+        this.antecedentesFamiliares = historiaClinica.getAntecedentesFamiliares();
+        this.enTratamiento = historiaClinica.getEnTratamiento();
+        this.tomaBifosfonatos = historiaClinica.getTomaBifosfonatos();
+        this.apreciacionGeneral = historiaClinica.getApreciacionGeneral();
+        this.apreciacionGeneralDetalle = historiaClinica.getApreciacionGeneralDetalle();
+        this.examenRegional = historiaClinica.getExamenRegional();
+        this.examenRegionalDetalle = historiaClinica.getExamenRegionalDetalle();
+        this.examenLocal = historiaClinica.getExamenLocal();
+        this.examenLocalDetalle = historiaClinica.getExamenLocalDetalle();
+        this.examenRegionalDetalles = historiaClinica.getExamenRegionalDetalles();
+        this.continenteDetalles = historiaClinica.getContinenteDetalles();
+        this.usuarioId = historiaClinica.getUsuario() != null ? historiaClinica.getUsuario().getId() : null;
+        this.usuarioNombre = historiaClinica.getUsuario() != null ? 
+            historiaClinica.getUsuario().getName():"no name";
+        this.fechaCreacion = historiaClinica.getFechaCreacion();
+        this.fechaActualizacion = historiaClinica.getFechaActualizacion();
+    }
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -54,12 +100,20 @@ public class HistoriaClinicaDTO {
         this.id = id;
     }
 
-    public PacienteDTO getPaciente() {
-        return paciente;
+    public Long getPacienteId() {
+        return pacienteId;
     }
 
-    public void setPaciente(PacienteDTO paciente) {
-        this.paciente = paciente;
+    public void setPacienteId(Long pacienteId) {
+        this.pacienteId = pacienteId;
+    }
+
+    public String getPacienteNombre() {
+        return pacienteNombre;
+    }
+
+    public void setPacienteNombre(String pacienteNombre) {
+        this.pacienteNombre = pacienteNombre;
     }
 
     public String getMotivoConsulta() {
@@ -116,6 +170,54 @@ public class HistoriaClinicaDTO {
 
     public void setHigieneProtesica(Boolean higieneProtesica) {
         this.higieneProtesica = higieneProtesica;
+    }
+
+    public Boolean getFumador() {
+        return fumador;
+    }
+
+    public void setFumador(Boolean fumador) {
+        this.fumador = fumador;
+    }
+
+    public Boolean getConsumeCafe() {
+        return consumeCafe;
+    }
+
+    public void setConsumeCafe(Boolean consumeCafe) {
+        this.consumeCafe = consumeCafe;
+    }
+
+    public Boolean getConsumeTe() {
+        return consumeTe;
+    }
+
+    public void setConsumeTe(Boolean consumeTe) {
+        this.consumeTe = consumeTe;
+    }
+
+    public Boolean getConsumeMate() {
+        return consumeMate;
+    }
+
+    public void setConsumeMate(Boolean consumeMate) {
+        this.consumeMate = consumeMate;
+    }
+
+    public Boolean getConsumeAlcohol() {
+        return consumeAlcohol;
+    }
+
+    public void setConsumeAlcohol(Boolean consumeAlcohol) {
+        this.consumeAlcohol = consumeAlcohol;
+    }
+
+    public Boolean getConsumeDrogas() {
+        return consumeDrogas;
+    }
+
+    public void setConsumeDrogas(Boolean consumeDrogas) {
+        this.consumeDrogas = consumeDrogas;
     }
 
     public String getEnfermedadesActuales() {
@@ -238,60 +340,20 @@ public class HistoriaClinicaDTO {
         this.continenteDetalles = continenteDetalles;
     }
 
-    public UsuarioDTO getUsuario() {
-        return usuario;
+    public Long getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuario(UsuarioDTO usuario) {
-        this.usuario = usuario;
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
-    public Boolean getFumador() {
-        return fumador;
+    public String getUsuarioNombre() {
+        return usuarioNombre;
     }
 
-    public void setFumador(Boolean fumador) {
-        this.fumador = fumador;
-    }
-
-    public Boolean getConsumeCafe() {
-        return consumeCafe;
-    }
-
-    public void setConsumeCafe(Boolean consumeCafe) {
-        this.consumeCafe = consumeCafe;
-    }
-
-    public Boolean getConsumeTe() {
-        return consumeTe;
-    }
-
-    public void setConsumeTe(Boolean consumeTe) {
-        this.consumeTe = consumeTe;
-    }
-
-    public Boolean getConsumeMate() {
-        return consumeMate;
-    }
-
-    public void setConsumeMate(Boolean consumeMate) {
-        this.consumeMate = consumeMate;
-    }
-
-    public Boolean getConsumeAlcohol() {
-        return consumeAlcohol;
-    }
-
-    public void setConsumeAlcohol(Boolean consumeAlcohol) {
-        this.consumeAlcohol = consumeAlcohol;
-    }
-
-    public Boolean getConsumeDrogas() {
-        return consumeDrogas;
-    }
-
-    public void setConsumeDrogas(Boolean consumeDrogas) {
-        this.consumeDrogas = consumeDrogas;
+    public void setUsuarioNombre(String usuarioNombre) {
+        this.usuarioNombre = usuarioNombre;
     }
 
     public LocalDateTime getFechaCreacion() {

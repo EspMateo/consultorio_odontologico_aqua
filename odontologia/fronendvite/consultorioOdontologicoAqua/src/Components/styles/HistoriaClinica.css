@@ -1,809 +1,533 @@
 /* Contenedor principal */
 .historia-clinica-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-/* Contenido principal */
-.historia-clinica-card {
-  max-width: 900px;
-  min-width: 900px;
-  width: 900px;
-  margin: 0 auto;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  width: 1300px;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Header */
 .historia-clinica-header {
   text-align: center;
-  margin-bottom: 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 2rem;
+  color: white;
+  padding: 2rem 0;
 }
 
-.historia-clinica-title {
-  font-size: 2rem;
+.historia-clinica-header h1 {
+  font-size: 2.5rem;
   font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.historia-clinica-subtitle {
-  font-size: 1.1rem;
-  color: #6b7280;
+/* Contenido principal */
+.historia-clinica-content {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  background: white;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sección del formulario */
+.form-section {
+  padding: 2rem 3rem;
+}
+
+/* Fila de formulario */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Grupos de formulario */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 1rem;
+}
+
+.form-input,
+.form-select {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-textarea {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.3s ease;
+  background: white;
+  font-family: inherit;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Información del paciente */
+.paciente-info {
+  padding: 0.75rem 1rem;
+  background: #f3f4f6;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #374151;
 }
 
 /* Secciones */
-.historia-clinica-section {
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
+.section {
+  background: #f8fafc;
+  border-radius: 15px;
+  padding: 2.5rem;
+  margin-bottom: 2.5rem;
+  border: 1px solid #e2e8f0;
 }
 
-.historia-clinica-section-title {
+.section h3 {
+  color: #1e293b;
   font-size: 1.5rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #3b82f6;
+  border-bottom: 3px solid #667eea;
   display: inline-block;
 }
 
-/* Grid layout */
-.historia-clinica-grid {
+/* Grupos de checkboxes */
+.checkbox-group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0;
 }
 
-/* Items del formulario */
-.historia-clinica-item {
+.checkbox-label {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
   transition: all 0.3s ease;
-}
-
-.historia-clinica-item:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.historia-clinica-item.full-width {
-  grid-column: 1 / -1;
-}
-
-.historia-clinica-item label {
-  font-size: 1rem;
   font-weight: 500;
   color: #374151;
 }
 
-.historia-clinica-item span {
+.checkbox-label:hover {
+  border-color: #667eea;
+  background: #f8fafc;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+/* Sección de acciones */
+.acciones-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e5e7eb;
+}
+
+/* Mensajes */
+.message {
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  margin: 1rem auto;
+  text-align: center;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+  position: relative;
+  z-index: 1000;
+  font-size: 1.1rem;
+}
+
+.message.success {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+  border: 2px solid #10b981;
+  border-left: 5px solid #10b981;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.message.error {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #dc2626;
+  border: 2px solid #ef4444;
+  border-left: 5px solid #ef4444;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+
+.message.info {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e40af;
+  border: 2px solid #3b82f6;
+  border-left: 5px solid #3b82f6;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.message.fade-out {
+  animation: fadeOut 0.3s ease-in forwards;
+}
+
+/* Botones */
+.botones-container {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-guardar,
+.btn-modificar,
+.btn-volver {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
   font-size: 1rem;
-  color: #1f2937;
-  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
 }
 
-.historia-clinica-item textarea {
-  width: 100%;
-  min-height: 80px;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  resize: vertical;
-  transition: all 0.2s;
-  background-color: white;
+.btn-guardar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-.historia-clinica-item textarea:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+.btn-guardar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
 }
 
-.historia-clinica-item textarea::placeholder {
+.btn-guardar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+}
+
+.btn-modificar {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+}
+
+.btn-modificar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
+}
+
+.btn-modificar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+}
+
+.btn-volver {
+  background: #6b7280;
+  color: white;
+  box-shadow: 0 4px 15px rgba(107, 114, 128, 0.4);
+}
+
+.btn-volver:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(107, 114, 128, 0.6);
+}
+
+.btn-volver:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Efecto de carga en botones */
+.btn-guardar:disabled::after,
+.btn-modificar:disabled::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+  .historia-clinica-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .historia-clinica-content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .form-section {
+    padding: 2rem 2rem;
+  }
+  
+  .form-row {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
+  }
+  
+  .checkbox-group {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .historia-clinica-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .historia-clinica-content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .form-section {
+    padding: 2rem 1.5rem;
+  }
+  
+  .form-row {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .checkbox-group {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .historia-clinica-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .historia-clinica-content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .historia-clinica-header h1 {
+    font-size: 2rem;
+  }
+  
+  .form-section {
+    padding: 1.5rem 1rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .checkbox-group {
+    grid-template-columns: 1fr;
+  }
+  
+  .botones-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-guardar,
+  .btn-modificar,
+  .btn-volver {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .historia-clinica-container {
+    padding: 0.5rem;
+  }
+  
+  .form-section {
+    padding: 1rem;
+  }
+  
+  .section {
+    padding: 1.5rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.historia-clinica-content {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Estados de carga */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Overlay de carga */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-radius: 20px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.loading-overlay p {
+  color: #374151;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Mejoras visuales adicionales */
+.form-input::placeholder,
+.form-textarea::placeholder {
   color: #9ca3af;
   font-style: italic;
 }
 
-/* Sección de examen */
-.examen-section {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  justify-content: center;
+.section:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
 }
 
-.examen-column {
-  flex: 0 0 380px;
-  max-width: 380px;
-  min-width: 280px;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
+/* Scroll personalizado */
+.form-textarea::-webkit-scrollbar {
+  width: 8px;
 }
 
-.examen-column:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.examen-column h4 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #3b82f6;
-  display: inline-block;
-}
-
-.examen-items {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.examen-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.examen-item:hover {
-  background-color: #f3f4f6;
-}
-
-.examen-item label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #374151;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-}
-
-.examen-item input[type="checkbox"] {
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid #d1d5db;
+.form-textarea::-webkit-scrollbar-track {
+  background: #f1f5f9;
   border-radius: 4px;
-  cursor: pointer;
-  accent-color: #3b82f6;
 }
 
-.examen-item textarea {
-  width: 100%;
-  min-height: 80px;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  resize: vertical;
-  transition: all 0.2s;
-  background-color: white;
-}
-
-.examen-item textarea:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Checkboxes anidados */
-.nested-checkboxes {
-  margin-top: 1rem;
-  padding-left: 2rem;
-  border-left: 2px solid #e5e7eb;
-}
-
-/* Sección de enfermedades */
-.enfermedades-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.enfermedades-item {
-  background: #fff;
-  border-radius: 10px;
-  padding: 1rem;
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-}
-
-.enfermedades-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #3b82f6;
-  display: inline-block;
-}
-
-.enfermedades-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.enfermedades-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.enfermedades-checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.enfermedades-checkbox-label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #374151;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.enfermedades-checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid #d1d5db;
+.form-textarea::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
   border-radius: 4px;
-  cursor: pointer;
-  accent-color: #3b82f6;
 }
 
-.enfermedades-textarea {
-  width: 100%;
-  min-height: 80px;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  resize: vertical;
-  transition: all 0.2s;
-  background-color: white;
-}
-
-.enfermedades-textarea:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Sección de hábitos e higiene */
-.habitos-higiene-section {
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.habitos-higiene-column {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.habitos-higiene-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 400px;
-  margin-bottom: 1rem;
-}
-
-.habitos-higiene-input-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.habitos-higiene-input-container label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #374151;
-}
-
-.habitos-higiene-input-container input[type="number"] {
-  width: 100%;
-  max-width: 200px;
-  padding: 0.3rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.habitos-higiene-checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.habitos-higiene-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 160px;
-  margin-bottom: 0.5rem;
-}
-
-.habitos-higiene-checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid #d1d5db;
-  border-radius: 4px;
-  cursor: pointer;
-  accent-color: #3b82f6;
-}
-
-.habitos-higiene-observaciones {
-  margin-top: 1rem;
-}
-
-.habitos-higiene-observaciones textarea {
-  width: 100%;
-  min-height: 80px;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  resize: vertical;
-  transition: all 0.2s;
-  background-color: white;
-}
-
-.habitos-higiene-observaciones textarea:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Notificaciones mejoradas */
-.notification {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  z-index: 1000;
-  max-width: 400px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  animation: slideInUp 0.3s ease-out;
-}
-
-.notification.success {
-  background-color: #10b981;
-  color: white;
-  border-left: 4px solid #059669;
-}
-
-.notification.error {
-  background-color: #ef4444;
-  color: white;
-  border-left: 4px solid #dc2626;
-}
-
-@keyframes slideInUp {
-  from {
-    transform: translateY(100px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Botones de acción */
-.historia-clinica-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1.5rem;
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 2px solid #e5e7eb;
-  position: relative;
-}
-
-.historia-clinica-button {
-  padding: 1rem 2.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1.125rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  min-width: 180px;
-  text-align: center;
-  letter-spacing: 0.025em;
-  border: none;
-}
-
-.historia-clinica-button-primary {
-  background-color: #3b82f6;
-  color: white;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-}
-
-.historia-clinica-button-primary:hover:not(:disabled) {
-  background-color: #2563eb;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
-}
-
-.historia-clinica-button-primary:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-}
-
-.historia-clinica-button-secondary {
-  background-color: white;
-  color: #4b5563;
-  border: 2px solid #d1d5db;
-}
-
-.historia-clinica-button-secondary:hover:not(:disabled) {
-  background-color: #f9fafb;
-  border-color: #9ca3af;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.historia-clinica-button-secondary:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.historia-clinica-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Mensajes de error */
-.error-message {
-  background-color: #fee2e2;
-  color: #dc2626;
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 1rem 0;
-  font-size: 0.95rem;
-  border: 1px solid #fecaca;
-}
-
-/* Modal de confirmación */
-.modal-confirm {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-confirm-content {
-  background-color: white;
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-.modal-confirm-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 1rem;
-}
-
-.modal-confirm-message {
-  color: #6b7280;
-  margin-bottom: 2rem;
-}
-
-.modal-confirm-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .historia-clinica-container {
-    padding: 1rem;
-  }
-
-  .historia-clinica-card {
-    padding: 1.5rem;
-  }
-
-  .historia-clinica-section {
-    padding: 1.5rem;
-  }
-
-  .historia-clinica-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .examen-section {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .habitos-higiene-column {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .historia-clinica-actions {
-    flex-direction: column;
-    margin-top: 2rem;
-  }
-
-  .historia-clinica-button {
-    width: 100%;
-  }
-
-  .modal-confirm-actions {
-    flex-direction: column;
-  }
-
-  .notification {
-    bottom: 10px;
-    right: 10px;
-    left: 10px;
-    max-width: none;
-  }
-}
-
-.apreciacion-general-checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-  margin-top: 0.5rem;
-}
-
-.apreciacion-general-checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-  background: #e3f0fa;
-  border-radius: 6px;
-  padding: 0.4rem 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.apreciacion-general-checkbox-group input[type="checkbox"]:checked + span {
-  color: #1976d2;
-  font-weight: bold;
-}
-
-.examen-local-columns {
-  display: flex;
-  gap: 2rem;
-  margin-top: 1rem;
-  justify-content: center;
-}
-
-.examen-local-column {
-  flex: 0 0 380px;
-  max-width: 380px;
-  min-width: 280px;
-  background: #f7fafc;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-}
-
-/* Examen Regional también en columnas más pequeñas */
-.examen-section {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  justify-content: center;
-}
-
-.examen-column {
-  flex: 0 0 380px;
-  max-width: 380px;
-  min-width: 280px;
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-}
-
-/* Estilo para el textarea de apreciación general */
-.apreciacion-general-detalle {
-  width: 100%;
-  min-height: 60px;
-  padding: 0.6rem 1rem;
-  border: 2px solid #90caf9;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #f0f7ff;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  transition: border 0.2s;
-}
-
-.apreciacion-general-detalle:focus {
-  outline: none;
-  border-color: #1976d2;
-  background: #e3f2fd;
-}
-
-@media (max-width: 900px) {
-  .examen-local-columns, .examen-section {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-  }
-  .examen-local-column, .examen-column {
-    max-width: 100%;
-    min-width: 0;
-  }
-}
-
-.apreciacion-general-section {
-  flex: 0 0 380px;
-  max-width: 380px;
-  min-width: 280px;
-  background: #f7fafc;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-  margin-right: 2rem;
-}
-
-.historia-clinica-examenes-row {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-
-@media (max-width: 900px) {
-  .historia-clinica-examenes-row {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
-  }
-  .apreciacion-general-section {
-    max-width: 100%;
-    min-width: 0;
-    margin-right: 0;
-  }
-} 
-
-/* Selector de historias clínicas */
-.historia-selector {
-  position: relative;
-  display: inline-block;
-  margin-top: 1rem;
-}
-
-.historia-selector-btn {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.historia-selector-btn:hover {
-  background-color: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.historia-selector-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  max-height: 300px;
-  overflow-y: auto;
-  margin-top: 0.5rem;
-}
-
-.historia-selector-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid #f3f4f6;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.historia-selector-item:last-child {
-  border-bottom: none;
-}
-
-.historia-selector-item:hover {
-  background-color: #f9fafb;
-}
-
-.historia-selector-item span:first-child {
-  font-weight: 500;
-  color: #1f2937;
-}
-
-.historia-fecha {
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-/* Responsive para el selector */
-@media (max-width: 768px) {
-  .historia-selector {
-    width: 100%;
-  }
-  
-  .historia-selector-dropdown {
-    width: 100%;
-    left: 0;
-  }
-  
-  .historia-selector-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
+.form-textarea::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 } 

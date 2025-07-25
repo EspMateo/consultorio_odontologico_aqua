@@ -12,7 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "historiaClinica")
+@Table(name = "historia_clinica")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,9 +23,11 @@ public class HistoriaClinica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Información básica
     @Column(nullable = true)
     private String motivoConsulta;
 
+    // Hábitos de higiene
     @Column(nullable = true)
     private String cepilladoDental;
 
@@ -44,6 +46,26 @@ public class HistoriaClinica {
     @Column(nullable = true)
     private Boolean higieneProtesica;
 
+    // Hábitos y consumo
+    @Column(nullable = true)
+    private Boolean fumador;
+
+    @Column(nullable = true)
+    private Boolean consumeCafe;
+
+    @Column(nullable = true)
+    private Boolean consumeTe;
+
+    @Column(nullable = true)
+    private Boolean consumeMate;
+
+    @Column(nullable = true)
+    private Boolean consumeAlcohol;
+
+    @Column(nullable = true)
+    private Boolean consumeDrogas;
+
+    // Antecedentes médicos
     @Column(nullable = true)
     private String enfermedadesActuales;
 
@@ -65,12 +87,14 @@ public class HistoriaClinica {
     @Column(nullable = true)
     private Boolean tomaBifosfonatos;
 
+    // Apreciación general
     @Column(nullable = true)
     private String apreciacionGeneral;
 
     @Column(nullable = true)
     private String apreciacionGeneralDetalle;
 
+    // Examen regional
     @Column(nullable = true)
     private String examenRegional;
 
@@ -78,35 +102,19 @@ public class HistoriaClinica {
     private String examenRegionalDetalle;
 
     @Column(nullable = true)
+    private String examenRegionalDetalles;
+
+    // Examen local
+    @Column(nullable = true)
     private String examenLocal;
 
     @Column(nullable = true)
     private String examenLocalDetalle;
 
     @Column(nullable = true)
-    private String examenRegionalDetalles;
-
-    @Column(nullable = true)
     private String continenteDetalles;
 
-    @Column(nullable = true)
-    private Boolean fumador;
-
-    @Column(nullable = true)
-    private Boolean consumeCafe;
-
-    @Column(nullable = true)
-    private Boolean consumeTe;
-
-    @Column(nullable = true)
-    private Boolean consumeMate;
-
-    @Column(nullable = true)
-    private Boolean consumeAlcohol;
-
-    @Column(nullable = true)
-    private Boolean consumeDrogas;
-
+    // Timestamps
     @CreationTimestamp
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
@@ -115,6 +123,7 @@ public class HistoriaClinica {
     @Column(name = "fecha_actualizacion", nullable = false)
     private LocalDateTime fechaActualizacion;
 
+    // Relaciones
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = true)
     private Usuario usuario;
@@ -123,6 +132,15 @@ public class HistoriaClinica {
     @JoinColumn(name = "paciente_id")
     @JsonBackReference
     private Paciente paciente;
+
+    // Métodos de utilidad
+    public String getFechaCreacionFormateada() {
+        return fechaCreacion != null ? fechaCreacion.toLocalDate().toString() : "";
+    }
+
+    public String getFechaActualizacionFormateada() {
+        return fechaActualizacion != null ? fechaActualizacion.toLocalDate().toString() : "";
+    }
 
     public Long getId() {
         return id;
@@ -172,6 +190,14 @@ public class HistoriaClinica {
         this.observacionesHigienicas = observacionesHigienicas;
     }
 
+    public Boolean getHigieneProtesica() {
+        return higieneProtesica;
+    }
+
+    public void setHigieneProtesica(Boolean higieneProtesica) {
+        this.higieneProtesica = higieneProtesica;
+    }
+
     public Boolean getUsaHiloDental() {
         return usaHiloDental;
     }
@@ -180,12 +206,52 @@ public class HistoriaClinica {
         this.usaHiloDental = usaHiloDental;
     }
 
-    public Boolean getHigieneProtesica() {
-        return higieneProtesica;
+    public Boolean getFumador() {
+        return fumador;
     }
 
-    public void setHigieneProtesica(Boolean higieneProtesica) {
-        this.higieneProtesica = higieneProtesica;
+    public void setFumador(Boolean fumador) {
+        this.fumador = fumador;
+    }
+
+    public Boolean getConsumeCafe() {
+        return consumeCafe;
+    }
+
+    public void setConsumeCafe(Boolean consumeCafe) {
+        this.consumeCafe = consumeCafe;
+    }
+
+    public Boolean getConsumeTe() {
+        return consumeTe;
+    }
+
+    public void setConsumeTe(Boolean consumeTe) {
+        this.consumeTe = consumeTe;
+    }
+
+    public Boolean getConsumeMate() {
+        return consumeMate;
+    }
+
+    public void setConsumeMate(Boolean consumeMate) {
+        this.consumeMate = consumeMate;
+    }
+
+    public Boolean getConsumeAlcohol() {
+        return consumeAlcohol;
+    }
+
+    public void setConsumeAlcohol(Boolean consumeAlcohol) {
+        this.consumeAlcohol = consumeAlcohol;
+    }
+
+    public Boolean getConsumeDrogas() {
+        return consumeDrogas;
+    }
+
+    public void setConsumeDrogas(Boolean consumeDrogas) {
+        this.consumeDrogas = consumeDrogas;
     }
 
     public String getEnfermedadesActuales() {
@@ -276,12 +342,12 @@ public class HistoriaClinica {
         this.examenRegionalDetalle = examenRegionalDetalle;
     }
 
-    public String getExamenLocal() {
-        return examenLocal;
+    public String getExamenRegionalDetalles() {
+        return examenRegionalDetalles;
     }
 
-    public void setExamenLocal(String examenLocal) {
-        this.examenLocal = examenLocal;
+    public void setExamenRegionalDetalles(String examenRegionalDetalles) {
+        this.examenRegionalDetalles = examenRegionalDetalles;
     }
 
     public String getExamenLocalDetalle() {
@@ -292,12 +358,12 @@ public class HistoriaClinica {
         this.examenLocalDetalle = examenLocalDetalle;
     }
 
-    public String getExamenRegionalDetalles() {
-        return examenRegionalDetalles;
+    public String getExamenLocal() {
+        return examenLocal;
     }
 
-    public void setExamenRegionalDetalles(String examenRegionalDetalles) {
-        this.examenRegionalDetalles = examenRegionalDetalles;
+    public void setExamenLocal(String examenLocal) {
+        this.examenLocal = examenLocal;
     }
 
     public String getContinenteDetalles() {
@@ -306,70 +372,6 @@ public class HistoriaClinica {
 
     public void setContinenteDetalles(String continenteDetalles) {
         this.continenteDetalles = continenteDetalles;
-    }
-
-    public Boolean getFumador() {
-        return fumador;
-    }
-
-    public void setFumador(Boolean fumador) {
-        this.fumador = fumador;
-    }
-
-    public Boolean getConsumeCafe() {
-        return consumeCafe;
-    }
-
-    public void setConsumeCafe(Boolean consumeCafe) {
-        this.consumeCafe = consumeCafe;
-    }
-
-    public Boolean getConsumeTe() {
-        return consumeTe;
-    }
-
-    public void setConsumeTe(Boolean consumeTe) {
-        this.consumeTe = consumeTe;
-    }
-
-    public Boolean getConsumeMate() {
-        return consumeMate;
-    }
-
-    public void setConsumeMate(Boolean consumeMate) {
-        this.consumeMate = consumeMate;
-    }
-
-    public Boolean getConsumeAlcohol() {
-        return consumeAlcohol;
-    }
-
-    public void setConsumeAlcohol(Boolean consumeAlcohol) {
-        this.consumeAlcohol = consumeAlcohol;
-    }
-
-    public Boolean getConsumeDrogas() {
-        return consumeDrogas;
-    }
-
-    public void setConsumeDrogas(Boolean consumeDrogas) {
-        this.consumeDrogas = consumeDrogas;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public LocalDateTime getFechaCreacion() {
@@ -386,5 +388,21 @@ public class HistoriaClinica {
 
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 }
