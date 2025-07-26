@@ -87,6 +87,18 @@ const Periodontograma = () => {
   
   // Estado para la vista (vestibular/palatina)
   const [vistaActual, setVistaActual] = useState('vestibular'); // 'vestibular' o 'palatina'
+  
+  // Estado para el cuadrante seleccionado
+  const [cuadranteSeleccionado, setCuadranteSeleccionado] = useState('todos'); // 'todos', 'superior-derecho', 'superior-izquierdo', 'inferior-derecho', 'inferior-izquierdo'
+  
+  // Definir cuadrantes
+  const cuadrantes = {
+    'todos': { nombre: 'Todos los dientes', dientes: [...DIENTES_SUPERIORES, ...DIENTES_INFERIORES] },
+    'superior-derecho': { nombre: 'Superior Derecho (11-18)', dientes: [18, 17, 16, 15, 14, 13, 12, 11] },
+    'superior-izquierdo': { nombre: 'Superior Izquierdo (21-28)', dientes: [21, 22, 23, 24, 25, 26, 27, 28] },
+    'inferior-derecho': { nombre: 'Inferior Derecho (41-48)', dientes: [48, 47, 46, 45, 44, 43, 42, 41] },
+    'inferior-izquierdo': { nombre: 'Inferior Izquierdo (31-38)', dientes: [31, 32, 33, 34, 35, 36, 37, 38] }
+  };
 
   useEffect(() => {
     if (location.state?.paciente) {
@@ -960,6 +972,22 @@ const Periodontograma = () => {
                   Vista Palatina
                 </button>
               </div>
+              
+              {/* Selector de cuadrantes */}
+              <div className="cuadrante-selector-container">
+                <label className="cuadrante-label">Cuadrante:</label>
+                <select
+                  value={cuadranteSeleccionado}
+                  onChange={(e) => setCuadranteSeleccionado(e.target.value)}
+                  className="cuadrante-select"
+                >
+                  {Object.entries(cuadrantes).map(([key, cuadrante]) => (
+                    <option key={key} value={key}>
+                      {cuadrante.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="periodontograma-legend">
@@ -978,19 +1006,32 @@ const Periodontograma = () => {
             </div>
 
             <div className="periodontograma-dientes">
-              <div className="dientes-superiores">
-                <h3>Dientes Superiores</h3>
-                <div className="dientes-grid">
-                  {DIENTES_SUPERIORES.map(renderDiente)}
-                </div>
-              </div>
+              {cuadranteSeleccionado === 'todos' ? (
+                // Mostrar todos los dientes
+                <>
+                  <div className="dientes-superiores">
+                    <h3>Dientes Superiores</h3>
+                    <div className="dientes-grid">
+                      {DIENTES_SUPERIORES.map(renderDiente)}
+                    </div>
+                  </div>
 
-              <div className="dientes-inferiores">
-                <h3>Dientes Inferiores</h3>
-                <div className="dientes-grid">
-                  {DIENTES_INFERIORES.map(renderDiente)}
+                  <div className="dientes-inferiores">
+                    <h3>Dientes Inferiores</h3>
+                    <div className="dientes-grid">
+                      {DIENTES_INFERIORES.map(renderDiente)}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                // Mostrar solo el cuadrante seleccionado
+                <div className="dientes-cuadrante">
+                  <h3>{cuadrantes[cuadranteSeleccionado].nombre}</h3>
+                  <div className="dientes-grid">
+                    {cuadrantes[cuadranteSeleccionado].dientes.map(renderDiente)}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <div className="periodontograma-observaciones">
