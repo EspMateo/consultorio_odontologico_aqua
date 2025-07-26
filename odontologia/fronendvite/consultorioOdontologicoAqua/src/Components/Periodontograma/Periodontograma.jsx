@@ -12,20 +12,36 @@ const DIENTES_FURCA = [14, 15, 16, 17, 18, 24, 25, 26, 27, 28];
 
 // Estados iniciales para cada diente
 const getInitialDienteState = () => ({
-  pronostico: '', // D, F, R
-  condicionMucogingival: '', // R, FA, V, F, O
-  movilidad: 0, // 0-3
+  pronostico: '', // D, F, R - COMPARTIDO
+  condicionMucogingival: '', // R, FA, V, F, O - COMPARTIDO
+  movilidad: 0, // 0-3 - COMPARTIDO
   profundidadSondaje: {
-    mesial: 0,
-    vestibular: 0,
-    distal: 0,
-    lingual: 0
+    vestibular: {
+      mesial: 0,
+      vestibular: 0,
+      distal: 0,
+      lingual: 0
+    },
+    palatina: {
+      mesial: 0,
+      palatino: 0,
+      distal: 0,
+      lingual: 0
+    }
   },
   migracionGingival: {
-    mesial: 0,
-    vestibular: 0,
-    distal: 0,
-    lingual: 0
+    vestibular: {
+      mesial: 0,
+      vestibular: 0,
+      distal: 0,
+      lingual: 0
+    },
+    palatina: {
+      mesial: 0,
+      palatino: 0,
+      distal: 0,
+      lingual: 0
+    }
   },
   sangrado: {
     mesial: false,
@@ -33,11 +49,11 @@ const getInitialDienteState = () => ({
     distal: false,
     lingual: false
   },
-  sangradoGeneral: false, // Nuevo campo para sangrado general
-  lesionFurca: 0, // 0-4 (solo para dientes específicos)
-  ausente: false,
-  nota: '', // Nota personalizada
-  tipoNota: '' // RDF, SSR, RF
+  sangradoGeneral: false, // COMPARTIDO
+  lesionFurca: 0, // 0-4 (solo para dientes específicos) - COMPARTIDO
+  ausente: false, // COMPARTIDO
+  nota: '', // Nota personalizada - COMPARTIDO
+  tipoNota: '' // RDF, SSR, RF - COMPARTIDO
 });
 
 const Periodontograma = () => {
@@ -68,6 +84,9 @@ const Periodontograma = () => {
   const [selectedDiente, setSelectedDiente] = useState(null);
   const [selectedSector, setSelectedSector] = useState(null);
   const [showDienteModal, setShowDienteModal] = useState(false);
+  
+  // Estado para la vista (vestibular/palatina)
+  const [vistaActual, setVistaActual] = useState('vestibular'); // 'vestibular' o 'palatina'
 
   useEffect(() => {
     if (location.state?.paciente) {
@@ -156,7 +175,31 @@ const Periodontograma = () => {
     if (data.datosPeriodontograma) {
       const datos = data.datosPeriodontograma;
       if (datos.dientes) {
-        setDientes(datos.dientes);
+        // Convertir datos antiguos a nueva estructura si es necesario
+        const dientesConvertidos = {};
+        Object.entries(datos.dientes).forEach(([numero, diente]) => {
+          if (diente) {
+            // Si los datos tienen la estructura antigua, convertir a la nueva
+            if (diente.profundidadSondaje && !diente.profundidadSondaje.vestibular) {
+              // Estructura antigua - convertir a nueva
+              dientesConvertidos[numero] = {
+                ...diente,
+                profundidadSondaje: {
+                  vestibular: diente.profundidadSondaje || {},
+                  palatina: diente.profundidadSondaje || {}
+                },
+                migracionGingival: {
+                  vestibular: diente.migracionGingival || {},
+                  palatina: diente.migracionGingival || {}
+                }
+              };
+            } else {
+              // Estructura nueva - usar tal como está
+              dientesConvertidos[numero] = diente;
+            }
+          }
+        });
+        setDientes(dientesConvertidos);
       } else {
         initializeDientes();
       }
@@ -233,11 +276,14 @@ const Periodontograma = () => {
         ...prev[diente],
         profundidadSondaje: {
           ...prev[diente].profundidadSondaje,
-          [sector]: parseInt(valor) || 0
+          [vistaActual]: {
+            ...prev[diente].profundidadSondaje[vistaActual],
+            [sector]: parseInt(valor) || 0
+          }
         }
       }
     }));
-  }, []);
+  }, [vistaActual]);
 
   const handleMigracionGingivalChange = useCallback((diente, sector, valor) => {
     setDientes(prev => ({
@@ -246,11 +292,14 @@ const Periodontograma = () => {
         ...prev[diente],
         migracionGingival: {
           ...prev[diente].migracionGingival,
-          [sector]: parseInt(valor) || 0
+          [vistaActual]: {
+            ...prev[diente].migracionGingival[vistaActual],
+            [sector]: parseInt(valor) || 0
+          }
         }
       }
     }));
-  }, []);
+  }, [vistaActual]);
 
   const handleNotaChange = useCallback((diente, valor) => {
     setDientes(prev => ({
@@ -442,50 +491,161 @@ const Periodontograma = () => {
   }, []);
 
   // Componente para el rectángulo con rayitas
-  const RayitasRectangulo = ({ profundidadSondaje, migracionGingival }) => {
-    const maxLineas = 15; // Máximo número de líneas
+  const RayitasRectangulo = ({ profundidadSondaje, migracionGingival, vistaActual, numeroDiente }) => {
+    const maxLineasPositivas = 12; // Cambiado de 10 a 12
+    const maxLineasNegativas = 12; // Cambiado de 10 a 12
+    const sectores = vistaActual === 'vestibular' 
+      ? [
+          { key: 'mesial', label: 'D' },
+          { key: 'vestibular', label: 'V' },
+          { key: 'distal', label: 'M' }
+        ]
+      : [
+          { key: 'mesial', label: 'D' },
+          { key: 'palatino', label: 'P' },
+          { key: 'distal', label: 'M' }
+        ];
     
-    const getLineasProfundidad = () => {
-      const valores = Object.values(profundidadSondaje).filter(v => v > 0);
-      const maxValor = Math.max(...valores, 0);
-      return Math.min(maxValor, maxLineas);
+    // Determinar si es diente superior o inferior
+    const esDienteInferior = DIENTES_INFERIORES.includes(numeroDiente);
+    
+    const getLineasPorSector = (sector) => {
+      const profundidad = profundidadSondaje[vistaActual]?.[sector] || 0;
+      const migracion = migracionGingival[vistaActual]?.[sector] || 0;
+      
+      // Calcular rayitas positivas
+      const rayitasProfundidad = Math.min(profundidad, maxLineasPositivas);
+      const rayitasMigracionPositiva = migracion > 0 ? Math.min(migracion, maxLineasPositivas - rayitasProfundidad) : 0;
+      
+      // Calcular rayitas negativas (solo migración negativa)
+      const rayitasMigracionNegativa = migracion < 0 ? Math.min(Math.abs(migracion), maxLineasNegativas) : 0;
+      
+      return {
+        positivas: {
+          profundidad: {
+            cantidad: rayitasProfundidad,
+            esRoja: profundidad > 3,
+            tipo: 'profundidad',
+            posicionInicial: rayitasMigracionPositiva // Empieza después de la migración
+          },
+          migracion: {
+            cantidad: rayitasMigracionPositiva,
+            tipo: 'migracion',
+            posicionInicial: 0 // Empieza desde la línea divisoria
+          },
+          total: rayitasProfundidad + rayitasMigracionPositiva
+        },
+        negativas: {
+          cantidad: rayitasMigracionNegativa,
+          tipo: 'migracion-negativa'
+        }
+      };
     };
-    
-    const getLineasMigracion = () => {
-      const valores = Object.values(migracionGingival).filter(v => v !== 0);
-      const maxValor = Math.max(...valores.map(v => Math.abs(v)), 0);
-      return Math.min(maxValor, maxLineas);
-    };
-    
-    const lineasProfundidad = getLineasProfundidad();
-    const lineasMigracion = getLineasMigracion();
-    
-    // Determinar el color predominante
-    const profundidadMax = Math.max(...Object.values(profundidadSondaje).filter(v => v > 0), 0);
-    const migracionMax = Math.max(...Object.values(migracionGingival).map(v => Math.abs(v)), 0);
     
     return (
       <div className="rayitas-container">
         <div className="rayitas-label">Visualización</div>
         <div className="rayitas-rectangulo">
-          {[...Array(maxLineas)].map((_, index) => {
-            const isProfundidad = index < lineasProfundidad;
-            const isMigracion = index < lineasMigracion;
-            
-            let className = 'rayitas-linea';
-            if (isProfundidad) {
-              className += ' activa';
-              // Si la profundidad es mayor a 3mm, es roja
-              if (profundidadMax > 3) {
-                className += ' activa-roja';
-              }
-            }
-            if (isMigracion && !isProfundidad) {
-              className += ' activa-migracion';
-            }
+          {sectores.map((sector, sectorIndex) => {
+            const lineasInfo = getLineasPorSector(sector.key);
             
             return (
-              <div key={index} className={className}></div>
+              <div key={sector.key} className="rayitas-columna">
+                <div className="rayitas-columna-label">{sector.label}</div>
+                <div className="rayitas-columna-content">
+                  {esDienteInferior ? (
+                    // Visualización invertida para dientes inferiores
+                    <>
+                      {/* Líneas negativas (arriba) - para dientes inferiores */}
+                      {[...Array(maxLineasNegativas)].reverse().map((_, index) => {
+                        const originalIndex = maxLineasNegativas - 1 - index;
+                        const isMigracionNegativa = originalIndex < lineasInfo.negativas.cantidad;
+                        
+                        let className = 'rayitas-linea';
+                        if (isMigracionNegativa) {
+                          className += ' activa-migracion-negativa';
+                        }
+                        
+                        return (
+                          <div key={`neg-${originalIndex}`} className={className}></div>
+                        );
+                      })}
+                      
+                      {/* Línea divisoria */}
+                      <div className="rayitas-divisoria"></div>
+                      
+                      {/* Líneas positivas (abajo) - invertidas para dientes inferiores */}
+                      {[...Array(maxLineasPositivas)].map((_, index) => {
+                        const isProfundidad = index >= lineasInfo.positivas.profundidad.posicionInicial && 
+                                             index < (lineasInfo.positivas.profundidad.posicionInicial + lineasInfo.positivas.profundidad.cantidad);
+                        const isMigracion = index >= lineasInfo.positivas.migracion.posicionInicial && 
+                                           index < (lineasInfo.positivas.migracion.posicionInicial + lineasInfo.positivas.migracion.cantidad);
+                        
+                        let className = 'rayitas-linea';
+                        if (isProfundidad) {
+                          className += ' activa';
+                          if (lineasInfo.positivas.profundidad.esRoja) {
+                            className += ' activa-roja';
+                          } else {
+                            className += ' activa-verde';
+                          }
+                        } else if (isMigracion) {
+                          className += ' activa-migracion';
+                        }
+                        
+                        return (
+                          <div key={`pos-${index}`} className={className}></div>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    // Visualización normal para dientes superiores
+                    <>
+                      {/* Líneas positivas (arriba) - invertidas para empezar desde la línea divisoria */}
+                      {[...Array(maxLineasPositivas)].reverse().map((_, index) => {
+                        const originalIndex = maxLineasPositivas - 1 - index;
+                        const isProfundidad = originalIndex >= lineasInfo.positivas.profundidad.posicionInicial && 
+                                             originalIndex < (lineasInfo.positivas.profundidad.posicionInicial + lineasInfo.positivas.profundidad.cantidad);
+                        const isMigracion = originalIndex >= lineasInfo.positivas.migracion.posicionInicial && 
+                                           originalIndex < (lineasInfo.positivas.migracion.posicionInicial + lineasInfo.positivas.migracion.cantidad);
+                        
+                        let className = 'rayitas-linea';
+                        if (isProfundidad) {
+                          className += ' activa';
+                          if (lineasInfo.positivas.profundidad.esRoja) {
+                            className += ' activa-roja';
+                          } else {
+                            className += ' activa-verde';
+                          }
+                        } else if (isMigracion) {
+                          className += ' activa-migracion';
+                        }
+                        
+                        return (
+                          <div key={`pos-${originalIndex}`} className={className}></div>
+                        );
+                      })}
+                      
+                      {/* Línea divisoria */}
+                      <div className="rayitas-divisoria"></div>
+                      
+                      {/* Líneas negativas (abajo) */}
+                      {[...Array(maxLineasNegativas)].map((_, index) => {
+                        const isMigracionNegativa = index < lineasInfo.negativas.cantidad;
+                        
+                        let className = 'rayitas-linea';
+                        if (isMigracionNegativa) {
+                          className += ' activa-migracion-negativa';
+                        }
+                        
+                        return (
+                          <div key={`neg-${index}`} className={className}></div>
+                        );
+                      })}
+                    </>
+                  )}
+                </div>
+              </div>
             );
           })}
         </div>
@@ -494,10 +654,13 @@ const Periodontograma = () => {
             <span className="leyenda-color verde"></span> Profundidad ≤3mm
           </span>
           <span className="leyenda-item">
-            <span className="leyenda-color rojo"></span> Profundidad >3mm
+            <span className="leyenda-color rojo"></span> Profundidad &gt;3mm
           </span>
           <span className="leyenda-item">
-            <span className="leyenda-color azul"></span> Migración
+            <span className="leyenda-color azul"></span> Migración +
+          </span>
+          <span className="leyenda-item">
+            <span className="leyenda-color naranja"></span> Migración -
           </span>
         </div>
       </div>
@@ -625,20 +788,36 @@ const Periodontograma = () => {
               <div className="campo-container">
                 <span className="campo-label">Profundidad de Sondaje</span>
                 <div className="combo-boxes-container">
-                  {['mesial', 'vestibular', 'distal'].map((sector) => (
-                    <select
-                      key={sector}
-                      value={diente.profundidadSondaje[sector] || ''}
-                      onChange={(e) => handleProfundidadSondajeChange(numero, sector, e.target.value)}
-                      onClick={(e) => e.stopPropagation()}
-                      className="combo-box"
-                    >
-                      <option value="">-</option>
-                      {[...Array(16)].map((_, i) => (
-                        <option key={i} value={i}>{i}</option>
-                      ))}
-                    </select>
-                  ))}
+                  {vistaActual === 'vestibular' 
+                    ? ['mesial', 'vestibular', 'distal'].map((sector) => (
+                        <select
+                          key={sector}
+                          value={diente.profundidadSondaje.vestibular[sector] || ''}
+                          onChange={(e) => handleProfundidadSondajeChange(numero, sector, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          className="combo-box"
+                        >
+                          <option value="">-</option>
+                          {[...Array(12)].map((_, i) => (
+                            <option key={i} value={i}>{i}</option>
+                          ))}
+                        </select>
+                      ))
+                    : ['mesial', 'palatino', 'distal'].map((sector) => (
+                        <select
+                          key={sector}
+                          value={diente.profundidadSondaje.palatina[sector] || ''}
+                          onChange={(e) => handleProfundidadSondajeChange(numero, sector, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          className="combo-box"
+                        >
+                          <option value="">-</option>
+                          {[...Array(12)].map((_, i) => (
+                            <option key={i} value={i}>{i}</option>
+                          ))}
+                        </select>
+                      ))
+                  }
                 </div>
               </div>
             </div>
@@ -648,20 +827,36 @@ const Periodontograma = () => {
               <div className="campo-container">
                 <span className="campo-label">Migración Gingival</span>
                 <div className="combo-boxes-container">
-                  {['mesial', 'vestibular', 'distal'].map((sector) => (
-                    <select
-                      key={sector}
-                      value={diente.migracionGingival[sector] || ''}
-                      onChange={(e) => handleMigracionGingivalChange(numero, sector, e.target.value)}
-                      onClick={(e) => e.stopPropagation()}
-                      className="combo-box"
-                    >
-                      <option value="">-</option>
-                      {[...Array(31)].map((_, i) => (
-                        <option key={i-15} value={i-15}>{i-15}</option>
-                      ))}
-                    </select>
-                  ))}
+                  {vistaActual === 'vestibular'
+                    ? ['mesial', 'vestibular', 'distal'].map((sector) => (
+                        <select
+                          key={sector}
+                          value={diente.migracionGingival.vestibular[sector] || ''}
+                          onChange={(e) => handleMigracionGingivalChange(numero, sector, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          className="combo-box"
+                        >
+                          <option value="">-</option>
+                          {[...Array(25)].map((_, i) => (
+                            <option key={i-12} value={i-12}>{i-12}</option>
+                          ))}
+                        </select>
+                      ))
+                    : ['mesial', 'palatino', 'distal'].map((sector) => (
+                        <select
+                          key={sector}
+                          value={diente.migracionGingival.palatina[sector] || ''}
+                          onChange={(e) => handleMigracionGingivalChange(numero, sector, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          className="combo-box"
+                        >
+                          <option value="">-</option>
+                          {[...Array(25)].map((_, i) => (
+                            <option key={i-12} value={i-12}>{i-12}</option>
+                          ))}
+                        </select>
+                      ))
+                  }
                 </div>
               </div>
             </div>
@@ -670,6 +865,8 @@ const Periodontograma = () => {
             <RayitasRectangulo 
               profundidadSondaje={diente.profundidadSondaje}
               migracionGingival={diente.migracionGingival}
+              vistaActual={vistaActual}
+              numeroDiente={numero}
             />
 
             {/* Nota */}
@@ -720,7 +917,7 @@ const Periodontograma = () => {
     );
   }, [dientes, dientesAusentes, handleDienteClick, handlePronosticoChange, handleCondicionMucogingivalChange, 
        handleMovilidadChange, handleLesionFurcaChange, handleSangradoGeneralClick, handleProfundidadSondajeChange, handleMigracionGingivalChange, 
-       handleDienteAusente, handleNotaChange, handleTipoNotaChange, getColorProfundidad]);
+       handleDienteAusente, handleNotaChange, handleTipoNotaChange, getColorProfundidad, vistaActual]);
 
   if (loading && !paciente) return <p>Cargando...</p>;
   if (error) return <div className="error-message">{error}</div>;
@@ -739,56 +936,72 @@ const Periodontograma = () => {
               </div>
             )}
 
-            <div className="periodontograma-container">
-              <div className="periodontograma-header">
-                <h2 className="periodontograma-title">Periodontograma</h2>
-                <div className="paciente-info">
-                  <p><strong>Paciente:</strong> {paciente.name} {paciente.lastname}</p>
-                  <p><strong>Cédula:</strong> {paciente.ci}</p>
+            <div className="periodontograma-header">
+              <h2 className="periodontograma-title">Periodontograma</h2>
+              <div className="paciente-info">
+                <p><strong>Paciente:</strong> {paciente.name} {paciente.lastname}</p>
+                <p><strong>Cédula:</strong> {paciente.ci}</p>
+              </div>
+              
+              {/* Botón de cambio de vista */}
+              <div className="vista-toggle-container">
+                <button
+                  type="button"
+                  className={`vista-toggle-btn ${vistaActual === 'vestibular' ? 'active' : ''}`}
+                  onClick={() => setVistaActual('vestibular')}
+                >
+                  Vista Vestibular
+                </button>
+                <button
+                  type="button"
+                  className={`vista-toggle-btn ${vistaActual === 'palatina' ? 'active' : ''}`}
+                  onClick={() => setVistaActual('palatina')}
+                >
+                  Vista Palatina
+                </button>
+              </div>
+            </div>
+
+            <div className="periodontograma-legend">
+              <div className="legend-item">
+                <div className="legend-color verde"></div>
+                <span>Profundidad 1-3mm</span>
+              </div>
+              <div className="legend-item">
+                <div className="legend-color rojo"></div>
+                <span>Profundidad 4+mm</span>
+              </div>
+              <div className="legend-item">
+                <div className="legend-color amarillo"></div>
+                <span>Sangrado</span>
+              </div>
+            </div>
+
+            <div className="periodontograma-dientes">
+              <div className="dientes-superiores">
+                <h3>Dientes Superiores</h3>
+                <div className="dientes-grid">
+                  {DIENTES_SUPERIORES.map(renderDiente)}
                 </div>
               </div>
 
-              <div className="periodontograma-legend">
-                <div className="legend-item">
-                  <div className="legend-color verde"></div>
-                  <span>Profundidad 1-3mm</span>
-                </div>
-                <div className="legend-item">
-                  <div className="legend-color rojo"></div>
-                  <span>Profundidad 4+mm</span>
-                </div>
-                <div className="legend-item">
-                  <div className="legend-color amarillo"></div>
-                  <span>Sangrado</span>
+              <div className="dientes-inferiores">
+                <h3>Dientes Inferiores</h3>
+                <div className="dientes-grid">
+                  {DIENTES_INFERIORES.map(renderDiente)}
                 </div>
               </div>
+            </div>
 
-              <div className="periodontograma-dientes">
-                <div className="dientes-superiores">
-                  <h3>Dientes Superiores</h3>
-                  <div className="dientes-grid">
-                    {DIENTES_SUPERIORES.map(renderDiente)}
-                  </div>
-                </div>
-
-                <div className="dientes-inferiores">
-                  <h3>Dientes Inferiores</h3>
-                  <div className="dientes-grid">
-                    {DIENTES_INFERIORES.map(renderDiente)}
-                  </div>
-                </div>
-              </div>
-
-              <div className="periodontograma-observaciones">
-                <label htmlFor="observaciones">Observaciones:</label>
-                <textarea
-                  id="observaciones"
-                  value={observaciones}
-                  onChange={(e) => setObservaciones(e.target.value)}
-                  rows="4"
-                  placeholder="Observaciones adicionales..."
-                ></textarea>
-              </div>
+            <div className="periodontograma-observaciones">
+              <label htmlFor="observaciones">Observaciones:</label>
+              <textarea
+                id="observaciones"
+                value={observaciones}
+                onChange={(e) => setObservaciones(e.target.value)}
+                rows="4"
+                placeholder="Observaciones adicionales..."
+              ></textarea>
             </div>
 
             <div className="periodontograma-actions">
