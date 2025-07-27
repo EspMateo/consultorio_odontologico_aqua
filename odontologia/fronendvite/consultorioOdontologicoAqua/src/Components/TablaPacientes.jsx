@@ -117,8 +117,12 @@ function TablaPacientes({ usuarioId }) {
     navigate(`/dashboard/pacientes/odontograma/${paciente.id}`, { state: { paciente } });
   };
 
-  const handlePeriodontograma = (paciente) => {
-    navigate(`/dashboard/pacientes/periodontograma/${paciente.id}`, { state: { paciente } });
+  const handlePeriodoncia = (paciente) => {
+    navigate(`/dashboard/pacientes/periodoncia/${paciente.id}`, { state: { paciente } });
+  };
+
+  const handlePresupuesto = (paciente) => {
+    navigate(`/dashboard/pacientes/presupuesto/${paciente.id}`, { state: { paciente } });
   };
 
   const handleDismissMessage = () => {
@@ -182,10 +186,16 @@ function TablaPacientes({ usuarioId }) {
                     Odontograma
                   </button>
                   <button 
-                    onClick={() => handlePeriodontograma(p)}
-                    className="btn-periodontograma"
+                    onClick={() => handlePeriodoncia(p)}
+                    className="btn-periodoncia"
                   >
-                    Periodontograma
+                    Periodoncia
+                  </button>
+                  <button 
+                    onClick={() => handlePresupuesto(p)}
+                    className="btn-presupuesto"
+                  >
+                    Presupuesto
                   </button>
                   <button 
                     onClick={() => handleEdit(p)}

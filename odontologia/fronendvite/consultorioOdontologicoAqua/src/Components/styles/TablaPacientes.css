@@ -84,7 +84,8 @@
 
 .btn-historia,
 .btn-odontograma,
-.btn-periodontograma,
+.btn-periodoncia,
+.btn-presupuesto,
 .btn-editar,
 .btn-eliminar {
   padding: 6px 12px;
@@ -114,13 +115,22 @@
   background-color: #7c3aed;
 }
 
-.btn-periodontograma {
+.btn-periodoncia {
   background-color: #f59e0b;
   color: white;
 }
 
-.btn-periodontograma:hover {
+.btn-periodoncia:hover {
   background-color: #d97706;
+}
+
+.btn-presupuesto {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn-presupuesto:hover {
+  background-color: #059669;
 }
 
 .btn-editar {
@@ -170,7 +180,8 @@
 
   .btn-historia,
   .btn-odontograma,
-  .btn-periodontograma,
+  .btn-periodoncia,
+  .btn-presupuesto,
   .btn-editar,
   .btn-eliminar {
     width: 100%;

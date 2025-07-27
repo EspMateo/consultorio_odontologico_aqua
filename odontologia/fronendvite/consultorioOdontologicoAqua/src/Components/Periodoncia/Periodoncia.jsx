@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { buildApiUrl } from '../../config';
 import './Periodoncia.css';
 
 const Periodoncia = () => {
   const navigate = useNavigate();
+  const { pacienteId } = useParams();
+  const location = useLocation();
+  const pacienteFromState = location.state?.paciente;
   
   // Estados principales
-  const [selectedPaciente, setSelectedPaciente] = useState('');
+  const [selectedPaciente, setSelectedPaciente] = useState(pacienteId || pacienteFromState?.id || '');
   const [pacientes, setPacientes] = useState([]);
   const [fechaRegistro, setFechaRegistro] = useState('');
   const [fechasDisponibles, setFechasDisponibles] = useState([]);
@@ -241,6 +244,14 @@ const Periodoncia = () => {
     }
   };
 
+  const handlePeriodontograma = () => {
+    if (selectedPaciente) {
+      navigate(`/dashboard/pacientes/periodontograma/${selectedPaciente}`, { 
+        state: { paciente: pacientes.find(p => p.id == selectedPaciente) } 
+      });
+    }
+  };
+
   const handleVolver = () => {
     navigate('/dashboard');
   };
@@ -461,6 +472,14 @@ const Periodoncia = () => {
                   {loading ? 'Modificando...' : 'Modificar'}
                 </button>
               )}
+
+              <button 
+                className="btn-periodontograma" 
+                onClick={handlePeriodontograma}
+                disabled={loading || !selectedPaciente}
+              >
+                Periodontograma
+              </button>
               
               <button 
                 className="btn-volver" 

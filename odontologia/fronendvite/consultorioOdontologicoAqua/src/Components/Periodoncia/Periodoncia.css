@@ -553,6 +553,7 @@
 
 .btn-guardar,
 .btn-modificar,
+.btn-periodontograma,
 .btn-volver {
   padding: 12px 24px;
   border: none;
@@ -584,6 +585,16 @@
   transform: translateY(-2px);
 }
 
+.btn-periodontograma {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-periodontograma:hover:not(:disabled) {
+  background: #138496;
+  transform: translateY(-2px);
+}
+
 .btn-volver {
   background: #6c757d;
   color: white;
@@ -596,6 +607,7 @@
 
 .btn-guardar:disabled,
 .btn-modificar:disabled,
+.btn-periodontograma:disabled,
 .btn-volver:disabled {
   opacity: 0.6;
   cursor: not-allowed;

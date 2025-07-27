@@ -23,7 +23,6 @@ const Dashboard = () => {
   const menuItems = [
     { id: 'inicio', label: 'Inicio', path: '' }, // Ruta por defecto para /dashboard
     { id: 'pacientes', label: 'Pacientes', path: 'pacientes' },
-    { id: 'periodoncia', label: 'Periodoncia', path: 'periodoncia' },
   ];
 
   // Determinar la pestaña activa basada en la ruta actual
@@ -33,8 +32,6 @@ const Dashboard = () => {
       setActiveTab('pacientes');
     } else if (path.includes('/dashboard/odontograma')) {
       setActiveTab('odontograma');
-    } else if (path.includes('/dashboard/periodoncia')) {
-      setActiveTab('periodoncia');
     } else if (path === '/dashboard' || path === '/dashboard/') {
       setActiveTab('inicio');
     }
