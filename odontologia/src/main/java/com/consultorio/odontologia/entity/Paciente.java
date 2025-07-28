@@ -56,6 +56,10 @@ public class Paciente {
     @JsonIgnore
     private List<Periodontograma> periodontogramas;
 
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Presupuesto> presupuestos;
+
     public Long getId() {
         return id;
     }

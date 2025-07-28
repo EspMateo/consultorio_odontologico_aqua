@@ -14,25 +14,17 @@ const Presupuesto = () => {
   const [selectedPaciente, setSelectedPaciente] = useState(pacienteId || pacienteFromState?.id || '');
   const [pacientes, setPacientes] = useState([]);
   const [fechaPresupuesto, setFechaPresupuesto] = useState('');
-  const [fechasDisponibles, setFechasDisponibles] = useState([]);
-  const [fechaSeleccionada, setFechaSeleccionada] = useState('');
+  const [presupuestos, setPresupuestos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [presupuestoActual, setPresupuestoActual] = useState(null);
-  const [isModifying, setIsModifying] = useState(false);
 
   // Estados para tratamientos
-  const [tratamientos, setTratamientos] = useState([
-    {
-      id: Date.now(),
-      nombre: '',
-      precio: 0,
-      abonado: 0,
-      pagado: false
-    }
-  ]);
+  const [tratamientos, setTratamientos] = useState([]);
   const [showCustomTreatment, setShowCustomTreatment] = useState(false);
   const [customTreatment, setCustomTreatment] = useState('');
+  const [expandedTratamientos, setExpandedTratamientos] = useState(new Set());
+
 
   // Opciones predefinidas de tratamientos
   const tratamientosPredefinidos = [
@@ -62,87 +54,59 @@ const Presupuesto = () => {
     }
   };
 
-  // Cargar fechas disponibles cuando se selecciona un paciente
+  // Cargar presupuestos cuando se selecciona un paciente
   useEffect(() => {
     if (selectedPaciente) {
-      cargarFechasDisponibles();
+      cargarPresupuestos();
     } else {
-      setFechasDisponibles([]);
-      setFechaSeleccionada('');
+      setPresupuestos([]);
     }
   }, [selectedPaciente]);
 
-  // Cargar datos cuando se selecciona una fecha
-  useEffect(() => {
-    if (selectedPaciente && fechaSeleccionada) {
-      cargarDatosPresupuesto();
-    }
-  }, [fechaSeleccionada]);
-
-  const cargarFechasDisponibles = async () => {
-    try {
-      // Por ahora simulamos fechas disponibles
-      // En el futuro esto vendría del backend
-      const fechas = ['2024-01-15', '2024-02-20', '2024-03-10'];
-      setFechasDisponibles(fechas);
-    } catch (error) {
-      console.error('Error al cargar fechas:', error);
-      setFechasDisponibles([]);
-    }
-  };
-
-  const cargarDatosPresupuesto = async () => {
+  const cargarPresupuestos = async () => {
     try {
       setLoading(true);
-      // Por ahora simulamos datos
-      // En el futuro esto vendría del backend
-      const data = {
-        id: 1,
-        tratamientos: [
-          { id: 1, nombre: 'Resina', precio: 50000, abonado: 30000, pagado: false },
-          { id: 2, nombre: 'Endodoncia', precio: 120000, abonado: 80000, pagado: false }
-        ]
-      };
+      const response = await axios.get(buildApiUrl(`presupuesto/paciente/${selectedPaciente}`));
+      setPresupuestos(response.data);
       
-      setTratamientos(data.tratamientos);
-      setPresupuestoActual(data);
-      setIsModifying(true);
+      // Si hay presupuestos, cargar automáticamente el primero
+      if (response.data && response.data.length > 0) {
+        const primerPresupuesto = response.data[0];
+        setPresupuestoActual(primerPresupuesto);
+        setTratamientos(primerPresupuesto.tratamientos || []);
+        setFechaPresupuesto(primerPresupuesto.fechaRegistro);
+        
+        // Expandir automáticamente todos los tratamientos
+        if (primerPresupuesto.tratamientos && primerPresupuesto.tratamientos.length > 0) {
+          const expandedIds = new Set(primerPresupuesto.tratamientos.map(t => t.id));
+          setExpandedTratamientos(expandedIds);
+        }
+      }
     } catch (error) {
-      console.error('Error al cargar datos:', error);
-      setMessage('Error al cargar datos de la fecha seleccionada');
-      limpiarDatos();
+      console.error('Error al cargar presupuestos:', error);
+      setPresupuestos([]);
     } finally {
       setLoading(false);
     }
   };
 
   const limpiarDatos = () => {
-    setTratamientos([
-      {
-        id: Date.now(),
-        nombre: '',
-        precio: 0,
-        abonado: 0,
-        pagado: false
-      }
-    ]);
+    setTratamientos([]);
     setPresupuestoActual(null);
-    setIsModifying(false);
     setShowCustomTreatment(false);
     setCustomTreatment('');
+    setExpandedTratamientos(new Set());
   };
 
   const handlePacienteChange = (pacienteId) => {
     setSelectedPaciente(pacienteId);
-    setFechaSeleccionada('');
     limpiarDatos();
   };
 
-  const handleFechaChange = (fecha) => {
-    setFechaSeleccionada(fecha);
-    if (fecha === '') {
-      limpiarDatos();
-    }
+  const handlePresupuestoSelect = (presupuesto) => {
+    setPresupuestoActual(presupuesto);
+    setTratamientos(presupuesto.tratamientos || []);
+    setFechaPresupuesto(presupuesto.fechaRegistro);
   };
 
   const handleAgregarTratamiento = () => {
@@ -154,6 +118,11 @@ const Presupuesto = () => {
       pagado: false
     };
     setTratamientos([...tratamientos, nuevoTratamiento]);
+    
+    // Expandir automáticamente el nuevo tratamiento
+    const newExpanded = new Set(expandedTratamientos);
+    newExpanded.add(nuevoTratamiento.id);
+    setExpandedTratamientos(newExpanded);
   };
 
   const handleEliminarTratamiento = (id) => {
@@ -164,6 +133,47 @@ const Presupuesto = () => {
     setTratamientos(tratamientos.map(t => 
       t.id === id ? { ...t, [campo]: valor } : t
     ));
+    
+    // Si es un campo de pago y hay un presupuesto actual, actualizar el pago
+    if (campo === 'abonado' && presupuestoActual) {
+      handlePagoChange(id, valor);
+    }
+  };
+
+  const handlePagoChange = async (tratamientoId, nuevoAbonado) => {
+    if (!presupuestoActual) return;
+    
+    // Verificar si el tratamiento ya existe en la base de datos (tiene un ID real)
+    const tratamiento = presupuestoActual.tratamientos?.find(t => t.id === tratamientoId);
+    
+    if (tratamiento && tratamiento.id > 1000) { // Los IDs de la BD son mayores a 1000
+      // Es un tratamiento existente, actualizar en la BD
+      try {
+        setLoading(true);
+        const response = await axios.put(
+          buildApiUrl(`presupuesto/${presupuestoActual.id}/tratamiento/${tratamientoId}/pago`),
+          { abonado: nuevoAbonado }
+        );
+        
+        // Actualizar el presupuesto actual con los nuevos datos
+        setPresupuestoActual(response.data.presupuesto);
+        setTratamientos(response.data.presupuesto.tratamientos);
+        
+        setMessage('Pago actualizado exitosamente');
+        setTimeout(() => setMessage(null), 3000);
+        
+      } catch (error) {
+        console.error('Error al actualizar pago:', error);
+        setMessage('Error al actualizar pago: ' + (error.response?.data?.error || error.message));
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Es un tratamiento nuevo, solo actualizar localmente
+      setTratamientos(tratamientos.map(t => 
+        t.id === tratamientoId ? { ...t, abonado: nuevoAbonado } : t
+      ));
+    }
   };
 
   const handleSelectTratamiento = (id, tratamientoSeleccionado) => {
@@ -180,6 +190,18 @@ const Presupuesto = () => {
       t.id === id ? { ...t, nombre: valor } : t
     ));
   };
+
+  const toggleTratamientoExpansion = (tratamientoId) => {
+    const newExpanded = new Set(expandedTratamientos);
+    if (newExpanded.has(tratamientoId)) {
+      newExpanded.delete(tratamientoId);
+    } else {
+      newExpanded.add(tratamientoId);
+    }
+    setExpandedTratamientos(newExpanded);
+  };
+
+
 
   const calcularTotalPresupuesto = () => {
     return tratamientos.reduce((total, t) => total + t.precio, 0);
@@ -214,13 +236,23 @@ const Presupuesto = () => {
         tratamientos: tratamientosValidos
       };
 
-      // Aquí iría la llamada al backend
-      console.log('Guardando presupuesto:', presupuestoData);
-      setMessage('Presupuesto guardado exitosamente');
+      let response;
+      
+      // Si hay un presupuesto actual (modo modificación)
+      if (presupuestoActual) {
+        response = await axios.put(buildApiUrl(`presupuesto/${presupuestoActual.id}`), presupuestoData);
+        setMessage('Presupuesto actualizado exitosamente');
+      } else {
+        // Si no hay presupuesto actual (modo creación)
+        response = await axios.post(buildApiUrl('presupuesto'), presupuestoData);
+        setMessage('Presupuesto creado exitosamente');
+      }
+      
+      console.log('Respuesta exitosa:', response.data);
       setTimeout(() => setMessage(null), 3000);
       
-      // Recargar fechas disponibles
-      await cargarFechasDisponibles();
+      // Recargar presupuestos
+      await cargarPresupuestos();
       
     } catch (error) {
       console.error('Error al guardar:', error);
@@ -230,32 +262,7 @@ const Presupuesto = () => {
     }
   };
 
-  const handleModificar = async () => {
-    if (!presupuestoActual) {
-      setMessage('No hay datos para modificar');
-      return;
-    }
 
-    setLoading(true);
-    try {
-      const presupuestoData = {
-        pacienteId: parseInt(selectedPaciente),
-        fechaRegistro: fechaPresupuesto,
-        tratamientos: tratamientos
-      };
-
-      // Aquí iría la llamada al backend
-      console.log('Modificando presupuesto:', presupuestoData);
-      setMessage('Presupuesto modificado exitosamente');
-      setTimeout(() => setMessage(null), 3000);
-      
-    } catch (error) {
-      console.error('Error al modificar:', error);
-      setMessage('Error al modificar: ' + (error.response?.data?.error || error.message));
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleVolver = () => {
     navigate('/dashboard');
@@ -297,22 +304,10 @@ const Presupuesto = () => {
               />
             </div>
 
-            <div className="form-group">
-              <label>Fechas Disponibles:</label>
-              <select 
-                value={fechaSeleccionada} 
-                onChange={(e) => handleFechaChange(e.target.value)}
-                className="form-select"
-              >
-                <option value="">Seleccionar fecha</option>
-                {fechasDisponibles.map(fecha => (
-                  <option key={fecha} value={fecha}>
-                    {new Date(fecha).toLocaleDateString()}
-                  </option>
-                ))}
-              </select>
-            </div>
+
           </div>
+
+
 
           {/* Gestión de Tratamientos */}
           <div className="tratamientos-section">
@@ -336,32 +331,56 @@ const Presupuesto = () => {
                   <div key={tratamiento.id} className="tratamiento-item">
                     <div className="tratamiento-header">
                       <h4>Tratamiento {index + 1}</h4>
-                      <button 
-                        className="btn-eliminar-tratamiento"
-                        onClick={() => handleEliminarTratamiento(tratamiento.id)}
-                      >
-                        ×
-                      </button>
+                      <div className="tratamiento-buttons">
+                        <button 
+                          className="btn-expandir-tratamiento"
+                          onClick={() => toggleTratamientoExpansion(tratamiento.id)}
+                          title={expandedTratamientos.has(tratamiento.id) ? "Minimizar" : "Expandir"}
+                        >
+                          {expandedTratamientos.has(tratamiento.id) ? '−' : '+'}
+                        </button>
+                        <button 
+                          className="btn-eliminar-tratamiento"
+                          onClick={() => handleEliminarTratamiento(tratamiento.id)}
+                        >
+                          ×
+                        </button>
+                      </div>
                     </div>
                     
-                    <div className="tratamiento-fields">
-                      <div className="form-group">
-                        <label>Tipo de Tratamiento:</label>
-                        <select 
-                          value={tratamiento.nombre}
-                          onChange={(e) => handleSelectTratamiento(tratamiento.id, e.target.value)}
-                          className="form-select"
-                        >
-                          <option value="">Seleccionar tratamiento</option>
-                          {tratamientosPredefinidos.map(t => (
-                            <option key={t.nombre} value={t.nombre}>
-                              {t.nombre} - ${t.precio.toLocaleString()}
-                            </option>
-                          ))}
-                          <option value="custom">Otro (escribir)</option>
-                        </select>
+                    <div className={`tratamiento-fields ${expandedTratamientos.has(tratamiento.id) ? 'expanded' : 'collapsed'}`}>
+                      {/* Fila 1: Tipo de tratamiento y Precio */}
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Tipo de Tratamiento:</label>
+                          <select 
+                            value={tratamiento.nombre}
+                            onChange={(e) => handleSelectTratamiento(tratamiento.id, e.target.value)}
+                            className="form-select"
+                          >
+                            <option value="">Seleccionar tratamiento</option>
+                            {tratamientosPredefinidos.map(t => (
+                              <option key={t.nombre} value={t.nombre}>
+                                {t.nombre} - ${t.precio.toLocaleString()}
+                              </option>
+                            ))}
+                            <option value="custom">Otro (escribir)</option>
+                          </select>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Precio ($):</label>
+                          <input
+                            type="number"
+                            value={tratamiento.precio}
+                            onChange={(e) => handleTratamientoChange(tratamiento.id, 'precio', parseInt(e.target.value) || 0)}
+                            className="form-input"
+                            min="0"
+                          />
+                        </div>
                       </div>
 
+                      {/* Tratamiento personalizado si es necesario */}
                       {tratamiento.nombre === 'custom' && (
                         <div className="form-group">
                           <label>Tratamiento Personalizado:</label>
@@ -375,39 +394,34 @@ const Presupuesto = () => {
                         </div>
                       )}
 
-                      <div className="form-group">
-                        <label>Precio ($):</label>
-                        <input
-                          type="number"
-                          value={tratamiento.precio}
-                          onChange={(e) => handleTratamientoChange(tratamiento.id, 'precio', parseInt(e.target.value) || 0)}
-                          className="form-input"
-                          min="0"
-                        />
-                      </div>
-
-                      <div className="form-group">
-                        <label>Abonado ($):</label>
-                        <input
-                          type="number"
-                          value={tratamiento.abonado}
-                          onChange={(e) => handleTratamientoChange(tratamiento.id, 'abonado', parseInt(e.target.value) || 0)}
-                          className="form-input"
-                          min="0"
-                        />
-                      </div>
-
-                      <div className="form-group checkbox-group">
-                        <label className="checkbox-label">
+                      {/* Fila 2: Abonado y Estado de pago */}
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Abonado ($):</label>
                           <input
-                            type="checkbox"
-                            checked={tratamiento.pagado}
-                            onChange={(e) => handleTratamientoChange(tratamiento.id, 'pagado', e.target.checked)}
-                            className="checkbox-input"
+                            type="number"
+                            value={tratamiento.abonado}
+                            onChange={(e) => {
+                              const nuevoAbonado = parseInt(e.target.value) || 0;
+                              handleTratamientoChange(tratamiento.id, 'abonado', nuevoAbonado);
+                            }}
+                            className="form-input"
+                            min="0"
                           />
-                          <span className="checkbox-custom"></span>
-                          Pagado completamente
-                        </label>
+                        </div>
+
+                        <div className="form-group pagado-group">
+                          <label>Estado de Pago:</label>
+                          <div className="pagado-buttons">
+                            <button
+                              type="button"
+                              className={`btn-pagado ${tratamiento.pagado ? 'pagado' : 'no-pagado'}`}
+                              onClick={() => handleTratamientoChange(tratamiento.id, 'pagado', !tratamiento.pagado)}
+                            >
+                              {tratamiento.pagado ? '✓ Pagado' : '○ Pendiente'}
+                            </button>
+                          </div>
+                        </div>
                       </div>
 
                       <div className="tratamiento-deuda">
@@ -416,6 +430,27 @@ const Presupuesto = () => {
                           ${(tratamiento.precio - tratamiento.abonado).toLocaleString()}
                         </span>
                       </div>
+
+                      {/* Información de fechas - solo mostrar si hay datos reales */}
+                      {tratamiento.fechaCreacion && (
+                        <div className="tratamiento-fechas">
+                          <div className="fecha-info">
+                            <span className="fecha-label">Creado: </span>
+                            <span className="fecha-valor">
+                              {new Date(tratamiento.fechaCreacion).toLocaleString()}
+                            </span>
+                          </div>
+                          {tratamiento.fechaUltimaActualizacion && 
+                           tratamiento.fechaUltimaActualizacion !== tratamiento.fechaCreacion && (
+                            <div className="fecha-info">
+                              <span className="fecha-label">Última actualización: </span>
+                              <span className="fecha-valor">
+                                {new Date(tratamiento.fechaUltimaActualizacion).toLocaleString()}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -455,23 +490,13 @@ const Presupuesto = () => {
             )}
             
             <div className="botones-container">
-                              <button 
-                  className="btn-guardar" 
-                  onClick={handleGuardar}
-                  disabled={loading || !selectedPaciente}
-                >
-                  {loading ? 'Guardando...' : 'Guardar'}
-                </button>
-              
-              {isModifying && (
-                <button 
-                  className="btn-modificar" 
-                  onClick={handleModificar}
-                  disabled={loading}
-                >
-                  {loading ? 'Modificando...' : 'Modificar'}
-                </button>
-              )}
+              <button 
+                className="btn-guardar" 
+                onClick={handleGuardar}
+                disabled={loading || !selectedPaciente}
+              >
+                {loading ? 'Guardando...' : (presupuestoActual ? 'Actualizar' : 'Guardar')}
+              </button>
               
               <button 
                 className="btn-volver" 

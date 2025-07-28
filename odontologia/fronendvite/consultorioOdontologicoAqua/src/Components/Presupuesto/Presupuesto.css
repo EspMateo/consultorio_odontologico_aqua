@@ -59,13 +59,15 @@
 
 .form-select,
 .form-input {
-  padding: 10px 14px;
+  padding: 8px 12px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
-  font-size: 0.95em;
+  font-size: 0.9em;
   font-family: inherit;
   transition: border-color 0.3s ease;
   background: white;
+  max-width: 200px;
+  width: 100%;
 }
 
 .form-select:focus,
@@ -139,7 +141,7 @@
   background: #f8f9fa;
   border: 2px solid #e9ecef;
   border-radius: 12px;
-  padding: 20px;
+  padding: 15px;
   position: relative;
 }
 
@@ -147,9 +149,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #dee2e6;
+}
+
+.tratamiento-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .tratamiento-header h4 {
@@ -180,73 +188,115 @@
   transform: scale(1.1);
 }
 
-.tratamiento-fields {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-/* Estilos para checkbox personalizado */
-.checkbox-group {
-  display: flex;
-  align-items: center;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  font-weight: 500;
-  color: #333;
-}
-
-.checkbox-input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.checkbox-custom {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #ddd;
-  border-radius: 4px;
-  background: white;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.checkbox-label:hover .checkbox-custom {
-  border-color: #667eea;
-}
-
-.checkbox-input:checked + .checkbox-custom {
-  border-color: #667eea;
-  background: #667eea;
-}
-
-.checkbox-input:checked + .checkbox-custom::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.btn-expandir-tratamiento {
+  background: #6c757d;
   color: white;
-  font-size: 12px;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.btn-expandir-tratamiento:hover {
+  background: #5a6268;
+  transform: scale(1.1);
+}
+
+.tratamiento-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.tratamiento-fields .form-row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.tratamiento-fields .form-group {
+  flex: 1;
+  min-width: 180px;
+  max-width: 220px;
+}
+
+.tratamiento-fields.collapsed {
+  display: none;
+}
+
+.tratamiento-fields.expanded {
+  display: grid;
+}
+
+/* Estilos para estado de pago */
+.pagado-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pagado-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-pagado {
+  padding: 6px 12px;
+  border: 2px solid;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  width: 100%;
+}
+
+.btn-pagado.pagado {
+  background: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.btn-pagado.pagado:hover {
+  background: #218838;
+  border-color: #218838;
+  transform: translateY(-1px);
+}
+
+.btn-pagado.no-pagado {
+  background: white;
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.btn-pagado.no-pagado:hover {
+  background: #dc3545;
+  color: white;
+  transform: translateY(-1px);
 }
 
 /* Estilos para deuda por tratamiento */
 .tratamiento-deuda {
-  grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
+  gap: 8px;
+  padding: 6px 10px;
   background: white;
   border-radius: 6px;
   border: 1px solid #e9ecef;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .deuda-label {
@@ -267,49 +317,131 @@
   color: #28a745;
 }
 
+/* Estilos para fechas de tratamientos */
+.tratamiento-fechas {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+  margin-top: 6px;
+}
+
+.fecha-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+}
+
+.fecha-label {
+  font-weight: 600;
+  color: #666;
+  min-width: 120px;
+}
+
+.fecha-valor {
+  color: #333;
+  font-family: 'Courier New', monospace;
+}
+
+
+
+.tratamiento-resumen {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.tratamiento-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.tratamiento-nombre {
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  min-width: 150px;
+}
+
+.tratamiento-precio {
+  font-weight: bold;
+  color: #28a745;
+}
+
+.tratamiento-abonado {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.tratamiento-deuda {
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.tratamiento-fechas-resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+  font-size: 0.8em;
+  color: #666;
+}
+
 /* Estilos para el resumen */
 .resumen-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
 }
 
 .resumen-section h3 {
   color: #333;
-  margin-bottom: 20px;
-  font-size: 1.2em;
+  margin-bottom: 15px;
+  font-size: 1.1em;
   font-weight: 500;
   text-align: center;
 }
 
 .resumen-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  max-width: 1000px;
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
 .resumen-item {
   background: white;
-  border: 2px solid #e9ecef;
-  border-radius: 10px;
-  padding: 20px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px 16px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  flex: 1;
 }
 
 .resumen-label {
   display: block;
   font-weight: 600;
   color: #666;
-  margin-bottom: 8px;
-  font-size: 0.9em;
+  margin-bottom: 4px;
+  font-size: 0.8em;
 }
 
 .resumen-valor {
   display: block;
-  font-size: 1.4em;
+  font-size: 1.1em;
   font-weight: bold;
   color: #333;
 }
@@ -437,12 +569,31 @@
     justify-content: center;
   }
 
-  .tratamiento-fields {
-    grid-template-columns: 1fr;
+  .tratamiento-fields .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .tratamiento-fields .form-group {
+    min-width: auto;
+  }
+
+
+
+
+
+  .tratamiento-info {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .resumen-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .resumen-item {
+    padding: 10px 12px;
   }
 
   .botones-container {
@@ -472,6 +623,7 @@
   .form-input {
     padding: 8px 10px;
     font-size: 0.9em;
+    max-width: 200px;
   }
 
   .tratamiento-item {
