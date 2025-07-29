@@ -17,9 +17,11 @@
 	<name>consultorio-odontologico-aqua</name>
 	<description>Consultorio odontologico Aqua ATI</description>
 
-	<properties>
-		<java.version>17</java.version>
-	</properties>
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+    </properties>
 
 	<dependencies>
 		<!-- Spring Boot Web -->
