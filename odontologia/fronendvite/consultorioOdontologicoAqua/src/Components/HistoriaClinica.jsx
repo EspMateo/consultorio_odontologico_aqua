@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { buildApiUrl } from '../config';
 import './styles/HistoriaClinica.css';
+import PlanTratamiento from './PlanTratamiento';
 
 const HistoriaClinica = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const HistoriaClinica = () => {
   const [messageType, setMessageType] = useState('info'); // 'success', 'error', 'info'
   const [historiaActual, setHistoriaActual] = useState(null);
   const [isModifying, setIsModifying] = useState(false);
+  const [showPlanTratamiento, setShowPlanTratamiento] = useState(false);
 
   // Función para mostrar mensajes
   const showMessage = (msg, type = 'info', duration = 5000) => {
@@ -565,6 +567,14 @@ const HistoriaClinica = () => {
     navigate('/dashboard');
   };
 
+  const handlePlanTratamiento = () => {
+    setShowPlanTratamiento(true);
+  };
+
+  const handleClosePlanTratamiento = () => {
+    setShowPlanTratamiento(false);
+  };
+
   return (
     <div className="historia-clinica-container">
       <div className="historia-clinica-header">
@@ -628,6 +638,19 @@ const HistoriaClinica = () => {
               </select>
             </div>
           </div>
+
+          {/* Botón Plan de Tratamiento */}
+          {pacienteSeleccionado && (
+            <div className="plan-tratamiento-section">
+              <button 
+                className="btn-plan-tratamiento"
+                onClick={handlePlanTratamiento}
+                disabled={loading}
+              >
+                📋 Plan de Tratamiento
+              </button>
+            </div>
+          )}
 
           {/* Información Personal */}
           <div className="section">
@@ -1248,6 +1271,14 @@ const HistoriaClinica = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal Plan de Tratamiento */}
+      {showPlanTratamiento && (
+        <PlanTratamiento 
+          paciente={pacienteSeleccionado}
+          onClose={handleClosePlanTratamiento}
+        />
+      )}
     </div>
   );
 };
