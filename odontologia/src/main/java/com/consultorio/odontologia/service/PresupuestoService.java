@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -109,7 +110,7 @@ public class PresupuestoService {
     }
 
     // Actualizar pago de un tratamiento específico
-    public PresupuestoDTO actualizarPagoTratamiento(Long presupuestoId, Long tratamientoId, Integer nuevoAbonado) {
+    public PresupuestoDTO actualizarPagoTratamiento(Long presupuestoId, Long tratamientoId, BigDecimal nuevoAbonado) {
         Presupuesto presupuesto = presupuestoRepository.findById(presupuestoId)
                 .orElseThrow(() -> new RuntimeException("Presupuesto no encontrado"));
         
@@ -122,6 +123,11 @@ public class PresupuestoService {
         
         Presupuesto presupuestoActualizado = presupuestoRepository.save(presupuesto);
         return convertirADTO(presupuestoActualizado);
+    }
+
+    // Método sobrecargado para compatibilidad con Integer
+    public PresupuestoDTO actualizarPagoTratamiento(Long presupuestoId, Long tratamientoId, Integer nuevoAbonado) {
+        return actualizarPagoTratamiento(presupuestoId, tratamientoId, BigDecimal.valueOf(nuevoAbonado));
     }
 
     // Eliminar presupuesto
@@ -163,5 +169,31 @@ public class PresupuestoService {
         dto.setFechaCreacion(tratamiento.getFechaCreacion());
         dto.setFechaUltimaActualizacion(tratamiento.getFechaUltimaActualizacion());
         return dto;
+    }
+
+    // Calcular total de ingresos por rango de fechas
+    public BigDecimal calcularTotalIngresosPorFecha(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Presupuesto> presupuestos = presupuestoRepository.findByFechaRegistroBetween(fechaInicio, fechaFin);
+        return presupuestos.stream()
+                .flatMap(p -> p.getTratamientos().stream())
+                .map(TratamientoPresupuesto::getAbonado)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    // Calcular total de ingresos pendientes por rango de fechas
+    public BigDecimal calcularTotalIngresosPendientesPorFecha(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Presupuesto> presupuestos = presupuestoRepository.findByFechaRegistroBetween(fechaInicio, fechaFin);
+        return presupuestos.stream()
+                .flatMap(p -> p.getTratamientos().stream())
+                .map(tratamiento -> tratamiento.getPrecio().subtract(tratamiento.getAbonado()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    // Obtener presupuestos por rango de fechas
+    public List<PresupuestoDTO> obtenerPresupuestosPorFecha(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Presupuesto> presupuestos = presupuestoRepository.findByFechaRegistroBetween(fechaInicio, fechaFin);
+        return presupuestos.stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
     }
 } 

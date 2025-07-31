@@ -56,4 +56,36 @@ public class Presupuesto {
         }
         tratamiento.setPresupuesto(null);
     }
-} 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public List<TratamientoPresupuesto> getTratamientos() {
+        return tratamientos;
+    }
+
+    public void setTratamientos(List<TratamientoPresupuesto> tratamientos) {
+        this.tratamientos = tratamientos;
+    }
+}

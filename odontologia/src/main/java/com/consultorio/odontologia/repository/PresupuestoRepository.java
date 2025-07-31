@@ -28,4 +28,7 @@ public interface PresupuestoRepository extends JpaRepository<Presupuesto, Long> 
 
     // Contar presupuestos por paciente
     long countByPacienteId(Long pacienteId);
+
+    // Buscar presupuestos por rango de fechas
+    List<Presupuesto> findByFechaRegistroBetween(LocalDate fechaInicio, LocalDate fechaFin);
 } 

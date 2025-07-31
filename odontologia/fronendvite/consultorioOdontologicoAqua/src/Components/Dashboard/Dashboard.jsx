@@ -23,6 +23,7 @@ const Dashboard = () => {
   const menuItems = [
     { id: 'inicio', label: 'Inicio', path: '' }, // Ruta por defecto para /dashboard
     { id: 'pacientes', label: 'Pacientes', path: 'pacientes' },
+    { id: 'control-financiero', label: 'Control Financiero', path: 'control-financiero' },
   ];
 
   // Determinar la pestaña activa basada en la ruta actual
@@ -30,6 +31,8 @@ const Dashboard = () => {
     const path = location.pathname;
     if (path.includes('/dashboard/pacientes')) {
       setActiveTab('pacientes');
+    } else if (path.includes('/dashboard/control-financiero')) {
+      setActiveTab('control-financiero');
     } else if (path.includes('/dashboard/odontograma')) {
       setActiveTab('odontograma');
     } else if (path === '/dashboard' || path === '/dashboard/') {

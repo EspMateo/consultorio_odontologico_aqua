@@ -11,6 +11,7 @@ import Odontograma from './Components/Odontograma/Odontograma';
 import Periodoncia from './Components/Periodoncia/Periodoncia';
 import Periodontograma from './Components/Periodontograma/Periodontograma';
 import Presupuesto from './Components/Presupuesto/Presupuesto';
+import ControlFinanciero from './Components/ControlFinanciero/ControlFinanciero';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="pacientes/periodontograma/:id" element={<Periodontograma />} />
           <Route path="pacientes/periodoncia/:id" element={<Periodoncia />} />
           <Route path="pacientes/presupuesto/:id" element={<Presupuesto />} />
+          <Route path="control-financiero" element={<ControlFinanciero />} />
         </Route>
       </Routes>
     </Router>

@@ -308,7 +308,6 @@ const Presupuesto = () => {
           </div>
 
 
-
           {/* Gestión de Tratamientos */}
           <div className="tratamientos-section">
             <div className="tratamientos-header">

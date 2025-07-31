@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,29 +23,77 @@ public class PresupuestoDTO {
     private List<TratamientoPresupuestoDTO> tratamientos;
 
     // Métodos para calcular totales
-    public Integer getTotalPresupuesto() {
+    public BigDecimal getTotalPresupuesto() {
         if (tratamientos == null || tratamientos.isEmpty()) {
-            return 0;
+            return BigDecimal.ZERO;
         }
         return tratamientos.stream()
-                .mapToInt(TratamientoPresupuestoDTO::getPrecio)
-                .sum();
+                .map(TratamientoPresupuestoDTO::getPrecio)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public Integer getTotalAbonado() {
+    public BigDecimal getTotalAbonado() {
         if (tratamientos == null || tratamientos.isEmpty()) {
-            return 0;
+            return BigDecimal.ZERO;
         }
         return tratamientos.stream()
-                .mapToInt(TratamientoPresupuestoDTO::getAbonado)
-                .sum();
+                .map(TratamientoPresupuestoDTO::getAbonado)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public Integer getDeudaTotal() {
-        return getTotalPresupuesto() - getTotalAbonado();
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getPacienteId() {
+        return pacienteId;
+    }
+
+    public void setPacienteId(Long pacienteId) {
+        this.pacienteId = pacienteId;
+    }
+
+    public String getPacienteNombre() {
+        return pacienteNombre;
+    }
+
+    public void setPacienteNombre(String pacienteNombre) {
+        this.pacienteNombre = pacienteNombre;
+    }
+
+    public String getPacienteApellido() {
+        return pacienteApellido;
+    }
+
+    public void setPacienteApellido(String pacienteApellido) {
+        this.pacienteApellido = pacienteApellido;
+    }
+
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDate fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public List<TratamientoPresupuestoDTO> getTratamientos() {
+        return tratamientos;
+    }
+
+    public void setTratamientos(List<TratamientoPresupuestoDTO> tratamientos) {
+        this.tratamientos = tratamientos;
+    }
+
+    public BigDecimal getDeudaTotal() {
+        return getTotalPresupuesto().subtract(getTotalAbonado());
     }
 
     public Boolean isCompletamentePagado() {
-        return getDeudaTotal() <= 0;
+        return getDeudaTotal().compareTo(BigDecimal.ZERO) <= 0;
     }
 } 
