@@ -34,6 +34,16 @@ public class CitaController {
         return ResponseEntity.ok(citas);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Cita> actualizarCita(@PathVariable Long id, @RequestBody CitaDTO citaDTO) {
+        try {
+            Cita cita = citaService.actualizarCita(id, citaDTO);
+            return ResponseEntity.ok(cita);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarCita(@PathVariable Long id) {
         try {

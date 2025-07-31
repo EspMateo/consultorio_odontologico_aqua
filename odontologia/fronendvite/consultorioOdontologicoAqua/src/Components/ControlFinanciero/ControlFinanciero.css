@@ -138,42 +138,80 @@
   color: #dc3545;
 }
 
-/* Pestañas */
-.tabs-container {
+
+
+/* Overlay del modal */
+.gasto-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  gap: 8px;
-  margin-bottom: 25px;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
 }
 
-.tab-btn {
-  padding: 12px 24px;
-  border: none;
-  background: #f8f9fa;
-  color: #555;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-.tab-btn:hover {
-  background: #e9ecef;
-}
-
-.tab-btn.active {
-  background: #667eea;
-  color: white;
-}
-
-/* Contenido de pestañas */
-.tab-content {
+/* Modal principal */
+.gasto-modal {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
   overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
 }
 
+/* Header del modal */
+.gasto-modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gasto-modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.btn-cerrar {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.btn-cerrar:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* Contenido del modal */
+.gasto-modal-content {
+  padding: 2rem;
+  max-height: calc(90vh - 120px);
+  overflow-y: auto;
+}
+
+/* Actualizar el header de la sección para incluir el botón */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -190,21 +228,18 @@
   font-weight: 600;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .periodo {
   font-size: 0.9rem;
   color: #666;
 }
 
-.header-stats {
-  display: flex;
-  gap: 20px;
-  font-size: 0.9rem;
-  color: #666;
-}
 
-.header-stats span {
-  font-weight: 500;
-}
 
 .btn-agregar {
   padding: 8px 16px;
@@ -291,7 +326,11 @@
 
 /* Resumen section */
 .resumen-section {
-  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 25px;
 }
 
 .resumen-tables {
@@ -308,22 +347,11 @@
   font-weight: 600;
 }
 
-/* Formulario de gasto */
-.gasto-form {
-  padding: 20px;
-  border-bottom: 1px solid #e0e0e0;
-  background: #f8f9fa;
-}
 
-.gasto-form h3 {
-  margin: 0 0 15px 0;
-  color: #333;
-  font-size: 1.1rem;
-}
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
   margin-bottom: 15px;
 }
@@ -400,7 +428,7 @@
   transition: background 0.3s ease;
 }
 
-.btn-guardar:hover {
+.btn-guardar:hover:not(:disabled) {
   background: #5a6fd8;
 }
 
@@ -477,6 +505,27 @@
   color: #333;
 }
 
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .resumen-tables {
@@ -529,9 +578,39 @@
     gap: 10px;
   }
 
-  .header-stats {
+  .gasto-modal {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .gasto-modal-content {
+    padding: 1rem;
+  }
+  
+  .form-actions {
     flex-direction: column;
-    gap: 5px;
+  }
+  
+  .btn-guardar,
+  .btn-cancelar {
+    width: 100%;
+  }
+  
+  .gasto-modal-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
   }
 }
 

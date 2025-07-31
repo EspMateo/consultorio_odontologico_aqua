@@ -5,8 +5,8 @@ import './ControlFinanciero.css';
 
 const ControlFinanciero = () => {
   // Estados principales
-  const [activeTab, setActiveTab] = useState('resumen');
   const [loading, setLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
   // Estados para filtros
@@ -136,8 +136,14 @@ const ControlFinanciero = () => {
   };
 
   const handleCrearGasto = async () => {
+    // Validar campos obligatorios
+    if (!nuevoGasto.descripcion || !nuevoGasto.precio) {
+      setMessage('Por favor complete los campos obligatorios (Descripción y Precio)');
+      return;
+    }
+
     try {
-      setLoading(true);
+      setFormLoading(true);
       const gastoData = {
         ...nuevoGasto,
         precio: parseFloat(nuevoGasto.precio),
@@ -166,7 +172,7 @@ const ControlFinanciero = () => {
       console.error('Error al crear gasto:', error);
       setMessage('Error al registrar el gasto');
     } finally {
-      setLoading(false);
+      setFormLoading(false);
     }
   };
 
@@ -224,6 +230,19 @@ const ControlFinanciero = () => {
 
   const formatearFecha = (fecha) => {
     return new Date(fecha).toLocaleDateString('es-CO');
+  };
+
+  const handleCancelarGasto = () => {
+    setShowGastoForm(false);
+    setNuevoGasto({
+      descripcion: '',
+      precio: '',
+      cantidad: 1,
+      fechaGasto: new Date().toISOString().split('T')[0],
+      categoria: '',
+      proveedor: '',
+      observaciones: ''
+    });
   };
 
   return (
@@ -298,115 +317,24 @@ const ControlFinanciero = () => {
         </div>
       </div>
 
-      {/* Pestañas */}
-      <div className="tabs-container">
-        <button 
-          className={`tab-btn ${activeTab === 'resumen' ? 'active' : ''}`}
-          onClick={() => setActiveTab('resumen')}
-        >
-          Resumen General
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'ingresos' ? 'active' : ''}`}
-          onClick={() => setActiveTab('ingresos')}
-        >
-          Ingresos
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'gastos' ? 'active' : ''}`}
-          onClick={() => setActiveTab('gastos')}
-        >
-          Gastos
-        </button>
-      </div>
-
-      {/* Contenido de las pestañas */}
-      <div className="tab-content">
-        {activeTab === 'resumen' && (
-          <div className="resumen-section">
-            <div className="section-header">
-              <h2>Resumen Financiero</h2>
-              <span className="periodo">Período: {formatearFecha(fechaInicio)} - {formatearFecha(fechaFin)}</span>
-            </div>
-
-            <div className="resumen-tables">
-              <div className="table-section">
-                <h3>Últimos Ingresos</h3>
-                <div className="table-container">
-                  <table className="data-table">
-                    <thead>
-                      <tr>
-                        <th>Paciente</th>
-                        <th>Fecha</th>
-                        <th>Tratamiento</th>
-                        <th>Precio</th>
-                        <th>Abonado</th>
-                        <th>Estado</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {ingresos.slice(0, 5).map((presupuesto) => 
-                        presupuesto.tratamientos?.map((tratamiento, index) => (
-                          <tr key={`${presupuesto.id}-${index}`}>
-                            <td>{presupuesto.pacienteNombre} {presupuesto.pacienteApellido}</td>
-                            <td>{formatearFecha(presupuesto.fechaRegistro)}</td>
-                            <td>{tratamiento.nombre}</td>
-                            <td>{formatearMoneda(tratamiento.precio)}</td>
-                            <td>{formatearMoneda(tratamiento.abonado)}</td>
-                            <td>
-                              <span className={`estado-badge ${tratamiento.pagado ? 'pagado' : 'pendiente'}`}>
-                                {tratamiento.pagado ? 'Pagado' : 'Pendiente'}
-                              </span>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="table-section">
-                <h3>Últimos Gastos</h3>
-                <div className="table-container">
-                  <table className="data-table">
-                    <thead>
-                      <tr>
-                        <th>Descripción</th>
-                        <th>Fecha</th>
-                        <th>Categoría</th>
-                        <th>Proveedor</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {gastos.slice(0, 5).map((gasto) => (
-                        <tr key={gasto.id}>
-                          <td>{gasto.descripcion}</td>
-                          <td>{formatearFecha(gasto.fechaGasto)}</td>
-                          <td>{gasto.categoria}</td>
-                          <td>{gasto.proveedor}</td>
-                          <td>{formatearMoneda(gasto.total)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+      {/* Vista de Resumen General */}
+      <div className="resumen-section">
+        <div className="section-header">
+          <h2>Resumen Financiero</h2>
+          <div className="header-actions">
+            <span className="periodo">Período: {formatearFecha(fechaInicio)} - {formatearFecha(fechaFin)}</span>
+            <button 
+              className="btn-agregar"
+              onClick={() => setShowGastoForm(true)}
+            >
+              + Registrar Gasto
+            </button>
           </div>
-        )}
+        </div>
 
-        {activeTab === 'ingresos' && (
-          <div className="ingresos-section">
-            <div className="section-header">
-              <h2>Historial de Ingresos</h2>
-              <div className="header-stats">
-                <span>Total: {formatearMoneda(resumen.totalIngresos)}</span>
-                <span>Pendientes: {formatearMoneda(resumen.totalPendientes)}</span>
-              </div>
-            </div>
-
+        <div className="resumen-tables">
+          <div className="table-section">
+            <h3>Últimos Ingresos</h3>
             <div className="table-container">
               <table className="data-table">
                 <thead>
@@ -416,12 +344,11 @@ const ControlFinanciero = () => {
                     <th>Tratamiento</th>
                     <th>Precio</th>
                     <th>Abonado</th>
-                    <th>Pendiente</th>
                     <th>Estado</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {ingresos.map((presupuesto) => 
+                  {ingresos.slice(0, 5).map((presupuesto) => 
                     presupuesto.tratamientos?.map((tratamiento, index) => (
                       <tr key={`${presupuesto.id}-${index}`}>
                         <td>{presupuesto.pacienteNombre} {presupuesto.pacienteApellido}</td>
@@ -429,7 +356,6 @@ const ControlFinanciero = () => {
                         <td>{tratamiento.nombre}</td>
                         <td>{formatearMoneda(tratamiento.precio)}</td>
                         <td>{formatearMoneda(tratamiento.abonado)}</td>
-                        <td>{formatearMoneda(tratamiento.precio - tratamiento.abonado)}</td>
                         <td>
                           <span className={`estado-badge ${tratamiento.pagado ? 'pagado' : 'pendiente'}`}>
                             {tratamiento.pagado ? 'Pagado' : 'Pendiente'}
@@ -442,110 +368,9 @@ const ControlFinanciero = () => {
               </table>
             </div>
           </div>
-        )}
 
-        {activeTab === 'gastos' && (
-          <div className="gastos-section">
-            <div className="section-header">
-              <h2>Historial de Gastos</h2>
-              <button 
-                className="btn-agregar"
-                onClick={() => setShowGastoForm(true)}
-              >
-                + Registrar Gasto
-              </button>
-            </div>
-
-            {/* Formulario de nuevo gasto */}
-            {showGastoForm && (
-              <div className="gasto-form">
-                <h3>Registrar Nuevo Gasto</h3>
-                <div className="form-grid">
-                  <div className="form-group">
-                    <label>Descripción:</label>
-                    <input
-                      type="text"
-                      value={nuevoGasto.descripcion}
-                      onChange={(e) => setNuevoGasto({...nuevoGasto, descripcion: e.target.value})}
-                      placeholder="Descripción del gasto"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Precio:</label>
-                    <input
-                      type="number"
-                      value={nuevoGasto.precio}
-                      onChange={(e) => setNuevoGasto({...nuevoGasto, precio: e.target.value})}
-                      placeholder="0"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Cantidad:</label>
-                    <input
-                      type="number"
-                      value={nuevoGasto.cantidad}
-                      onChange={(e) => setNuevoGasto({...nuevoGasto, cantidad: e.target.value})}
-                      min="1"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Fecha:</label>
-                    <input
-                      type="date"
-                      value={nuevoGasto.fechaGasto}
-                      onChange={(e) => setNuevoGasto({...nuevoGasto, fechaGasto: e.target.value})}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Categoría:</label>
-                    <select
-                      value={nuevoGasto.categoria}
-                      onChange={(e) => setNuevoGasto({...nuevoGasto, categoria: e.target.value})}
-                    >
-                      <option value="">Seleccionar categoría</option>
-                      <option value="Materiales">Materiales</option>
-                      <option value="Equipos">Equipos</option>
-                      <option value="Suministros">Suministros</option>
-                      <option value="Servicios">Servicios</option>
-                      <option value="Otros">Otros</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>Proveedor:</label>
-                    <input
-                      type="text"
-                      value={nuevoGasto.proveedor}
-                      onChange={(e) => setNuevoGasto({...nuevoGasto, proveedor: e.target.value})}
-                      placeholder="Nombre del proveedor"
-                    />
-                  </div>
-                </div>
-                <div className="form-group full-width">
-                  <label>Observaciones:</label>
-                  <textarea
-                    value={nuevoGasto.observaciones}
-                    onChange={(e) => setNuevoGasto({...nuevoGasto, observaciones: e.target.value})}
-                    placeholder="Observaciones adicionales..."
-                  />
-                </div>
-                <div className="form-actions">
-                  <button 
-                    className="btn-cancelar"
-                    onClick={() => setShowGastoForm(false)}
-                  >
-                    Cancelar
-                  </button>
-                  <button 
-                    className="btn-guardar"
-                    onClick={handleCrearGasto}
-                    disabled={loading || !nuevoGasto.descripcion || !nuevoGasto.precio}
-                  >
-                    {loading ? 'Guardando...' : 'Registrar Gasto'}
-                  </button>
-                </div>
-              </div>
-            )}
-
+          <div className="table-section">
+            <h3>Últimos Gastos</h3>
             <div className="table-container">
               <table className="data-table">
                 <thead>
@@ -554,21 +379,17 @@ const ControlFinanciero = () => {
                     <th>Fecha</th>
                     <th>Categoría</th>
                     <th>Proveedor</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
                     <th>Total</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {gastos.map((gasto) => (
+                  {gastos.slice(0, 5).map((gasto) => (
                     <tr key={gasto.id}>
                       <td>{gasto.descripcion}</td>
                       <td>{formatearFecha(gasto.fechaGasto)}</td>
                       <td>{gasto.categoria}</td>
                       <td>{gasto.proveedor}</td>
-                      <td>{formatearMoneda(gasto.precio)}</td>
-                      <td>{gasto.cantidad}</td>
                       <td>{formatearMoneda(gasto.total)}</td>
                       <td>
                         <button 
@@ -585,8 +406,108 @@ const ControlFinanciero = () => {
               </table>
             </div>
           </div>
-        )}
+        </div>
       </div>
+
+      {/* Modal para nuevo gasto */}
+      {showGastoForm && (
+        <div className="gasto-modal-overlay">
+          <div className="gasto-modal">
+            <div className="gasto-modal-header">
+              <h3>Registrar Nuevo Gasto</h3>
+              <button className="btn-cerrar" onClick={handleCancelarGasto}>
+                ×
+              </button>
+            </div>
+
+            <div className="gasto-modal-content">
+              <div className="form-grid">
+                <div className="form-group">
+                  <label>Descripción:</label>
+                  <input
+                    type="text"
+                    value={nuevoGasto.descripcion}
+                    onChange={(e) => setNuevoGasto({...nuevoGasto, descripcion: e.target.value})}
+                    placeholder="Descripción del gasto"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Precio:</label>
+                  <input
+                    type="number"
+                    value={nuevoGasto.precio}
+                    onChange={(e) => setNuevoGasto({...nuevoGasto, precio: e.target.value})}
+                    placeholder="0"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Cantidad:</label>
+                  <input
+                    type="number"
+                    value={nuevoGasto.cantidad}
+                    onChange={(e) => setNuevoGasto({...nuevoGasto, cantidad: e.target.value})}
+                    min="1"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Fecha:</label>
+                  <input
+                    type="date"
+                    value={nuevoGasto.fechaGasto}
+                    onChange={(e) => setNuevoGasto({...nuevoGasto, fechaGasto: e.target.value})}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Categoría:</label>
+                  <select
+                    value={nuevoGasto.categoria}
+                    onChange={(e) => setNuevoGasto({...nuevoGasto, categoria: e.target.value})}
+                  >
+                    <option value="">Seleccionar categoría</option>
+                    <option value="Materiales">Materiales</option>
+                    <option value="Equipos">Equipos</option>
+                    <option value="Suministros">Suministros</option>
+                    <option value="Servicios">Servicios</option>
+                    <option value="Otros">Otros</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Proveedor:</label>
+                  <input
+                    type="text"
+                    value={nuevoGasto.proveedor}
+                    onChange={(e) => setNuevoGasto({...nuevoGasto, proveedor: e.target.value})}
+                    placeholder="Nombre del proveedor"
+                  />
+                </div>
+              </div>
+              <div className="form-group full-width">
+                <label>Observaciones:</label>
+                <textarea
+                  value={nuevoGasto.observaciones}
+                  onChange={(e) => setNuevoGasto({...nuevoGasto, observaciones: e.target.value})}
+                  placeholder="Observaciones adicionales..."
+                />
+              </div>
+              <div className="form-actions">
+                <button 
+                  className="btn-cancelar"
+                  onClick={handleCancelarGasto}
+                >
+                  Cancelar
+                </button>
+                <button 
+                  className="btn-guardar"
+                  onClick={handleCrearGasto}
+                  disabled={formLoading}
+                >
+                  {formLoading ? 'Guardando...' : 'Registrar Gasto'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mensajes */}
       {message && (

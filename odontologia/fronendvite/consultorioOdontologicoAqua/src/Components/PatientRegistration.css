@@ -566,6 +566,23 @@
   background-color: #fef2f2;
 }
 
+/* Estilos para botones de editar citas */
+.edit-cita-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  color: #3b82f6;
+  margin-right: 0.5rem;
+}
+
+.edit-cita-btn:hover {
+  background-color: #eff6ff;
+}
+
 .cita-actions {
   display: flex;
   align-items: center;
@@ -655,4 +672,52 @@
 
 .btn-danger:hover {
   background-color: #b91c1c;
+}
+
+/* Estilos para mensajes */
+.message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideIn 0.3s ease;
+  font-size: 0.9rem;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.message.success {
+  background: #28a745;
+}
+
+.message.error {
+  background: #dc3545;
+}
+
+.message button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0;
+  margin-left: 8px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

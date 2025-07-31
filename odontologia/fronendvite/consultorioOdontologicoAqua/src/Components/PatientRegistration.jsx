@@ -63,7 +63,9 @@ const PatientRegistration = () => {
   const [showModal, setShowModal] = useState(false);
   const [showCitasModal, setShowCitasModal] = useState(false);
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [citaToDelete, setCitaToDelete] = useState(null);
+  const [citaToEdit, setCitaToEdit] = useState(null);
   const [pacientes, setPacientes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [citasDelDia, setCitasDelDia] = useState([]);
@@ -74,6 +76,29 @@ const PatientRegistration = () => {
     hora: '',
     motivo: ''
   });
+  const [editFormData, setEditFormData] = useState({
+    pacienteId: '',
+    fecha: '',
+    hora: '',
+    motivo: ''
+  });
+
+  // Estados para mensajes
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState('success');
+
+  // Función para mostrar mensajes
+  const showMessage = (msg, type = 'success', duration = 5000) => {
+    setMessage(msg);
+    setMessageType(type);
+    
+    if (duration > 0) {
+      setTimeout(() => {
+        setMessage(null);
+        setMessageType('success');
+      }, duration);
+    }
+  };
 
   useEffect(() => {
     fetchAppointments();
@@ -107,7 +132,7 @@ const PatientRegistration = () => {
       setPacientes(pacientesData);
     } catch (error) {
       console.error('Error al obtener pacientes:', error);
-      alert('Error al cargar la lista de pacientes');
+      showMessage('Error al cargar la lista de pacientes', 'error');
       // En caso de error, establecer un array vacío
       setPacientes([]);
     }
@@ -126,7 +151,8 @@ const PatientRegistration = () => {
         usuarioEmail: cita.usuarioEmail,
         backgroundColor: getUserColor(cita.usuarioId),
         borderColor: getUserColor(cita.usuarioId),
-        textColor: '#ffffff'
+        textColor: '#ffffff',
+        pacienteId: cita.paciente.id
       }));
       setEvents(formattedEvents);
     } catch (error) {
@@ -172,13 +198,13 @@ const PatientRegistration = () => {
           fecha: '',
           sexo: ''
         });
-        alert('Paciente registrado exitosamente');
+        showMessage('Paciente registrado exitosamente');
         // Actualizar la lista de pacientes
         fetchPacientes();
       }
     } catch (error) {
       setError(error.response?.data?.message || 'Error al registrar el paciente');
-      alert('Error al registrar el paciente');
+      showMessage('Error al registrar el paciente', 'error');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -192,7 +218,7 @@ const PatientRegistration = () => {
       const selectedPaciente = Array.isArray(pacientes) ? pacientes.find(p => p.id === parseInt(agendaFormData.pacienteId)) : null;
       
       if (!selectedPaciente) {
-        alert('Por favor, seleccione un paciente válido');
+        showMessage('Por favor, seleccione un paciente válido', 'error');
         return;
       }
       
@@ -220,10 +246,64 @@ const PatientRegistration = () => {
         hora: '',
         motivo: ''
       });
-      alert('Cita agendada exitosamente');
+      showMessage('Cita agendada exitosamente');
     } catch (error) {
       console.error('Error al crear la cita:', error);
-      alert('Error al crear la cita. Por favor, intente nuevamente.');
+      showMessage('Error al crear la cita. Por favor, intente nuevamente.', 'error');
+    }
+  };
+
+  const handleEditCita = (cita) => {
+    setCitaToEdit(cita);
+    setEditFormData({
+      pacienteId: cita.pacienteId.toString(),
+      fecha: cita.start.split('T')[0],
+      hora: cita.start.split('T')[1],
+      motivo: cita.description
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userId = localStorage.getItem('userId');
+      const selectedPaciente = Array.isArray(pacientes) ? pacientes.find(p => p.id === parseInt(editFormData.pacienteId)) : null;
+      
+      if (!selectedPaciente) {
+        showMessage('Por favor, seleccione un paciente válido', 'error');
+        return;
+      }
+      
+      const citaData = {
+        paciente: {
+          id: selectedPaciente.id
+        },
+        fecha: editFormData.fecha,
+        hora: editFormData.hora,
+        motivo: editFormData.motivo,
+        usuarioId: parseInt(userId)
+      };
+
+      await axios.put(buildApiUrl(`citas/${citaToEdit.id}`), citaData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      setShowEditModal(false);
+      setCitaToEdit(null);
+      fetchAppointments();
+      setEditFormData({
+        pacienteId: '',
+        fecha: '',
+        hora: '',
+        motivo: ''
+      });
+      showMessage('Cita actualizada exitosamente');
+    } catch (error) {
+      console.error('Error al actualizar la cita:', error);
+      showMessage('Error al actualizar la cita. Por favor, intente nuevamente.', 'error');
     }
   };
 
@@ -243,6 +323,14 @@ const PatientRegistration = () => {
     }));
   };
 
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
   const handleDeleteCita = (cita) => {
     setCitaToDelete(cita);
     setShowDeleteConfirmModal(true);
@@ -252,7 +340,7 @@ const PatientRegistration = () => {
     if (!citaToDelete) return;
     
     try {
-              await axios.delete(buildApiUrl(`citas/${citaToDelete.id}`));
+      await axios.delete(buildApiUrl(`citas/${citaToDelete.id}`));
       
       // Actualizar la lista de eventos
       setEvents(prevEvents => prevEvents.filter(event => event.id !== citaToDelete.id));
@@ -262,10 +350,10 @@ const PatientRegistration = () => {
       setShowCitasModal(false);
       setCitaToDelete(null);
       
-      alert('Cita eliminada exitosamente');
+      showMessage('Cita eliminada exitosamente');
     } catch (error) {
       console.error('Error al eliminar la cita:', error);
-      alert('Error al eliminar la cita. Por favor, intente nuevamente.');
+      showMessage('Error al eliminar la cita. Por favor, intente nuevamente.', 'error');
     }
   };
 
@@ -274,8 +362,27 @@ const PatientRegistration = () => {
     setCitaToDelete(null);
   };
 
+  const cancelEditCita = () => {
+    setShowEditModal(false);
+    setCitaToEdit(null);
+    setEditFormData({
+      pacienteId: '',
+      fecha: '',
+      hora: '',
+      motivo: ''
+    });
+  };
+
   return (
     <div className="main-container">
+      {/* Mensajes */}
+      {message && (
+        <div className={`message ${messageType}`}>
+          {message}
+          <button onClick={() => setMessage(null)}>×</button>
+        </div>
+      )}
+
       {/* Sección del Calendario */}
       <div className="calendar-section">
         <div className="calendar-header">
@@ -378,6 +485,13 @@ const PatientRegistration = () => {
                     </small>
                   </div>
                   <div className="cita-actions">
+                    <button 
+                      className="edit-cita-btn"
+                      onClick={() => handleEditCita(cita)}
+                      title="Editar cita"
+                    >
+                      ✏️
+                    </button>
                     <button 
                       className="delete-cita-btn"
                       onClick={() => handleDeleteCita(cita)}
@@ -542,6 +656,74 @@ const PatientRegistration = () => {
         </div>
       )}
 
+      {/* Modal para Editar Cita */}
+      {showEditModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Editar Cita</h2>
+            <form onSubmit={handleEditSubmit}>
+              <div className="form-group">
+                <label>Paciente:</label>
+                <select
+                  value={editFormData.pacienteId}
+                  onChange={handleEditChange}
+                  name="pacienteId"
+                  required
+                  className="form-select"
+                >
+                  <option value="">Seleccione un paciente</option>
+                  {Array.isArray(pacientes) && pacientes.length > 0 ? (
+                    pacientes.map(paciente => (
+                      <option key={paciente.id} value={paciente.id}>
+                        {paciente.name} {paciente.lastname} - CI: {paciente.ci}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="" disabled>No hay pacientes disponibles</option>
+                  )}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Fecha:</label>
+                <input
+                  type="date"
+                  name="fecha"
+                  value={editFormData.fecha}
+                  onChange={handleEditChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Hora:</label>
+                <input
+                  type="time"
+                  name="hora"
+                  value={editFormData.hora}
+                  onChange={handleEditChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Motivo:</label>
+                <textarea
+                  name="motivo"
+                  value={editFormData.motivo}
+                  onChange={handleEditChange}
+                  required
+                  placeholder="Ingrese el motivo de la cita"
+                />
+              </div>
+              <div className="modal-actions">
+                <button type="submit" className="btn-primary">Actualizar</button>
+                <button type="button" className="btn-secondary" onClick={cancelEditCita}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Modal para mostrar citas del día */}
       {showCitasModal && (
         <div className="modal-overlay">
@@ -565,6 +747,13 @@ const PatientRegistration = () => {
                       <p><strong>Doctor:</strong> Dr. {cita.usuarioName || 'Usuario'}</p>
                     </div>
                     <div className="cita-item-actions">
+                      <button 
+                        className="edit-cita-btn"
+                        onClick={() => handleEditCita(cita)}
+                        title="Editar cita"
+                      >
+                        ✏️
+                      </button>
                       <button 
                         className="delete-cita-btn"
                         onClick={() => handleDeleteCita(cita)}

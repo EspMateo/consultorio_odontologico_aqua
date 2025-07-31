@@ -64,6 +64,25 @@ public class CitaService {
         citaRepository.delete(cita);
     }
 
+    public Cita actualizarCita(Long id, CitaDTO citaDTO) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + id));
+
+        Paciente paciente = pacienteRepository.findById(citaDTO.getPaciente().getId())
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+
+        Usuario usuario = usuarioRepository.findById(citaDTO.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        cita.setPaciente(paciente);
+        cita.setFecha(LocalDate.parse(citaDTO.getFecha()));
+        cita.setHora(LocalTime.parse(citaDTO.getHora()));
+        cita.setMotivo(citaDTO.getMotivo());
+        cita.setUsuario(usuario);
+
+        return citaRepository.save(cita);
+    }
+
     private CitaDTO convertirADTO(Cita cita) {
         CitaDTO dto = new CitaDTO();
         dto.setId(cita.getId());
