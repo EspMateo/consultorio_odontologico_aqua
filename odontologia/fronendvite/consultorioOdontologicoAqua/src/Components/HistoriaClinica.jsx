@@ -4,6 +4,7 @@ import axios from 'axios';
 import { buildApiUrl } from '../config';
 import './styles/HistoriaClinica.css';
 import PlanTratamiento from './PlanTratamiento';
+import DiagnosticoPronostico from './DiagnosticoPronostico';
 
 const HistoriaClinica = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const HistoriaClinica = () => {
   const [historiaActual, setHistoriaActual] = useState(null);
   const [isModifying, setIsModifying] = useState(false);
   const [showPlanTratamiento, setShowPlanTratamiento] = useState(false);
+  const [showDiagnosticoPronostico, setShowDiagnosticoPronostico] = useState(false);
 
   // Función para mostrar mensajes
   const showMessage = (msg, type = 'info', duration = 5000) => {
@@ -575,6 +577,14 @@ const HistoriaClinica = () => {
     setShowPlanTratamiento(false);
   };
 
+  const handleDiagnosticoPronostico = () => {
+    setShowDiagnosticoPronostico(true);
+  };
+
+  const handleCloseDiagnosticoPronostico = () => {
+    setShowDiagnosticoPronostico(false);
+  };
+
   return (
     <div className="historia-clinica-container">
       <div className="historia-clinica-header">
@@ -639,15 +649,22 @@ const HistoriaClinica = () => {
             </div>
           </div>
 
-          {/* Botón Plan de Tratamiento */}
+          {/* Botones de Plan de Tratamiento y Diagnóstico */}
           {pacienteSeleccionado && (
-            <div className="plan-tratamiento-section">
+            <div className="acciones-botones-section">
               <button 
                 className="btn-plan-tratamiento"
                 onClick={handlePlanTratamiento}
                 disabled={loading}
               >
                 📋 Plan de Tratamiento
+              </button>
+              <button 
+                className="btn-diagnostico-pronostico"
+                onClick={handleDiagnosticoPronostico}
+                disabled={loading}
+              >
+                🔍 Diagnóstico y Pronóstico
               </button>
             </div>
           )}
@@ -1277,6 +1294,14 @@ const HistoriaClinica = () => {
         <PlanTratamiento 
           paciente={pacienteSeleccionado}
           onClose={handleClosePlanTratamiento}
+        />
+      )}
+
+      {/* Modal Diagnóstico y Pronóstico */}
+      {showDiagnosticoPronostico && (
+        <DiagnosticoPronostico 
+          paciente={pacienteSeleccionado}
+          onClose={handleCloseDiagnosticoPronostico}
         />
       )}
     </div>

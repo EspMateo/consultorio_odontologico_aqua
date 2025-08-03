@@ -6,6 +6,8 @@ import './styles/PlanTratamiento.css';
 const PlanTratamiento = ({ paciente, onClose }) => {
   const [showNuevoTratamiento, setShowNuevoTratamiento] = useState(false);
   const [showEditarTratamiento, setShowEditarTratamiento] = useState(false);
+  const [showDetallesTratamiento, setShowDetallesTratamiento] = useState(false);
+  const [tratamientoSeleccionado, setTratamientoSeleccionado] = useState(null);
   const [tratamientos, setTratamientos] = useState([]);
   const [tratamientoActual, setTratamientoActual] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -190,6 +192,8 @@ const PlanTratamiento = ({ paciente, onClose }) => {
   const handleCancelar = () => {
     setShowNuevoTratamiento(false);
     setShowEditarTratamiento(false);
+    setShowDetallesTratamiento(false);
+    setTratamientoSeleccionado(null);
     setNuevoTratamiento({
       nombre: '',
       descripcion: '',
@@ -198,6 +202,11 @@ const PlanTratamiento = ({ paciente, onClose }) => {
       seguimiento: '',
       duracion: ''
     });
+  };
+
+  const handleVerDetallesTratamiento = (tratamiento) => {
+    setTratamientoSeleccionado(tratamiento);
+    setShowDetallesTratamiento(true);
   };
 
   const formatDate = (dateString) => {
@@ -299,7 +308,12 @@ const PlanTratamiento = ({ paciente, onClose }) => {
                 {tratamientos
                   .filter(t => t.id !== tratamientoActual?.id)
                   .map(tratamiento => (
-                    <div key={tratamiento.id} className="tratamiento-item">
+                    <div 
+                      key={tratamiento.id} 
+                      className="tratamiento-item"
+                      onClick={() => handleVerDetallesTratamiento(tratamiento)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <div className="tratamiento-item-header">
                         <h4>{tratamiento.nombre}</h4>
                         <span className={`estado ${tratamiento.activo ? 'activo' : 'inactivo'}`}>
@@ -309,6 +323,9 @@ const PlanTratamiento = ({ paciente, onClose }) => {
                       <p><strong>Descripción:</strong> {tratamiento.descripcion}</p>
                       <p><strong>Duración:</strong> {tratamiento.duracion}</p>
                       <p><strong>Período:</strong> {formatDate(tratamiento.fechaInicio)} - {formatDate(tratamiento.fechaFin)}</p>
+                      <div className="tratamiento-item-hint">
+                        <small>💡 Haz clic para ver detalles completos</small>
+                      </div>
                     </div>
                   ))}
               </div>
@@ -506,6 +523,80 @@ const PlanTratamiento = ({ paciente, onClose }) => {
                       disabled={loading}
                     >
                       Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Modal para ver detalles del tratamiento */}
+          {showDetallesTratamiento && tratamientoSeleccionado && (
+            <div className="nuevo-tratamiento-modal">
+              <div className="nuevo-tratamiento-content">
+                <div className="nuevo-tratamiento-header">
+                  <h3>Detalles del Tratamiento</h3>
+                  <button className="btn-cerrar" onClick={handleCancelar}>
+                    ×
+                  </button>
+                </div>
+
+                <div className="form-section">
+                  <div className="detalles-tratamiento-content">
+                    <div className="detalle-item">
+                      <h4>📋 Información General</h4>
+                      <div className="detalle-info">
+                        <p><strong>Nombre del Tratamiento:</strong> {tratamientoSeleccionado.nombre}</p>
+                        <p><strong>Estado:</strong> 
+                          <span className={`estado ${tratamientoSeleccionado.activo ? 'activo' : 'inactivo'}`}>
+                            {tratamientoSeleccionado.activo ? 'Activo' : 'Completado'}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="detalle-item">
+                      <h4>📝 Descripción</h4>
+                      <div className="detalle-info">
+                        <p>{tratamientoSeleccionado.descripcion}</p>
+                      </div>
+                    </div>
+
+                    <div className="detalle-item">
+                      <h4>⏱️ Duración y Seguimiento</h4>
+                      <div className="detalle-info">
+                        <p><strong>Duración:</strong> {tratamientoSeleccionado.duracion || 'No especificada'}</p>
+                        <p><strong>Seguimiento:</strong> {tratamientoSeleccionado.seguimiento || 'No especificado'}</p>
+                      </div>
+                    </div>
+
+                    <div className="detalle-item">
+                      <h4>📅 Fechas del Tratamiento</h4>
+                      <div className="detalle-info">
+                        <p><strong>Fecha de Inicio:</strong> {formatDate(tratamientoSeleccionado.fechaInicio) || 'No especificada'}</p>
+                        <p><strong>Fecha de Fin:</strong> {formatDate(tratamientoSeleccionado.fechaFin) || 'No especificada'}</p>
+                      </div>
+                    </div>
+
+                    {tratamientoSeleccionado.createdAt && (
+                      <div className="detalle-item">
+                        <h4>📊 Información del Sistema</h4>
+                        <div className="detalle-info">
+                          <p><strong>Fecha de Creación:</strong> {formatDate(tratamientoSeleccionado.createdAt)}</p>
+                          {tratamientoSeleccionado.updatedAt && (
+                            <p><strong>Última Actualización:</strong> {formatDate(tratamientoSeleccionado.updatedAt)}</p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="form-actions">
+                    <button 
+                      className="btn-cancelar"
+                      onClick={handleCancelar}
+                    >
+                      Cerrar
                     </button>
                   </div>
                 </div>
