@@ -28,12 +28,25 @@ const Presupuesto = () => {
 
   // Opciones predefinidas de tratamientos
   const tratamientosPredefinidos = [
-    { nombre: 'Resina', precio: 50000 },
-    { nombre: 'Endodoncia', precio: 120000 },
-    { nombre: 'Perno', precio: 80000 },
-    { nombre: 'Incrustación', precio: 150000 },
-    { nombre: 'Carilla', precio: 200000 },
-    { nombre: 'Corona', precio: 250000 }
+    { nombre: 'Diagnostico', precio: 500 },
+    { nombre: 'Limpieza', precio: 1500 },
+    { nombre: 'Blanqueamiento', precio: 2500 },
+    { nombre: 'Resina', precio: 2500 },
+    { nombre: 'Sellante', precio: 1500 },
+    { nombre: 'Tratamiento de condicto (Uniradicular)', precio: 4500 },
+    { nombre: 'Tratamiento de conducto (Multiradicular)', precio: 7000 },
+    { nombre: 'Exodoncia simple', precio: 1500 },
+    { nombre: 'Exodoncia a colgajo', precio: 3500 },
+    { nombre: 'Raspado y alizado por cuadrante', precio: 2500 },
+    { nombre: 'Incrustación cerámica', precio: 16000 },
+    { nombre: 'Incrustación ceromero', precio: 10000 },
+    { nombre: 'Corona cerámica', precio: 17500 },
+    { nombre: 'Corona metal-cerámica', precio: 16000 },
+    { nombre: 'Corona ceromero', precio: 10000 },
+    { nombre: 'Perno metálico', precio: 12000 },
+    { nombre: 'Perno de fibra', precio: 2500 },
+    { nombre: 'Protesis completa', precio: 15000 },
+    { nombre: 'Protesis parcial a cromo', precio: 21000 }
   ];
 
   // Establecer fecha actual por defecto

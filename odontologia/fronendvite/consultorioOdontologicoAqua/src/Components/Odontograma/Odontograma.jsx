@@ -24,7 +24,7 @@ const Odontograma = () => {
   const condiciones = {
     sano: { nombre: 'Sano', color: '#4CAF50', descripcion: 'Diente en buen estado' },
     caries: { nombre: 'Caries', color: '#FF9800', descripcion: 'Caries detectada' },
-    empaste: { nombre: 'Empaste', color: '#2196F3', descripcion: 'Diente con empaste' },
+    obturado: { nombre: 'Obturado', color: '#2196F3', descripcion: 'Diente obturado' },
     corona: { nombre: 'Corona', color: '#9C27B0', descripcion: 'Diente con corona' },
     extraido: { nombre: 'Extraído', color: '#F44336', descripcion: 'Diente extraído' },
     implante: { nombre: 'Implante', color: '#607D8B', descripcion: 'Implante dental' },
