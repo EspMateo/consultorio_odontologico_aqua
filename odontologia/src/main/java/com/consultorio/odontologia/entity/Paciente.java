@@ -64,6 +64,10 @@ public class Paciente {
     @JsonIgnore
     private List<Tratamiento> tratamientos;
 
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Diagnostico> diagnosticos;
+
     public Long getId() {
         return id;
     }
