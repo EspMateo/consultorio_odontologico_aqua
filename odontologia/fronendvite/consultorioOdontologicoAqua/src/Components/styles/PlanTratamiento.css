@@ -290,6 +290,18 @@
   font-size: 0.9rem;
 }
 
+.tratamiento-item-hint {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.tratamiento-item-hint small {
+  color: #6b7280;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
 /* Modal para nuevo tratamiento */
 .nuevo-tratamiento-modal {
   position: fixed;
@@ -429,6 +441,58 @@
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
+}
+
+/* Estilos para el modal de detalles del tratamiento */
+.detalles-tratamiento-content {
+  padding: 0;
+}
+
+.detalle-item {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.detalle-item:last-child {
+  margin-bottom: 0;
+}
+
+.detalle-item h4 {
+  margin: 0 0 1rem 0;
+  color: #1e293b;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detalle-info {
+  color: #374151;
+  line-height: 1.6;
+}
+
+.detalle-info p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.detalle-info strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.detalle-info .estado {
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Mensajes */
@@ -591,5 +655,13 @@
   .btn-completar-tratamiento {
     width: 100%;
     text-align: center;
+  }
+  
+  .detalle-item {
+    padding: 1rem;
+  }
+  
+  .detalle-item h4 {
+    font-size: 1.1rem;
   }
 } 

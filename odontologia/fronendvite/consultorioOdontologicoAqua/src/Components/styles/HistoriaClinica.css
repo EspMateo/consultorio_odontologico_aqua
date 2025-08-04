@@ -332,13 +332,17 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Sección Plan de Tratamiento */
-.plan-tratamiento-section {
+/* Sección de Botones de Acción */
+.acciones-botones-section {
   margin: 2rem 0;
-  text-align: center;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.btn-plan-tratamiento {
+.btn-plan-tratamiento,
+.btn-diagnostico-pronostico {
   background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   color: white;
   border: none;
@@ -351,18 +355,36 @@
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.btn-plan-tratamiento:hover:not(:disabled) {
+.btn-plan-tratamiento:hover:not(:disabled),
+.btn-diagnostico-pronostico:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
 }
 
-.btn-plan-tratamiento:disabled {
+.btn-plan-tratamiento:disabled,
+.btn-diagnostico-pronostico:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
   background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+}
+
+.btn-diagnostico-pronostico {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.btn-diagnostico-pronostico:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
 }
 
 /* Responsive */
@@ -462,6 +484,18 @@
   .btn-volver {
     width: 100%;
     max-width: 300px;
+  }
+  
+  .acciones-botones-section {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-plan-tratamiento,
+  .btn-diagnostico-pronostico {
+    width: 100%;
+    max-width: 300px;
+    min-width: auto;
   }
 }
 
