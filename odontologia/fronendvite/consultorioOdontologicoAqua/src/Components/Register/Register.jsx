@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { buildApiUrl } from '../../config';
 import Loader from '../Loader';
 import '../styles/Register.css';
@@ -17,6 +18,7 @@ function Register() {
   const [emailExists, setEmailExists] = useState(false);
   const [checkingEmail, setCheckingEmail] = useState(false);
   const debounceRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -133,6 +135,7 @@ function Register() {
         setTimeout(() => {
           setButtonMessage('Registrarse');
         }, 2000);
+        navigate("/");
       }
     } catch (err) {
       console.error('Error during registration:', err);
