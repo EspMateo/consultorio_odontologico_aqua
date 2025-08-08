@@ -4,6 +4,10 @@
   margin: 20px 0;
   padding: 0 20px;
   min-width: 1000px; /* Ancho mínimo para el contenedor del formulario */
+  box-sizing: border-box; /* Evita que el padding cause overflow horizontal */
+  display: flex;            /* Centrar contenido */
+  flex-direction: column;
+  align-items: center;
 }
 
 .search-container {
@@ -45,7 +49,9 @@
 }
 
 .tabla-pacientes {
-  width: 100%;
+  display: inline-table; /* Se ajusta al contenido y no ocupa todo el ancho */
+  width: fit-content; /* Termina en el último contenido (botón Eliminar) */
+  max-width: 100%; /* Evita desbordamiento cuando el contenido es muy ancho */
   border-collapse: collapse;
   background-color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);

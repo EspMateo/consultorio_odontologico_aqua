@@ -530,6 +530,10 @@ const PatientRegistration = () => {
                   <input type="text" name="apellido" value={formData.apellido} onChange={handleChange} className="patient-form-input" required />
                 </div>
                 <div className="patient-form-group">
+                  <label className="patient-form-label">Cédula</label>
+                  <input type="text" name="cedula" value={formData.cedula} onChange={handleChange} className="patient-form-input" required />
+                </div>
+                <div className="patient-form-group">
                   <label className="patient-form-label">Sexo</label>
                   <select name="sexo" value={formData.sexo} onChange={handleChange} className="patient-form-input" required>
                     <option value="">Seleccione...</option>
@@ -540,23 +544,21 @@ const PatientRegistration = () => {
                 </div>
               </div>
             </div>
+            
             <div className="patient-form-section">
               <h3 className="patient-form-section-title">Información de Contacto</h3>
               <div className="patient-form-row">
                 <div className="patient-form-group">
-                  <label className="patient-form-label">Cédula</label>
-                  <input type="text" name="cedula" value={formData.cedula} onChange={handleChange} className="patient-form-input" required />
-                </div>
-                <div className="patient-form-group">
                   <label className="patient-form-label">Número de Teléfono</label>
                   <input type="tel" name="numero" value={formData.numero} onChange={handleChange} className="patient-form-input" required />
                 </div>
-                <div className="patient-form-group patient-form-group-full">
+                <div className="patient-form-group">
                   <label className="patient-form-label">Dirección</label>
                   <input type="text" name="direccion" value={formData.direccion} onChange={handleChange} className="patient-form-input" required />
                 </div>
               </div>
             </div>
+            
             <div className="patient-form-section">
               <h3 className="patient-form-section-title">Información de la Consulta</h3>
               <div className="patient-form-row">
@@ -564,8 +566,25 @@ const PatientRegistration = () => {
                   <label className="patient-form-label">Fecha</label>
                   <input type="date" name="fecha" value={formData.fecha} onChange={handleChange} className="patient-form-input" required />
                 </div>
+                <div className="patient-form-group">
+                  <label className="patient-form-label">Hora</label>
+                  <input type="time" name="hora" value={formData.hora} onChange={handleChange} className="patient-form-input" required />
+                </div>
+                <div className="patient-form-group">
+                  <label className="patient-form-label">Tipo de Consulta</label>
+                  <select name="tipoConsulta" value={formData.tipoConsulta} onChange={handleChange} className="patient-form-input" required>
+                    <option value="">Seleccione...</option>
+                    <option value="primera_vez">Primera Vez</option>
+                    <option value="control">Control</option>
+                    <option value="emergencia">Emergencia</option>
+                    <option value="limpieza">Limpieza</option>
+                    <option value="tratamiento">Tratamiento</option>
+                  </select>
+                </div>
+              </div>
+              <div className="patient-form-row">
                 <div className="patient-form-group patient-form-group-full">
-                  <label className="patient-form-label">Consulta</label>
+                  <label className="patient-form-label">Consulta/Descripción</label>
                   <textarea name="consulta" value={formData.consulta} onChange={handleChange} rows="4" className="patient-form-input" required></textarea>
                 </div>
               </div>

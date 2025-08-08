@@ -1,10 +1,13 @@
 .dashboard-container {
   min-height: 100vh;
+  height: 100vh;
   background-color: #f5f7fa;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .dashboard-header {
@@ -101,13 +104,16 @@
 }
 
 .dashboard-content {
-  margin-top: 3rem;
+  margin-top: 7.5rem;
   padding: 1.5rem;
   flex: 1;
   width: 100%;
   box-sizing: border-box;
   background-color: #f5f7fa;
   max-width: 100%;
+  min-height: calc(100vh - 120px);
+  height: calc(100vh - 120px);
+  overflow-y: auto;
 }
 
 .content-section {
