@@ -1,9 +1,8 @@
 /* Contenedor principal */
 .main-container {
-  display: grid;
-  grid-template-columns: 3fr 1fr; /* Formulario más grande (3fr), calendario más pequeño (1fr) */
-  gap: 2rem;
-  padding: 2rem;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
   max-width: 100%;
   margin: 0 auto;
   min-height: calc(100vh - 120px);
@@ -12,28 +11,32 @@
   box-sizing: border-box;
   overflow-y: auto;
   width: 100%;
+  align-items: stretch;
 }
 
 /* Sección del Formulario (IZQUIERDA) */
 .form-section {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #e2e8f0;
   height: 100%;
   min-height: 100%;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
-  order: 1; /* Mover a la izquierda */
-  overflow: visible; /* Eliminar scroll */
+  order: 1;
+  overflow: visible;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
+  align-self: stretch;
+  flex: 3;
 }
 
 /* Estilos del formulario de pacientes */
 .patient-form-container {
-  padding: 0.5rem;
+  padding: 0.25rem;
   height: 100%;
   overflow: visible;
   width: 100%;
@@ -45,8 +48,8 @@
 
 .patient-form-card {
   background-color: #ffffff;
-  border-radius: 8px;
-  padding: 0.5rem;
+  border-radius: 6px;
+  padding: 0.25rem;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -59,39 +62,39 @@
 
 .patient-form-header {
   text-align: center;
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.25rem;
   border-bottom: 1px solid #f1f5f9;
 }
 
 .patient-form-title {
   color: #1e293b;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   margin-bottom: 0.125rem;
   font-weight: 700;
 }
 
 .patient-form-subtitle {
   color: #64748b;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   margin: 0;
 }
 
 .error-message {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   color: #dc2626;
-  padding: 0.5rem;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
+  padding: 0.375rem;
+  border-radius: 4px;
+  margin-bottom: 0.375rem;
   border: 1px solid #fecaca;
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 .patient-form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.375rem;
   flex: 1;
   overflow: visible;
   width: 100%;
@@ -102,8 +105,8 @@
 
 .patient-form-section {
   border: 1px solid #f1f5f9;
-  border-radius: 8px;
-  padding: 0.5rem;
+  border-radius: 6px;
+  padding: 0.375rem;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   transition: all 0.3s ease;
   width: 100%;
@@ -114,13 +117,13 @@
 
 .patient-form-section:hover {
   border-color: #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
 .patient-form-section-title {
   color: #1e293b;
-  font-size: 1rem;
-  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -129,17 +132,17 @@
 
 .patient-form-section-title::before {
   content: '';
-  width: 3px;
-  height: 16px;
+  width: 2px;
+  height: 14px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-radius: 1px;
 }
 
 .patient-form-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.375rem;
+  margin-bottom: 0.375rem;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
@@ -165,17 +168,17 @@
   color: #374151;
   font-weight: 600;
   margin-bottom: 0.125rem;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
 }
 
 .patient-form-input {
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.375rem;
   border: 1px solid #e2e8f0;
   border-radius: 4px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
@@ -186,7 +189,7 @@
 .patient-form-input:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
   transform: translateY(-1px);
 }
 
@@ -197,8 +200,8 @@
 .patient-form-actions {
   display: flex;
   justify-content: center;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
+  margin-top: 0.375rem;
+  padding-top: 0.375rem;
   border-top: 1px solid #f1f5f9;
 }
 
@@ -206,18 +209,18 @@
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 0.375rem 1rem;
-  border-radius: 6px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 4px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
 }
 
 .patient-form-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .patient-form-button:disabled {
@@ -230,29 +233,31 @@
 /* Sección del Calendario (DERECHA) */
 .calendar-section {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 0.75rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 0.5rem;
   height: 100%;
   min-height: 100%;
   overflow: hidden;
   border: 1px solid #e2e8f0;
   position: sticky;
-  top: 2rem;
+  top: 1rem;
   order: 2;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
   display: flex;
   flex-direction: column;
+  align-self: stretch;
+  flex: 1;
 }
 
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.375rem;
+  padding-bottom: 0.375rem;
   border-bottom: 1px solid #f1f5f9;
   width: 100%;
   box-sizing: border-box;
@@ -263,7 +268,7 @@
 .calendar-header h2 {
   color: #1e293b;
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
@@ -284,19 +289,19 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.7rem;
-  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
+  font-size: 0.65rem;
+  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
   white-space: nowrap;
 }
 
 .agendar-cita-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .calendar-container {
   flex: 1;
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
@@ -307,10 +312,10 @@
 /* Estilos para el título del mes del calendario */
 .calendar-container .fc-toolbar-title {
   text-transform: capitalize;
-  font-size: 1.1rem !important;
+  font-size: 1rem !important;
   font-weight: 700;
   color: #1e293b;
-  margin: 0 1rem !important;
+  margin: 0 0.75rem !important;
 }
 
 /* Estilos para los modales */
@@ -330,26 +335,26 @@
 
 .modal-content {
   background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  max-width: 500px;
+  border-radius: 6px;
+  padding: 0.75rem;
+  max-width: 450px;
   width: 90%;
   max-height: 70vh;
   overflow-y: auto;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   border: 1px solid #e2e8f0;
   box-sizing: border-box;
 }
 
 .modal-content h2 {
   color: #1e293b;
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
 .form-group {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
@@ -357,20 +362,20 @@
 
 .form-group label {
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.125rem;
   color: #374151;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.375rem;
+  padding: 0.25rem 0.375rem;
   border: 1px solid #e2e8f0;
   border-radius: 4px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   transition: all 0.3s ease;
   background: white;
   box-sizing: border-box;
@@ -382,7 +387,7 @@
 .form-group textarea:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
 .form-select {
@@ -391,15 +396,15 @@
 
 .form-group textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 80px;
 }
 
 .modal-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.375rem;
   justify-content: flex-end;
-  margin-top: 1rem;
-  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
   border-top: 1px solid #f1f5f9;
 }
 
@@ -407,47 +412,47 @@
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
-  font-size: 0.8rem;
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
+  font-size: 0.75rem;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .btn-secondary {
   background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
 }
 
 /* Estilos para la lista de citas */
 .citas-list {
-  margin: 1.5rem 0;
+  margin: 1rem 0;
 }
 
 .cita-item {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0.375rem;
+  padding: 0.25rem;
   border: 1px solid #e2e8f0;
   border-radius: 4px;
   margin-bottom: 0.25rem;
@@ -460,8 +465,8 @@
 }
 
 .cita-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   border-color: #3b82f6;
 }
 
@@ -475,14 +480,14 @@
 .cita-item-actions {
   display: flex;
   align-items: center;
-  margin-left: 0.5rem;
+  margin-left: 0.375rem;
   flex-shrink: 0;
 }
 
 .cita-item h4 {
   color: #1e293b;
   margin: 0 0 0.125rem 0;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -492,7 +497,7 @@
 .cita-item p {
   color: #64748b;
   margin: 0.0625rem 0;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -500,8 +505,8 @@
 
 /* Sección de Citas de Hoy */
 .citas-hoy-section {
-  margin-top: 0.5rem;
-  padding: 0.375rem;
+  margin-top: 0.375rem;
+  padding: 0.25rem;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 4px;
   border: 1px solid #e2e8f0;
@@ -513,8 +518,8 @@
 
 .citas-hoy-section h3 {
   color: #1e293b;
-  font-size: 0.9rem;
-  margin-bottom: 0.375rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -523,8 +528,8 @@
 
 .citas-hoy-section h3::before {
   content: '';
-  width: 4px;
-  height: 20px;
+  width: 3px;
+  height: 16px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-radius: 2px;
 }
@@ -532,15 +537,42 @@
 .citas-hoy-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  max-height: 200px;
+  gap: 0.375rem;
+  max-height: 150px;
   overflow-y: auto;
+  /* Estilos personalizados para el scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+/* Estilos para el scrollbar en Webkit (Chrome, Safari, Edge) */
+.citas-hoy-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.citas-hoy-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.citas-hoy-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+  border-radius: 3px;
+  border: 1px solid #e2e8f0;
+}
+
+.citas-hoy-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+}
+
+.citas-hoy-list::-webkit-scrollbar-corner {
+  background: #f1f5f9;
 }
 
 .cita-hoy-item {
   display: flex;
   align-items: center;
-  padding: 0.25rem;
+  padding: 0.125rem;
   border: 1px solid #e2e8f0;
   border-radius: 3px;
   margin-bottom: 0.125rem;
@@ -555,7 +587,7 @@
 
 .cita-hoy-item:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border-color: #3b82f6;
 }
 
@@ -565,8 +597,8 @@
   padding: 0.125rem 0.25rem;
   border-radius: 2px;
   font-weight: 700;
-  font-size: 0.65rem;
-  min-width: 50px;
+  font-size: 0.6rem;
+  min-width: 45px;
   text-align: center;
   box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
   flex-shrink: 0;
@@ -575,7 +607,7 @@
 .cita-info h4 {
   color: #1e293b;
   margin: 0 0 0.0625rem 0;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -585,7 +617,7 @@
 .cita-info p {
   color: #64748b;
   margin: 0;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -595,29 +627,25 @@
   color: #64748b;
   font-style: italic;
   text-align: center;
-  padding: 1.5rem;
+  padding: 1rem;
   background: white;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 2px dashed #e2e8f0;
 }
 
 /* Responsive design */
 @media (max-width: 1400px) {
   .main-container {
-    grid-template-columns: 2.5fr 1fr;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.75rem;
+    padding: 0.75rem;
   }
   
-  .patient-form-row {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  .form-section {
+    flex: 2.5;
   }
-}
-
-@media (max-width: 1200px) {
-  .main-container {
-    grid-template-columns: 2fr 1fr;
-    gap: 0.75rem;
+  
+  .calendar-section {
+    flex: 1;
   }
   
   .patient-form-row {
@@ -625,46 +653,66 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .main-container {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    height: auto;
-    min-height: calc(100vh - 120px);
+    gap: 0.5rem;
+  }
+  
+  .form-section {
+    flex: 2;
   }
   
   .calendar-section {
-    position: static;
+    flex: 1;
+  }
+  
+  .patient-form-row {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-container {
+    flex-direction: column;
+    gap: 0.75rem;
     height: auto;
-    min-height: auto;
-    order: 2;
+    min-height: calc(100vh - 120px);
   }
   
   .form-section {
     order: 1;
     height: auto;
     min-height: auto;
+    flex: none;
+  }
+  
+  .calendar-section {
+    order: 2;
+    position: static;
+    height: auto;
+    min-height: auto;
+    flex: none;
   }
   
   .calendar-container {
-    height: 300px;
+    height: 250px;
     flex: none;
   }
   
   .patient-form-row {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   .main-container {
-    padding: 0.5rem;
-    gap: 0.5rem;
+    padding: 0.375rem;
+    gap: 0.375rem;
   }
   
   .calendar-header {
     flex-direction: column;
-    gap: 0.375rem;
+    gap: 0.25rem;
     align-items: stretch;
   }
   
@@ -673,16 +721,16 @@
   }
   
   .color-legend {
-    margin-bottom: 0.375rem;
-    padding: 0.375rem;
+    margin-bottom: 0.25rem;
+    padding: 0.25rem;
   }
   
   .legend-items {
-    gap: 0.25rem;
+    gap: 0.125rem;
   }
   
   .legend-item {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
   }
   
   .patient-form-row {
@@ -690,7 +738,7 @@
   }
   
   .modal-content {
-    padding: 0.75rem;
+    padding: 0.5rem;
     width: 95%;
   }
   
@@ -699,33 +747,33 @@
   }
   
   .patient-form-card {
-    padding: 0.375rem;
+    padding: 0.25rem;
   }
   
   .patient-form-section {
-    padding: 0.375rem;
+    padding: 0.25rem;
   }
 }
 
 @media (max-width: 480px) {
   .main-container {
-    padding: 0.375rem;
+    padding: 0.25rem;
   }
   
   .patient-form-card {
-    padding: 0.5rem;
+    padding: 0.375rem;
   }
   
   .patient-form-section {
-    padding: 0.5rem;
+    padding: 0.375rem;
   }
   
   .calendar-section {
-    padding: 0.5rem;
+    padding: 0.375rem;
   }
   
   .patient-form-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 }
 
@@ -734,13 +782,13 @@
 .patient-form-input[name="consulta"],
 .patient-form-input[name="motivo"],
 .form-group textarea {
-  min-height: 120px;
+  min-height: 80px;
   resize: vertical;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  padding: 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
+  line-height: 1.5;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
   background: white;
   transition: all 0.3s ease;
 }
@@ -752,7 +800,7 @@
   outline: none;
   border-color: #3b82f6;
   background-color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
   transform: translateY(-1px);
 }
 
@@ -762,7 +810,7 @@
 .form-group textarea::placeholder {
   color: #94a3b8;
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
 }
 
 /* Estilos para el contenedor del textarea */
@@ -785,34 +833,34 @@
 .form-group:has(textarea) label {
   font-weight: 600;
   color: #1e293b;
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
 }
 
 /* Estilos para el contenedor del textarea cuando está en modo full-width */
 .patient-form-group-full textarea {
   grid-column: 1 / -1;
-  margin-top: 0.5rem;
+  margin-top: 0.375rem;
 }
 
 /* Estilos específicos para el textarea de consulta */
 .patient-form-input[name="consulta"] {
   background-image: linear-gradient(45deg, transparent 49%, #f1f5f9 50%, transparent 51%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 0, 10px 10px, 10px 10px;
+  background-size: 16px 16px;
+  background-position: 0 0, 0 0, 8px 8px, 8px 8px;
 }
 
 /* Estilos para el textarea de motivo en el modal */
 .form-group textarea[name="motivo"] {
-  min-height: 120px;
-  font-size: 0.95rem;
+  min-height: 80px;
+  font-size: 0.8rem;
 }
 
 /* Estilos para botones de eliminar citas */
 .delete-cita-btn {
   background: none;
   border: none;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   padding: 0.125rem;
   border-radius: 2px;
@@ -830,7 +878,7 @@
 .edit-cita-btn {
   background: none;
   border: none;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   padding: 0.125rem;
   border-radius: 2px;
@@ -855,8 +903,8 @@
 
 /* Leyenda de colores */
 .color-legend {
-  margin-bottom: 0.375rem;
-  padding: 0.375rem;
+  margin-bottom: 0.25rem;
+  padding: 0.25rem;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 4px;
   border: 1px solid #e2e8f0;
@@ -866,16 +914,16 @@
 }
 
 .color-legend h4 {
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 0.125rem 0;
   color: #1e293b;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
 .legend-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.125rem;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
@@ -885,15 +933,15 @@
   display: flex;
   align-items: center;
   gap: 0.125rem;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #374151;
   font-weight: 500;
   flex-shrink: 0;
 }
 
 .legend-color {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 1px;
   border: 1px solid #d1d5db;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -903,32 +951,32 @@
 /* Estilos para citas con colores */
 .cita-usuario {
   color: #6b7280;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-style: italic;
-  margin-top: 0.25rem;
+  margin-top: 0.125rem;
   display: block;
 }
 
 /* Estilos para el modal de confirmación de eliminación */
 .delete-confirm-modal {
-  max-width: 350px;
+  max-width: 300px;
   width: 90%;
   box-sizing: border-box;
 }
 
 .delete-confirm-modal h2 {
   color: #dc2626;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .cita-to-delete {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   border: 1px solid #fecaca;
   border-radius: 4px;
-  padding: 0.75rem;
-  margin: 0.75rem 0;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
   box-sizing: border-box;
   max-width: 100%;
 }
@@ -937,7 +985,7 @@
   margin: 0.125rem 0;
   color: #374151;
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -947,19 +995,19 @@
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-right: 0.25rem;
-  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
-  font-size: 0.8rem;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.3);
+  font-size: 0.75rem;
 }
 
 .btn-danger:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
 /* Estilos para mensajes */
@@ -967,7 +1015,7 @@
   position: fixed;
   top: 15px;
   right: 15px;
-  padding: 0.5rem 0.75rem;
+  padding: 0.375rem 0.5rem;
   border-radius: 4px;
   color: white;
   font-weight: 600;
@@ -976,9 +1024,9 @@
   align-items: center;
   gap: 0.25rem;
   animation: slideIn 0.3s ease;
-  font-size: 0.75rem;
-  max-width: 300px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 0.7rem;
+  max-width: 280px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(4px);
   box-sizing: border-box;
   overflow: hidden;
@@ -997,7 +1045,7 @@
   border: none;
   color: white;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   padding: 0;
   margin-left: 0.125rem;
   transition: transform 0.3s ease;
@@ -1017,4 +1065,20 @@
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+/* Asegurar que ambas secciones tengan exactamente la misma altura */
+.form-section,
+.calendar-section {
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Forzar que el contenedor principal use flexbox correctamente */
+.main-container {
+  display: flex !important;
+  align-items: stretch !important;
 }
