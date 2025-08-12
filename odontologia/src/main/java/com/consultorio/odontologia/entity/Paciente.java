@@ -23,6 +23,7 @@ public class Paciente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private Long CI;
     private String name;
     private String lastname;
@@ -34,6 +35,7 @@ public class Paciente {
     private String generalMedicalHistory;
     private String dentalHistory;
     private String releaseSummary;
+    private Integer edad;
 
     // Relaciones con eliminación en cascada
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -162,6 +164,14 @@ public class Paciente {
 
     public void setReleaseSummary(String releaseSummary) {
         this.releaseSummary = releaseSummary;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
     }
 
 }

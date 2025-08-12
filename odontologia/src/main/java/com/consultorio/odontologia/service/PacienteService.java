@@ -22,9 +22,25 @@ public class PacienteService {
 
     public Paciente registrarPaciente(PacienteDTO pacienteDTO) {
         Paciente paciente = new Paciente();
+        
+        // Validar que nombre y apellido no contengan números
+        if (pacienteDTO.getNombre() != null && pacienteDTO.getNombre().matches(".*\\d.*")) {
+            throw new RuntimeException("El nombre no puede contener números");
+        }
+        if (pacienteDTO.getApellido() != null && pacienteDTO.getApellido().matches(".*\\d.*")) {
+            throw new RuntimeException("El apellido no puede contener números");
+        }
+        
         if (pacienteDTO.getCedula() != null && !pacienteDTO.getCedula().trim().isEmpty()) {
             try {
-                paciente.setCI(Long.parseLong(pacienteDTO.getCedula().trim()));
+                Long cedula = Long.parseLong(pacienteDTO.getCedula().trim());
+                
+                // Verificar si ya existe un paciente con la misma cédula
+                if (pacienteRepository.existsByCI(cedula)) {
+                    throw new RuntimeException("Ya existe un paciente con la cédula " + cedula);
+                }
+                
+                paciente.setCI(cedula);
             } catch (NumberFormatException e) {
                 throw new RuntimeException("La cédula debe ser un número válido");
             }
@@ -40,6 +56,7 @@ public class PacienteService {
         paciente.setDiagnosis(pacienteDTO.getConsulta());
         paciente.setGeneralMedicalHistory(pacienteDTO.getDireccion());
         paciente.setReleaseSummary(pacienteDTO.getFecha());
+        paciente.setEdad(pacienteDTO.getEdad());
         paciente.setMedication("");
         paciente.setDentalHistory("");
         return pacienteRepository.save(paciente);
@@ -103,6 +120,14 @@ public class PacienteService {
         Paciente paciente = pacienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
+        // Validar que nombre y apellido no contengan números
+        if (pacienteDTO.getNombre() != null && pacienteDTO.getNombre().matches(".*\\d.*")) {
+            throw new RuntimeException("El nombre no puede contener números");
+        }
+        if (pacienteDTO.getApellido() != null && pacienteDTO.getApellido().matches(".*\\d.*")) {
+            throw new RuntimeException("El apellido no puede contener números");
+        }
+
         if (pacienteDTO.getCedula() != null && !pacienteDTO.getCedula().trim().isEmpty()) {
             try {
                 paciente.setCI(Long.parseLong(pacienteDTO.getCedula().trim()));
@@ -121,6 +146,7 @@ public class PacienteService {
         if (pacienteDTO.getConsulta() != null) paciente.setDiagnosis(pacienteDTO.getConsulta());
         if (pacienteDTO.getDireccion() != null) paciente.setGeneralMedicalHistory(pacienteDTO.getDireccion());
         if (pacienteDTO.getFecha() != null) paciente.setReleaseSummary(pacienteDTO.getFecha());
+        if (pacienteDTO.getEdad() != null) paciente.setEdad(pacienteDTO.getEdad());
 
         return pacienteRepository.save(paciente);
     }

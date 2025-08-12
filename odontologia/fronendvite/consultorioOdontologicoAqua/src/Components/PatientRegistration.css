@@ -222,6 +222,66 @@
   background: #ffffff;
 }
 
+/* Estilos para campos con error */
+.patient-form-input.input-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+}
+
+.patient-form-input.input-error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Mensaje de advertencia para cédula duplicada */
+.cedula-warning {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  padding: 0.5rem;
+  border-radius: 6px;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  border: 1px solid #f59e0b;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  animation: warningSlideIn 0.3s ease;
+}
+
+/* Alerta de validación del formulario */
+.form-validation-alert {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  border: 2px solid #fca5a5;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: warningSlideIn 0.3s ease;
+  font-weight: 600;
+}
+
+@keyframes warningSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+
 .patient-form-input::placeholder {
   color: #9ca3af;
 }
@@ -229,28 +289,32 @@
 .patient-form-actions {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 0.75rem;
   padding-top: 0.75rem;
   border-top: 2px solid #e2e8f0;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 8px;
-  padding: 0.75rem;
+  padding: 1rem;
+  text-align: center;
 }
 
 .patient-form-button {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 2rem;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border: 2px solid transparent;
+  min-width: 200px;
+  margin: 0 auto;
 }
 
 .patient-form-button:hover:not(:disabled) {
@@ -265,6 +329,38 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+.patient-form-button.button-disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.patient-form-button.button-disabled:hover {
+  background: #9ca3af;
+  transform: none;
+  box-shadow: none;
+}
+
+.form-help-text {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Formulario deshabilitado cuando hay cédula duplicada */
+.form-disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.form-disabled .patient-form-input,
+.form-disabled .patient-form-label,
+.form-disabled .patient-form-section-title {
+  color: #9ca3af;
 }
 
 /* Sección del Calendario (DERECHA) */
@@ -980,6 +1076,13 @@
     padding: 0.25rem;
   }
   
+  /* Ajustes para el botón en móviles */
+  .patient-form-button {
+    min-width: 180px;
+    padding: 0.625rem 1.5rem;
+    font-size: 0.8rem;
+  }
+  
   /* Ajustes para citas de hoy en móviles */
   .citas-hoy-list {
     height: 100px; /* Altura fija en móviles para mantener scroll */
@@ -1028,6 +1131,13 @@
     font-size: 0.6rem;
     top: 0.375rem;
     right: 0.375rem;
+  }
+  
+  /* Ajustes para el botón en pantallas muy pequeñas */
+  .patient-form-button {
+    min-width: 160px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -1386,3 +1496,75 @@
   display: flex !important;
   align-items: stretch !important;
 }
+
+/* Estilos para mensajes del formulario */
+.form-message {
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  animation: messageSlideIn 0.4s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.form-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%);
+  opacity: 0.3;
+}
+
+.form-message.success {
+  background: linear-gradient(135deg, #d1f2d1 0%, #b8e6b8 100%);
+  color: #0f5132;
+  border-color: #75b798;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+.form-message.error {
+  background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+  color: #7f1d1d;
+  border-color: #f87171;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+@keyframes messageSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+    scale: 0.95;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* Estilos específicos para el campo de edad */
+.patient-form-input[name="edad"] {
+  text-align: center;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.patient-form-input[name="edad"]::placeholder {
+  color: #94a3b8;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Estilos para campos con error */

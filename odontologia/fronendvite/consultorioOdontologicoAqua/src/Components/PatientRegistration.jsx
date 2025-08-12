@@ -52,7 +52,8 @@ const PatientRegistration = () => {
     direccion: '',
     consulta: '',
     fecha: '',
-    sexo: ''
+    sexo: '',
+    edad: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -89,7 +90,11 @@ const PatientRegistration = () => {
   
   // Estados para mensajes del modal
   const [modalMessage, setModalMessage] = useState(null);
-  const [modalMessageType, setModalMessageType] = useState('success');
+  const [modalMessageType] = useState('success');
+  
+  // Estados para validación de cédula duplicada
+  const [cedulaDuplicada, setCedulaDuplicada] = useState(false);
+  const [pacienteExistente, setPacienteExistente] = useState(null);
 
   // Función para mostrar mensajes
   const showMessage = (msg, type = 'success', duration = 5000) => {
@@ -108,6 +113,12 @@ const PatientRegistration = () => {
     fetchAppointments();
     fetchPacientes();
   }, []);
+
+  // Efecto para revalidar la cédula cuando cambie la lista de pacientes
+  useEffect(() => {
+    // Solo validar si ya se ha intentado enviar el formulario
+    // No validar en tiempo real
+  }, [pacientes, formData.cedula]);
 
   useEffect(() => {
     // Actualizar citas de hoy cuando cambien los eventos
@@ -133,6 +144,19 @@ const PatientRegistration = () => {
             ? JSON.parse(response.data)
             : []);
       console.log('Pacientes procesados:', pacientesData);
+      
+      // Verificar si hay cédulas duplicadas en los datos recibidos
+      const cedulas = pacientesData.map(p => p.ci).filter(ci => ci != null);
+      const cedulasUnicas = new Set(cedulas);
+      if (cedulas.length !== cedulasUnicas.size) {
+        console.warn('⚠️ Se detectaron cédulas duplicadas en los datos del servidor:', cedulas);
+        const duplicados = cedulas.filter(ci => {
+          const count = cedulas.filter(c => c === ci).length;
+          return count > 1;
+        });
+        console.warn('Cédulas duplicadas:', [...new Set(duplicados)]);
+      }
+      
       setPacientes(pacientesData);
     } catch (error) {
       console.error('Error al obtener pacientes:', error);
@@ -189,6 +213,126 @@ const PatientRegistration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validar cédula duplicada solo al enviar
+    if (formData.cedula && formData.cedula.length >= 7) {
+      const pacienteExistenteInicial = pacientes.find(paciente => 
+        paciente.ci && paciente.ci.toString() === formData.cedula
+      );
+      
+      if (pacienteExistenteInicial) {
+        setCedulaDuplicada(true);
+        setPacienteExistente(pacienteExistenteInicial);
+        // NO mostrar mensaje aquí, solo establecer el estado
+        return;
+      } else {
+        setCedulaDuplicada(false);
+        setPacienteExistente(null);
+      }
+    }
+    
+    console.log('🔍 Estado de validación al enviar:', {
+      cedulaDuplicada,
+      pacienteExistente,
+      formDataCedula: formData.cedula,
+      pacientesCount: pacientes.length,
+      pacientesCIs: pacientes.map(p => p.ci).filter(ci => ci != null)
+    });
+    
+    // Verificación inmediata del estado de validación
+    if (cedulaDuplicada) {
+      // NO mostrar mensaje aquí, solo retornar
+      return;
+    }
+    
+    // Verificación adicional: si el formulario está deshabilitado, no permitir envío
+    if (e.target.querySelector('fieldset')?.disabled) {
+      showMessage('El formulario está deshabilitado debido a una cédula duplicada', 'error');
+      return;
+    }
+    
+    // Validaciones del lado del cliente
+    if (!formData.cedula || formData.cedula.length < 7) {
+      showMessage('La cédula debe tener al menos 7 dígitos', 'error');
+      return;
+    }
+    
+    if (!formData.numero || formData.numero.length < 7) {
+      showMessage('El número de celular debe tener al menos 7 dígitos', 'error');
+      return;
+    }
+    
+    if (!formData.nombre.trim() || !formData.apellido.trim()) {
+      showMessage('El nombre y apellido son obligatorios', 'error');
+      return;
+    }
+    
+    // Validar que nombre y apellido no contengan números
+    if (formData.nombre.match(/\d/)) {
+      showMessage('El nombre no puede contener números', 'error');
+      return;
+    }
+    
+    if (formData.apellido.match(/\d/)) {
+      showMessage('El apellido no puede contener números', 'error');
+      return;
+    }
+    
+    // Validar que la fecha no sea mayor a 2027
+    if (formData.fecha) {
+      const fechaSeleccionada = new Date(formData.fecha);
+      const fechaLimite = new Date('2027-12-31');
+      
+      if (fechaSeleccionada > fechaLimite) {
+        showMessage('La fecha no puede ser mayor al año 2027', 'error');
+        return;
+      }
+    }
+    
+    // Verificar si ya existe un paciente con la misma cédula
+    const pacienteExistenteValidacion = pacientes.find(paciente => 
+      paciente.ci && paciente.ci.toString() === formData.cedula
+    );
+    
+    if (pacienteExistenteValidacion) {
+      showMessage(`Ya existe un paciente con la cédula ${formData.cedula}: ${pacienteExistenteValidacion.name} ${pacienteExistenteValidacion.lastname}. Por favor, verifique los datos.`, 'error');
+      return;
+    }
+    
+    // Verificación adicional: si el estado de validación indica duplicado, no permitir envío
+    if (cedulaDuplicada && pacienteExistente) {
+      showMessage(`Ya existe un paciente con la cédula ${formData.cedula}: ${pacienteExistente.name} ${pacienteExistente.lastname}. Por favor, verifique los datos.`, 'error');
+      return;
+    }
+    
+    // Verificación final de seguridad: buscar en la lista actual de pacientes
+    const pacienteExistenteFinal = pacientes.find(paciente => 
+      paciente.ci && paciente.ci.toString() === formData.cedula
+    );
+    
+    if (pacienteExistenteFinal) {
+      console.error('🚨 Validación de seguridad detectó cédula duplicada:', pacienteExistenteFinal);
+      showMessage(`Error de validación: Ya existe un paciente con la cédula ${formData.cedula}: ${pacienteExistenteFinal.name} ${pacienteExistenteFinal.lastname}.`, 'error');
+      return;
+    }
+    
+    // Verificación adicional: asegurar que la lista de pacientes esté actualizada
+    if (pacientes.length === 0) {
+      console.warn('⚠️ Lista de pacientes vacía, recargando datos...');
+      await fetchPacientes();
+      
+      // Verificar nuevamente después de recargar
+      const pacienteExistenteRecargado = pacientes.find(paciente => 
+        paciente.ci && paciente.ci.toString() === formData.cedula
+      );
+      
+      if (pacienteExistenteRecargado) {
+        console.error('🚨 Validación después de recargar detectó cédula duplicada:', pacienteExistenteRecargado);
+        showMessage(`Error de validación: Ya existe un paciente con la cédula ${formData.cedula}: ${pacienteExistenteRecargado.name} ${pacienteExistenteRecargado.lastname}.`, 'error');
+        return;
+      }
+    }
+    
     setLoading(true);
     setError(null);
     
@@ -205,15 +349,35 @@ const PatientRegistration = () => {
           direccion: '',
           consulta: '',
           fecha: '',
-          sexo: ''
+          sexo: '',
+          edad: ''
         });
+        // Limpiar estados de validación
+        setCedulaDuplicada(false);
+        setPacienteExistente(null);
         showMessage('Paciente registrado exitosamente');
-        // Actualizar la lista de pacientes
-        fetchPacientes();
+        
+        // Actualizar la lista de pacientes inmediatamente
+        await fetchPacientes();
+        
+        // Verificar que la cédula no esté duplicada después de la actualización
+        if (response.data.ci) {
+          const pacienteExistente = pacientes.find(paciente => 
+            paciente.ci === response.data.ci
+          );
+          if (pacienteExistente) {
+            console.warn('Paciente duplicado detectado después del registro:', pacienteExistente);
+          }
+        }
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Error al registrar el paciente');
-      showMessage('Error al registrar el paciente', 'error');
+      // Manejar específicamente el error de cédula duplicada
+      if (error.response?.status === 409 || error.response?.data?.message?.includes('cédula') || error.response?.data?.message?.includes('cedula')) {
+        showMessage('Ya existe un paciente con esa cédula. Por favor, verifique los datos.', 'error');
+      } else {
+        setError(error.response?.data?.message || 'Error al registrar el paciente');
+        showMessage('Error al registrar el paciente', 'error');
+      }
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -341,10 +505,40 @@ const PatientRegistration = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Validaciones específicas por campo
+    let validatedValue = value;
+    
+    if (name === 'cedula') {
+      // Solo permitir números para cédula
+      validatedValue = value.replace(/[^0-9]/g, '');
+    } else if (name === 'numero') {
+      // Solo permitir números para celular
+      validatedValue = value.replace(/[^0-9]/g, '');
+    } else if (name === 'nombre' || name === 'apellido') {
+      // No permitir números en nombre y apellido
+      validatedValue = value.replace(/[0-9]/g, '');
+    } else if (name === 'edad') {
+      // Solo permitir números para edad, máximo 3 dígitos
+      validatedValue = value.replace(/[^0-9]/g, '').slice(0, 3);
+      // Limitar edad a 150 años
+      if (parseInt(validatedValue) > 150) {
+        validatedValue = '150';
+      }
+    }
+    
     setFormData(prevState => ({
       ...prevState,
-      [name]: value
+      [name]: validatedValue
     }));
+    
+    // NO validar cédula duplicada en tiempo real
+    // Solo limpiar el estado de error si se cambia la cédula
+    if (name === 'cedula') {
+      // Limpiar el estado de error cuando se cambia la cédula
+      setCedulaDuplicada(false);
+      setPacienteExistente(null);
+    }
   };
 
   const handleAgendaChange = (e) => {
@@ -408,13 +602,13 @@ const PatientRegistration = () => {
 
   return (
     <div className="main-container">
-      {/* Mensajes */}
-      {message && (
+      {/* Eliminar mensajes que aparecen arriba a la derecha */}
+      {/* {message && (
         <div className={`message ${messageType}`}>
           {message}
           <button onClick={() => setMessage(null)}>×</button>
         </div>
-      )}
+      )} */}
 
       {/* Sección del Calendario */}
       <div className="calendar-section">
@@ -548,8 +742,26 @@ const PatientRegistration = () => {
           <div className="patient-form-header">
             <h2 className="patient-form-title">Registro de Paciente</h2>
           </div>
-          {error && <div className="error-message">{error}</div>}
+          
+          {/* Mostrar mensajes de éxito y error en la sección del formulario */}
+          {message && (
+            <div className={`form-message ${messageType}`}>
+              {messageType === 'success' ? '✅ ' : '❌ '}
+              {message}
+            </div>
+          )}
+          
+          {/* Eliminar el mensaje de error rojo de arriba */}
+          {/* {error && <div className="error-message">{error}</div>} */}
+          {/* Eliminar el mensaje de validación rojo de arriba */}
+          {/* {cedulaDuplicada && (
+            <div className="form-validation-alert">
+              ⚠️ <strong>No se puede registrar:</strong> Ya existe un paciente con la cédula {formData.cedula}
+            </div>
+          )} */}
+          
           <form onSubmit={handleSubmit} className="patient-form">
+            {/* Eliminar el fieldset disabled para que el formulario no se bloquee */}
             <div className="patient-form-section">
               <h3 className="patient-form-section-title">Información Personal</h3>
               <div className="patient-form-row">
@@ -563,7 +775,20 @@ const PatientRegistration = () => {
                 </div>
                 <div className="patient-form-group">
                   <label className="patient-form-label">Cédula</label>
-                  <input type="text" name="cedula" value={formData.cedula} onChange={handleChange} className="patient-form-input" required />
+                  <input 
+                    type="text" 
+                    name="cedula" 
+                    value={formData.cedula} 
+                    onChange={handleChange} 
+                    className={`patient-form-input ${cedulaDuplicada ? 'input-error' : ''}`}
+                    maxLength="10"
+                    required 
+                  />
+                  {cedulaDuplicada && pacienteExistente && (
+                    <div className="cedula-warning">
+                      ⚠️ Ya existe un paciente con la cédula {formData.cedula}: <strong>{pacienteExistente.name} {pacienteExistente.lastname}</strong>
+                    </div>
+                  )}
                 </div>
                 <div className="patient-form-group">
                   <label className="patient-form-label">Sexo</label>
@@ -574,6 +799,19 @@ const PatientRegistration = () => {
                     <option value="otro">Otro</option>
                   </select>
                 </div>
+                <div className="patient-form-group">
+                  <label className="patient-form-label">Edad</label>
+                  <input 
+                    type="number" 
+                    name="edad" 
+                    value={formData.edad} 
+                    onChange={handleChange} 
+                    className="patient-form-input" 
+                    min="0" 
+                    max="150" 
+                    placeholder="Opcional"
+                  />
+                </div>
               </div>
             </div>
             
@@ -582,7 +820,15 @@ const PatientRegistration = () => {
               <div className="patient-form-row">
                 <div className="patient-form-group">
                   <label className="patient-form-label">Número de Teléfono</label>
-                  <input type="tel" name="numero" value={formData.numero} onChange={handleChange} className="patient-form-input" required />
+                  <input 
+                    type="tel" 
+                    name="numero" 
+                    value={formData.numero} 
+                    onChange={handleChange} 
+                    className="patient-form-input" 
+                    maxLength="10"
+                    required 
+                  />
                 </div>
                 <div className="patient-form-group">
                   <label className="patient-form-label">Dirección</label>
@@ -624,11 +870,18 @@ const PatientRegistration = () => {
             <div className="patient-form-actions">
               <button 
                 type="submit" 
-                className="patient-form-button"
-                disabled={loading}
+                className={`patient-form-button ${cedulaDuplicada ? 'button-disabled' : ''}`}
+                disabled={loading || cedulaDuplicada}
+                title={cedulaDuplicada ? 'No se puede registrar: Cédula duplicada' : ''}
               >
-                {loading ? 'Registrando...' : 'Registrar Paciente'}
+                {loading ? 'Registrando...' : cedulaDuplicada ? 'Cédula Duplicada' : 'Registrar Paciente'}
               </button>
+              
+              {cedulaDuplicada && (
+                <div className="form-help-text">
+                  <small>Para continuar, cambie la cédula por una que no esté registrada</small>
+                </div>
+              )}
             </div>
           </form>
         </div>

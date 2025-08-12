@@ -18,6 +18,7 @@ public class PacienteDTO {
     private String consulta;
     private String direccion;
     private String fecha;
+    private Integer edad;
 
     public String getCedula() {
         return cedula;
@@ -89,6 +90,14 @@ public class PacienteDTO {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
     }
 
     public Long getId() {
