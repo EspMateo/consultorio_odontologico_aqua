@@ -16,9 +16,9 @@
 
 /* Sección del Formulario (IZQUIERDA) */
 .form-section {
-  background: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
   border: 1px solid #e2e8f0;
   height: 100%;
   min-height: 100%;
@@ -26,19 +26,21 @@
   display: flex;
   flex-direction: column;
   order: 1;
-  overflow: visible;
+  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
   align-self: stretch;
   flex: 3;
+  flex-basis: 60%;
+  backdrop-filter: blur(10px);
 }
 
 /* Estilos del formulario de pacientes */
 .patient-form-container {
   padding: 0.25rem;
   height: 100%;
-  overflow: visible;
+  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
@@ -47,56 +49,72 @@
 }
 
 .patient-form-card {
-  background-color: #ffffff;
-  border-radius: 6px;
-  padding: 0.25rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 8px;
+  padding: 0.5rem;
   flex: 1;
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: visible;
+  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
+  border: 1px solid #e2e8f0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .patient-form-header {
   text-align: center;
-  margin-bottom: 0.25rem;
-  padding-bottom: 0.25rem;
-  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 8px;
+  margin: 0 0 0.5rem 0;
 }
 
 .patient-form-title {
   color: #1e293b;
   font-size: 1.1rem;
-  margin-bottom: 0.125rem;
-  font-weight: 700;
+  margin-bottom: 0.25rem;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .patient-form-subtitle {
   color: #64748b;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   margin: 0;
+  font-weight: 500;
+  font-style: italic;
 }
 
 .error-message {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   color: #dc2626;
-  padding: 0.375rem;
-  border-radius: 4px;
-  margin-bottom: 0.375rem;
-  border: 1px solid #fecaca;
-  font-weight: 500;
-  font-size: 0.7rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  border: 2px solid #fecaca;
+  font-weight: 600;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+  text-align: center;
 }
 
 .patient-form {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: 0.5rem;
   flex: 1;
-  overflow: visible;
+  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
@@ -104,45 +122,52 @@
 }
 
 .patient-form-section {
-  border: 1px solid #f1f5f9;
-  border-radius: 6px;
-  padding: 0.375rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0.5rem;
 }
 
 .patient-form-section:hover {
   border-color: #3b82f6;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
 }
 
 .patient-form-section-title {
   color: #1e293b;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .patient-form-section-title::before {
   content: '';
-  width: 2px;
-  height: 14px;
+  width: 3px;
+  height: 18px;
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 1px;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
 }
 
 .patient-form-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.375rem;
-  margin-bottom: 0.375rem;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
@@ -165,32 +190,36 @@
 }
 
 .patient-form-label {
-  color: #374151;
-  font-weight: 600;
+  color: #1e293b;
+  font-weight: 700;
   margin-bottom: 0.125rem;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
 }
 
 .patient-form-input {
-  padding: 0.25rem 0.375rem;
+  padding: 0.375rem 0.5rem;
   border: 1px solid #e2e8f0;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 0.75rem;
   transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
   background: white;
   max-width: 100%;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .patient-form-input:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.05);
   transform: translateY(-1px);
+  background: #ffffff;
 }
 
 .patient-form-input::placeholder {
@@ -200,27 +229,35 @@
 .patient-form-actions {
   display: flex;
   justify-content: center;
-  margin-top: 0.375rem;
-  padding-top: 0.375rem;
-  border-top: 1px solid #f1f5f9;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #e2e8f0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 8px;
+  padding: 0.75rem;
 }
 
 .patient-form-button {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid transparent;
 }
 
 .patient-form-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+  border-color: #1d4ed8;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
 }
 
 .patient-form-button:disabled {
@@ -232,10 +269,10 @@
 
 /* Sección del Calendario (DERECHA) */
 .calendar-section {
-  background: white;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 0.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  padding: 0.75rem;
   height: 100%;
   min-height: 100%;
   overflow: hidden;
@@ -249,27 +286,38 @@
   display: flex;
   flex-direction: column;
   align-self: stretch;
-  flex: 1;
+  flex: 2;
+  flex-basis: 40%;
+  backdrop-filter: blur(10px);
 }
 
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.375rem;
-  padding-bottom: 0.375rem;
-  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
   flex-shrink: 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin: 0 0 0.75rem 0;
 }
 
 .calendar-header h2 {
   color: #1e293b;
   margin: 0;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .calendar-actions {
@@ -284,38 +332,108 @@
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.65rem;
-  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
+  font-size: 0.75rem;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid transparent;
 }
 
 .agendar-cita-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+  border-color: #1d4ed8;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
 }
 
 .calendar-container {
   flex: 1;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
   min-height: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Estilos para el título del mes del calendario */
 .calendar-container .fc-toolbar-title {
   text-transform: capitalize;
-  font-size: 1rem !important;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0.75rem !important;
+  font-size: 1.2rem !important;
+  font-weight: 800 !important;
+  color: #1e293b !important;
+  margin: 0 1rem !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Estilos para los botones de navegación del calendario */
+.calendar-container .fc-button {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  padding: 0.5rem 0.75rem !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.calendar-container .fc-button:hover {
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.calendar-container .fc-button:active {
+  transform: translateY(0) !important;
+}
+
+/* Estilos para las celdas del calendario */
+.calendar-container .fc-daygrid-day {
+  border: 1px solid #f1f5f9 !important;
+  transition: all 0.2s ease !important;
+}
+
+.calendar-container .fc-daygrid-day:hover {
+  background-color: #f8fafc !important;
+  border-color: #3b82f6 !important;
+}
+
+.calendar-container .fc-daygrid-day.fc-day-today {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Estilos para los números de los días */
+.calendar-container .fc-daygrid-day-number {
+  font-weight: 600 !important;
+  color: #374151 !important;
+  padding: 0.25rem !important;
+}
+
+/* Estilos para los eventos del calendario */
+.calendar-container .fc-event {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 0.125rem 0.25rem !important;
+  margin: 0.125rem !important;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3) !important;
 }
 
 /* Estilos para los modales */
@@ -505,25 +623,28 @@
 
 /* Sección de Citas de Hoy */
 .citas-hoy-section {
-  margin-top: 0.375rem;
-  padding: 0.25rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 4px;
+  border-radius: 8px;
   border: 1px solid #e2e8f0;
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .citas-hoy-section h3 {
   color: #1e293b;
-  font-size: 0.8rem;
-  margin-bottom: 0.25rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .citas-hoy-section h3::before {
@@ -627,10 +748,13 @@
   color: #64748b;
   font-style: italic;
   text-align: center;
-  padding: 1rem;
-  background: white;
-  border-radius: 6px;
-  border: 2px dashed #e2e8f0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 8px;
+  border: 2px dashed #cbd5e1;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Responsive design */
@@ -641,11 +765,13 @@
   }
   
   .form-section {
-    flex: 2.5;
+    flex: 3;
+    flex-basis: 60%;
   }
   
   .calendar-section {
-    flex: 1;
+    flex: 2;
+    flex-basis: 40%;
   }
   
   .patient-form-row {
@@ -659,11 +785,13 @@
   }
   
   .form-section {
-    flex: 2;
+    flex: 3;
+    flex-basis: 60%;
   }
   
   .calendar-section {
-    flex: 1;
+    flex: 2;
+    flex-basis: 40%;
   }
   
   .patient-form-row {
