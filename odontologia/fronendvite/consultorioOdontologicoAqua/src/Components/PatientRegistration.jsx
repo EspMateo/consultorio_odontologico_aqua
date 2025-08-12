@@ -127,7 +127,15 @@ const PatientRegistration = () => {
       const eventDate = event.start.split('T')[0];
       return eventDate === hoy;
     });
-    setCitasHoy(citasHoyFiltradas);
+    
+    // Ordenar citas por horario (de menor a mayor)
+    const citasOrdenadas = citasHoyFiltradas.sort((a, b) => {
+      const horaA = new Date(a.start).getTime();
+      const horaB = new Date(b.start).getTime();
+      return horaA - horaB;
+    });
+    
+    setCitasHoy(citasOrdenadas);
   }, [events]);
 
   const fetchPacientes = async () => {
