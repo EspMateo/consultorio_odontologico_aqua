@@ -86,6 +86,10 @@ const PatientRegistration = () => {
   // Estados para mensajes
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState('success');
+  
+  // Estados para mensajes del modal
+  const [modalMessage, setModalMessage] = useState(null);
+  const [modalMessageType, setModalMessageType] = useState('success');
 
   // Función para mostrar mensajes
   const showMessage = (msg, type = 'success', duration = 5000) => {
@@ -176,6 +180,11 @@ const PatientRegistration = () => {
 
   const handleAgendarCitaClick = () => {
     setShowModal(true);
+    setModalMessage(null); // Limpiar mensajes anteriores del modal
+    setAgendaFormData(prev => ({
+      ...prev,
+      fecha: selectedDate || new Date().toISOString().split('T')[0]
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -238,23 +247,35 @@ const PatientRegistration = () => {
         }
       });
       
-      setShowModal(false);
+      // NO cerrar el modal automáticamente
+      // setShowModal(false);
+      
+      // Actualizar las citas
       fetchAppointments();
+      
+      // Limpiar el formulario
       setAgendaFormData({
         pacienteId: '',
         fecha: '',
         hora: '',
         motivo: ''
       });
-      showMessage('Cita agendada exitosamente');
+      
+      // Mostrar mensaje de éxito dentro del modal
+      setModalMessage('Cita agendada exitosamente');
+      setModalMessageType('success');
+      
     } catch (error) {
       console.error('Error al crear la cita:', error);
-      showMessage('Error al crear la cita. Por favor, intente nuevamente.', 'error');
+      // Mostrar mensaje de error dentro del modal
+      setModalMessage('Error al crear la cita. Por favor, intente nuevamente.');
+      setModalMessageType('error');
     }
   };
 
   const handleEditCita = (cita) => {
     setCitaToEdit(cita);
+    setModalMessage(null); // Limpiar mensajes anteriores del modal
     setEditFormData({
       pacienteId: cita.pacienteId.toString(),
       fecha: cita.start.split('T')[0],
@@ -291,19 +312,30 @@ const PatientRegistration = () => {
         }
       });
       
-      setShowEditModal(false);
-      setCitaToEdit(null);
+      // NO cerrar el modal automáticamente
+      // setShowEditModal(false);
+      // setCitaToEdit(null);
+      
+      // Actualizar las citas
       fetchAppointments();
+      
+      // Limpiar el formulario
       setEditFormData({
         pacienteId: '',
         fecha: '',
         hora: '',
         motivo: ''
       });
-      showMessage('Cita actualizada exitosamente');
+      
+      // Mostrar mensaje de éxito dentro del modal
+      setModalMessage('Cita actualizada exitosamente');
+      setModalMessageType('success');
+      
     } catch (error) {
       console.error('Error al actualizar la cita:', error);
-      showMessage('Error al actualizar la cita. Por favor, intente nuevamente.', 'error');
+      // Mostrar mensaje de error dentro del modal
+      setModalMessage('Error al actualizar la cita. Por favor, intente nuevamente.');
+      setModalMessageType('error');
     }
   };
 
@@ -365,6 +397,7 @@ const PatientRegistration = () => {
   const cancelEditCita = () => {
     setShowEditModal(false);
     setCitaToEdit(null);
+    setModalMessage(null); // Limpiar mensajes del modal
     setEditFormData({
       pacienteId: '',
       fecha: '',
@@ -605,72 +638,116 @@ const PatientRegistration = () => {
       {/* Modal para Agendar Cita */}
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className={`modal-content ${modalMessage ? 'has-message' : ''}`}>
             <h2>Nueva Cita</h2>
-            <form onSubmit={handleAgendaSubmit}>
-              <div className="form-group">
-                <label>Paciente:</label>
-                <select
-                  value={agendaFormData.pacienteId}
-                  onChange={handleAgendaChange}
-                  name="pacienteId"
-                  required
-                  className="form-select"
-                >
-                  <option value="">Seleccione un paciente</option>
-                  {(() => {
-                    console.log('Estado actual de pacientes:', pacientes);
-                    console.log('Tipo de pacientes:', typeof pacientes);
-                    console.log('Es array?', Array.isArray(pacientes));
-                    return Array.isArray(pacientes) && pacientes.length > 0 ? (
-                      pacientes.map(paciente => (
-                        <option key={paciente.id} value={paciente.id}>
-                          {paciente.name} {paciente.lastname} - CI: {paciente.ci}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="" disabled>No hay pacientes disponibles</option>
-                    );
-                  })()}
-                </select>
+            
+            {/* Mostrar mensaje dentro del modal */}
+            {modalMessage && (
+              <div className={`modal-message ${modalMessageType}`}>
+                <div className={`modal-message-icon ${modalMessageType}`}></div>
+                {modalMessage}
               </div>
-              <div className="form-group">
-                <label>Fecha:</label>
-                <input
-                  type="date"
-                  name="fecha"
-                  value={agendaFormData.fecha}
-                  onChange={handleAgendaChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Hora:</label>
-                <input
-                  type="time"
-                  name="hora"
-                  value={agendaFormData.hora}
-                  onChange={handleAgendaChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Motivo:</label>
-                <textarea
-                  name="motivo"
-                  value={agendaFormData.motivo}
-                  onChange={handleAgendaChange}
-                  required
-                  placeholder="Ingrese el motivo de la cita"
-                />
-              </div>
+            )}
+            
+            {/* Mostrar formulario solo si no hay mensaje de éxito */}
+            {!modalMessage || modalMessageType === 'error' ? (
+              <form onSubmit={handleAgendaSubmit}>
+                <div className="form-group">
+                  <label>Paciente:</label>
+                  <select
+                    value={agendaFormData.pacienteId}
+                    onChange={handleAgendaChange}
+                    name="pacienteId"
+                    required
+                    className="form-select"
+                  >
+                    <option value="">Seleccione un paciente</option>
+                    {(() => {
+                      console.log('Estado actual de pacientes:', pacientes);
+                      console.log('Tipo de pacientes:', typeof pacientes);
+                      console.log('Es array?', Array.isArray(pacientes));
+                      return Array.isArray(pacientes) && pacientes.length > 0 ? (
+                        pacientes.map(paciente => (
+                          <option key={paciente.id} value={paciente.id}>
+                            {paciente.name} {paciente.lastname} - CI: {paciente.ci}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="" disabled>No hay pacientes disponibles</option>
+                      );
+                    })()}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Fecha:</label>
+                  <input
+                    type="date"
+                    name="fecha"
+                    value={agendaFormData.fecha}
+                    onChange={handleAgendaChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Hora:</label>
+                  <input
+                    type="time"
+                    name="hora"
+                    value={agendaFormData.hora}
+                    onChange={handleAgendaChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Motivo:</label>
+                  <textarea
+                    name="motivo"
+                    value={agendaFormData.motivo}
+                    required
+                    placeholder="Ingrese el motivo de la cita"
+                    onChange={handleAgendaChange}
+                  />
+                </div>
+                <div className="modal-actions">
+                  <button type="submit" className="btn-primary">Guardar</button>
+                  <button type="button" className="btn-secondary" onClick={() => {
+                    setShowModal(false);
+                    setModalMessage(null);
+                  }}>
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            ) : (
+              /* Mostrar botones después del éxito */
               <div className="modal-actions">
-                <button type="submit" className="btn-primary">Guardar</button>
-                <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>
-                  Cancelar
+                <button 
+                  type="button" 
+                  className="btn-primary" 
+                  onClick={() => {
+                    setShowModal(false);
+                    setModalMessage(null);
+                  }}
+                >
+                  Cerrar
+                </button>
+                <button 
+                  type="button" 
+                  className="btn-secondary" 
+                  onClick={() => {
+                    setModalMessage(null);
+                    setAgendaFormData({
+                      pacienteId: '',
+                      fecha: selectedDate || new Date().toISOString().split('T')[0],
+                      hora: '',
+                      motivo: ''
+                    });
+                  }}
+                >
+                  Agregar Otra Cita
                 </button>
               </div>
-            </form>
+            )}
           </div>
         </div>
       )}
@@ -678,67 +755,109 @@ const PatientRegistration = () => {
       {/* Modal para Editar Cita */}
       {showEditModal && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className={`modal-content ${modalMessage ? 'has-message' : ''}`}>
             <h2>Editar Cita</h2>
-            <form onSubmit={handleEditSubmit}>
-              <div className="form-group">
-                <label>Paciente:</label>
-                <select
-                  value={editFormData.pacienteId}
-                  onChange={handleEditChange}
-                  name="pacienteId"
-                  required
-                  className="form-select"
-                >
-                  <option value="">Seleccione un paciente</option>
-                  {Array.isArray(pacientes) && pacientes.length > 0 ? (
-                    pacientes.map(paciente => (
-                      <option key={paciente.id} value={paciente.id}>
-                        {paciente.name} {paciente.lastname} - CI: {paciente.ci}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="" disabled>No hay pacientes disponibles</option>
-                  )}
-                </select>
+            
+            {/* Mostrar mensaje dentro del modal */}
+            {modalMessage && (
+              <div className={`modal-message ${modalMessageType}`}>
+                <div className={`modal-message-icon ${modalMessageType}`}></div>
+                {modalMessage}
               </div>
-              <div className="form-group">
-                <label>Fecha:</label>
-                <input
-                  type="date"
-                  name="fecha"
-                  value={editFormData.fecha}
-                  onChange={handleEditChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Hora:</label>
-                <input
-                  type="time"
-                  name="hora"
-                  value={editFormData.hora}
-                  onChange={handleEditChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Motivo:</label>
-                <textarea
-                  name="motivo"
-                  value={editFormData.motivo}
-                  onChange={handleEditChange}
-                  required
-                  placeholder="Ingrese el motivo de la cita"
-                />
-              </div>
+            )}
+            
+                        {/* Mostrar formulario solo si no hay mensaje de éxito */}
+            {!modalMessage || modalMessageType === 'error' ? (
+              <form onSubmit={handleEditSubmit}>
+                <div className="form-group">
+                  <label>Paciente:</label>
+                  <select
+                    value={editFormData.pacienteId}
+                    onChange={handleEditChange}
+                    name="pacienteId"
+                    required
+                    className="form-select"
+                  >
+                    <option value="">Seleccione un paciente</option>
+                    {Array.isArray(pacientes) && pacientes.length > 0 ? (
+                      pacientes.map(paciente => (
+                        <option key={paciente.id} value={paciente.id}>
+                          {paciente.name} {paciente.lastname} - CI: {paciente.ci}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" disabled>No hay pacientes disponibles</option>
+                    )}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Fecha:</label>
+                  <input
+                    type="date"
+                    name="fecha"
+                    value={editFormData.fecha}
+                    onChange={handleEditChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Hora:</label>
+                  <input
+                    type="time"
+                    name="hora"
+                    value={editFormData.hora}
+                    onChange={handleEditChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Motivo:</label>
+                  <textarea
+                    name="motivo"
+                    value={editFormData.motivo}
+                    onChange={handleEditChange}
+                    required
+                    placeholder="Ingrese el motivo de la cita"
+                  />
+                </div>
+                <div className="modal-actions">
+                  <button type="submit" className="btn-primary">Actualizar</button>
+                  <button type="button" className="btn-secondary" onClick={cancelEditCita}>
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            ) : (
+              /* Mostrar botones después del éxito */
               <div className="modal-actions">
-                <button type="submit" className="btn-primary">Actualizar</button>
-                <button type="button" className="btn-secondary" onClick={cancelEditCita}>
-                  Cancelar
+                <button 
+                  type="button" 
+                  className="btn-primary" 
+                  onClick={() => {
+                    setShowEditModal(false);
+                    setCitaToEdit(null);
+                    setModalMessage(null);
+                  }}
+                >
+                  Cerrar
+                </button>
+                <button 
+                  type="button" 
+                  className="btn-secondary" 
+                  onClick={() => {
+                    setModalMessage(null);
+                    setEditFormData({
+                      pacienteId: '',
+                      fecha: '',
+                      hora: '',
+                      motivo: ''
+                    });
+                  }}
+                >
+                  Editar Otra Cita
                 </button>
               </div>
-            </form>
+            )}
           </div>
         </div>
       )}
