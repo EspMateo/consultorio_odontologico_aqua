@@ -648,6 +648,7 @@
   max-width: 100%;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
 }
 
 .citas-hoy-section h3 {
@@ -670,39 +671,118 @@
   border-radius: 2px;
 }
 
+/* Indicador de scroll cuando hay muchas citas */
+.citas-hoy-section.has-many-citas::after {
+  content: '📜';
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  animation: scrollHint 2s ease-in-out infinite;
+}
+
+@keyframes scrollHint {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(-2px); opacity: 1; }
+}
+
 .citas-hoy-list {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
-  max-height: 150px;
-  overflow-y: auto;
+  height: 120px; /* Altura fija para forzar scroll */
+  overflow-y: auto; /* Cambiar a auto para que solo aparezca cuando sea necesario */
+  overflow-x: hidden;
   /* Estilos personalizados para el scrollbar */
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
+  scrollbar-color: #3b82f6 #f1f5f9;
+  /* Transición suave para el scroll */
+  scroll-behavior: smooth;
+  /* Asegurar que el scrollbar sea visible */
+  padding-right: 4px;
+  /* Forzar que el contenido no se comprima */
+  flex-shrink: 0;
 }
 
 /* Estilos para el scrollbar en Webkit (Chrome, Safari, Edge) */
 .citas-hoy-list::-webkit-scrollbar {
-  width: 6px;
+  width: 12px; /* Scrollbar más ancho para mejor visibilidad */
 }
 
 .citas-hoy-list::-webkit-scrollbar-track {
   background: #f1f5f9;
-  border-radius: 3px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  margin: 2px;
 }
 
 .citas-hoy-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
-  border-radius: 3px;
-  border: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 6px;
+  border: 1px solid #1d4ed8;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  min-height: 40px; /* Altura mínima del thumb */
 }
 
 .citas-hoy-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
 }
 
 .citas-hoy-list::-webkit-scrollbar-corner {
   background: #f1f5f9;
+}
+
+/* Estilos para Firefox */
+.citas-hoy-list {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #f1f5f9;
+}
+
+/* Estilos adicionales para mejorar la funcionalidad del scrollbar */
+.citas-hoy-list::-webkit-scrollbar-button {
+  display: none; /* Ocultar botones de scroll para un look más limpio */
+}
+
+/* Asegurar que el scrollbar sea visible en todos los navegadores */
+.citas-hoy-list {
+  scrollbar-gutter: stable;
+}
+
+/* Forzar que el scrollbar aparezca cuando hay más de 2 citas */
+.citas-hoy-list:has(.cita-hoy-item:nth-child(3)) {
+  overflow-y: scroll !important;
+}
+
+/* Asegurar que el contenido no se comprima */
+.cita-hoy-item {
+  flex-shrink: 0 !important;
+  min-height: 40px !important;
+}
+
+/* Mejorar la visibilidad del scrollbar */
+.citas-hoy-list::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+.citas-hoy-list::-webkit-scrollbar-track {
+  background-color: #f1f5f9;
+  border-radius: 6px;
+  margin: 2px;
+}
+
+.citas-hoy-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 6px;
+  border: 1px solid #1d4ed8;
+  min-height: 40px;
+}
+
+/* Hover effect para el scrollbar */
+.citas-hoy-list:hover::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
 }
 
 .cita-hoy-item {
@@ -719,6 +799,9 @@
   box-sizing: border-box;
   max-width: 100%;
   overflow: hidden;
+  /* Forzar que cada cita mantenga su altura */
+  min-height: 40px;
+  flex-shrink: 0;
 }
 
 .cita-hoy-item:hover {
@@ -896,6 +979,18 @@
   .patient-form-section {
     padding: 0.25rem;
   }
+  
+  /* Ajustes para citas de hoy en móviles */
+  .citas-hoy-list {
+    height: 100px; /* Altura fija en móviles para mantener scroll */
+    overflow-y: auto; /* Scroll automático en móviles */
+  }
+  
+  .citas-hoy-section.has-many-citas::after {
+    font-size: 0.7rem;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -917,6 +1012,22 @@
   
   .patient-form-title {
     font-size: 1rem;
+  }
+  
+  /* Ajustes para citas de hoy en pantallas muy pequeñas */
+  .citas-hoy-list {
+    height: 80px; /* Altura fija para mantener scroll en pantallas pequeñas */
+    overflow-y: auto; /* Scroll automático en pantallas pequeñas */
+  }
+  
+  .citas-hoy-section {
+    padding: 0.5rem;
+  }
+  
+  .citas-hoy-section.has-many-citas::after {
+    font-size: 0.6rem;
+    top: 0.375rem;
+    right: 0.375rem;
   }
 }
 

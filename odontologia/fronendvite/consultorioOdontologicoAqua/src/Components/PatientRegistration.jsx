@@ -493,12 +493,12 @@ const PatientRegistration = () => {
           />
         </div>
         
-        {/* Sección de Citas de Hoy */}
-        <div className="citas-hoy-section">
-          <h3>Citas de Hoy</h3>
-          {citasHoy.length > 0 ? (
-            <div className="citas-hoy-list">
-              {citasHoy.map((cita, index) => (
+                 {/* Sección de Citas de Hoy */}
+         <div className={`citas-hoy-section ${citasHoy.length >= 3 ? 'has-many-citas' : ''}`}>
+           <h3>Citas de Hoy</h3>
+           {citasHoy.length > 0 ? (
+             <div className="citas-hoy-list">
+               {citasHoy.map((cita, index) => (
                 <div 
                   key={index} 
                   className="cita-hoy-item"
@@ -547,7 +547,6 @@ const PatientRegistration = () => {
         <div className="patient-form-card">
           <div className="patient-form-header">
             <h2 className="patient-form-title">Registro de Paciente</h2>
-            <p className="patient-form-subtitle">Complete el formulario con los datos del paciente</p>
           </div>
           {error && <div className="error-message">{error}</div>}
           <form onSubmit={handleSubmit} className="patient-form">
