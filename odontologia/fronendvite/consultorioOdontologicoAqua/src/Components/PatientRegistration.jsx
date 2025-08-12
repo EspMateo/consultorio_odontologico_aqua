@@ -90,7 +90,7 @@ const PatientRegistration = () => {
   
   // Estados para mensajes del modal
   const [modalMessage, setModalMessage] = useState(null);
-  const [modalMessageType] = useState('success');
+  const [modalMessageType, setModalMessageType] = useState('success');
   
   // Estados para validación de cédula duplicada
   const [cedulaDuplicada, setCedulaDuplicada] = useState(false);
