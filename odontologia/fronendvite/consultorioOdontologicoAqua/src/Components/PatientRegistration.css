@@ -124,7 +124,7 @@
 .patient-form-section {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 0.5rem;
+  padding: 0.375rem; /* Reducido de 0.5rem */
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   transition: all 0.3s ease;
   width: 100%;
@@ -132,7 +132,7 @@
   max-width: 100%;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.375rem; /* Reducido de 0.5rem */
 }
 
 .patient-form-section:hover {
@@ -144,8 +144,8 @@
 
 .patient-form-section-title {
   color: #1e293b;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.8rem; /* Reducido de 0.9rem */
+  margin-bottom: 0.375rem; /* Reducido de 0.5rem */
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -157,7 +157,7 @@
 .patient-form-section-title::before {
   content: '';
   width: 3px;
-  height: 18px;
+  height: 14px; /* Reducido de 18px */
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
@@ -165,9 +165,9 @@
 
 .patient-form-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Reducido de 150px */
+  gap: 0.375rem; /* Reducido de 0.5rem */
+  margin-bottom: 0.375rem; /* Reducido de 0.5rem */
   width: 100%;
   box-sizing: border-box;
   max-width: 100%;
@@ -193,7 +193,7 @@
   color: #1e293b;
   font-weight: 700;
   margin-bottom: 0.125rem;
-  font-size: 0.75rem;
+  font-size: 0.65rem; /* Reducido de 0.75rem */
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -202,16 +202,17 @@
 }
 
 .patient-form-input {
-  padding: 0.375rem 0.5rem;
+  padding: 0.25rem 0.375rem; /* Reducido de 0.375rem 0.5rem */
   border: 1px solid #e2e8f0;
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 0.7rem; /* Reducido de 0.75rem */
   transition: all 0.3s ease;
   width: 100%;
   box-sizing: border-box;
   background: white;
   max-width: 100%;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  height: 28px; /* Reducido para ser más compacto */
 }
 
 .patient-form-input:focus {
@@ -290,12 +291,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
+  margin-top: 0.5rem; /* Reducido de 0.75rem */
+  padding-top: 0.5rem; /* Reducido de 0.75rem */
   border-top: 2px solid #e2e8f0;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.75rem; /* Reducido de 1rem */
   text-align: center;
 }
 
@@ -303,17 +304,17 @@
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 0.75rem 2rem;
+  padding: 0.625rem 1.5rem; /* Reducido de 0.75rem 2rem */
   border-radius: 8px;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Reducido de 0.9rem */
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border: 2px solid transparent;
-  min-width: 200px;
+  min-width: 160px; /* Reducido de 200px */
   margin: 0 auto;
 }
 
@@ -346,9 +347,10 @@
 
 .form-help-text {
   text-align: center;
-  margin-top: 0.5rem;
+  margin-top: 0.375rem; /* Reducido de 0.5rem */
   color: #6b7280;
   font-style: italic;
+  font-size: 0.75rem; /* Reducido para ser más compacto */
 }
 
 /* Formulario deshabilitado cuando hay cédula duplicada */
@@ -1078,9 +1080,9 @@
   
   /* Ajustes para el botón en móviles */
   .patient-form-button {
-    min-width: 180px;
-    padding: 0.625rem 1.5rem;
-    font-size: 0.8rem;
+    min-width: 140px; /* Reducido de 180px */
+    padding: 0.5rem 1.25rem; /* Reducido de 0.625rem 1.5rem */
+    font-size: 0.8rem; /* Reducido de 0.85rem */
   }
   
   /* Ajustes para citas de hoy en móviles */
@@ -1135,9 +1137,9 @@
   
   /* Ajustes para el botón en pantallas muy pequeñas */
   .patient-form-button {
-    min-width: 160px;
-    padding: 0.5rem 1.25rem;
-    font-size: 0.75rem;
+    min-width: 120px; /* Reducido de 160px */
+    padding: 0.5rem 1rem; /* Reducido de 0.5rem 1.25rem */
+    font-size: 0.75rem; /* Reducido de 0.8rem */
   }
 }
 
@@ -1146,15 +1148,16 @@
 .patient-form-input[name="consulta"],
 .patient-form-input[name="motivo"],
 .form-group textarea {
-  min-height: 80px;
+  min-height: 60px; /* Reducido de 80px */
   resize: vertical;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.5;
-  padding: 0.5rem;
+  line-height: 1.3; /* Reducido de 1.5 */
+  padding: 0.375rem; /* Reducido de 0.5rem */
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   background: white;
   transition: all 0.3s ease;
+  height: auto;
 }
 
 .patient-form-input[type="textarea"]:focus,

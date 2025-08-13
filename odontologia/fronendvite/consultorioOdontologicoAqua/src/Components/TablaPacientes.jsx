@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { buildApiUrl } from '../config';
@@ -13,29 +13,10 @@ function TablaPacientes({ usuarioId }) {
   const [displayMessage, setDisplayMessage] = useState(null);
   const [messageType, setMessageType] = useState('info');
   const navigate = useNavigate();
-  const tableRef = useRef(null);
-  const [searchWidth, setSearchWidth] = useState(null);
-
-  const updateSearchWidth = useCallback(() => {
-    if (tableRef.current) {
-      setSearchWidth(tableRef.current.offsetWidth);
-    }
-  }, []);
 
   useEffect(() => {
     fetchPacientes();
   }, []);
-
-  // Actualizar el ancho del buscador cuando cambie el tamaño de la ventana o los datos
-  useEffect(() => {
-    updateSearchWidth();
-    window.addEventListener('resize', updateSearchWidth);
-    return () => window.removeEventListener('resize', updateSearchWidth);
-  }, [updateSearchWidth]);
-
-  useEffect(() => {
-    updateSearchWidth();
-  }, [pacientes, updateSearchWidth]);
 
   const fetchPacientes = async () => {
     setLoading(true);
@@ -154,7 +135,7 @@ function TablaPacientes({ usuarioId }) {
   return (
     <div className="tabla-container">
       <MessageDisplay message={displayMessage} type={messageType} onDismiss={handleDismissMessage} />
-      <div className="search-container" style={{ width: searchWidth ? `${searchWidth}px` : 'auto' }}>
+      <div className="search-container">
         <input
           type="text"
           value={searchTerm}
@@ -167,7 +148,7 @@ function TablaPacientes({ usuarioId }) {
         </button>
       </div>
 
-      <table ref={tableRef} className="tabla-pacientes">
+      <table className="tabla-pacientes">
         <thead>
           <tr>
             <th>Nombre</th>
