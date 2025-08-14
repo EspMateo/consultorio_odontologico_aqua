@@ -28,7 +28,6 @@ function TablaPacientes({ usuarioId }) {
       });
       setPacientes(response.data);
     } catch (error) {
-      console.error('Error al cargar pacientes:', error);
       setDisplayMessage('Error al cargar los pacientes');
       setMessageType('error');
     } finally {
@@ -58,7 +57,6 @@ function TablaPacientes({ usuarioId }) {
         setMessageType('success');
       }
     } catch (error) {
-      console.error('Error en la búsqueda:', error);
       setDisplayMessage('Error al buscar pacientes.');
       setMessageType('error');
     } finally {
@@ -81,7 +79,6 @@ function TablaPacientes({ usuarioId }) {
         setDisplayMessage('Paciente eliminado exitosamente.');
         setMessageType('success');
       } catch (error) {
-        console.error('Error al eliminar paciente:', error);
         let errorMessage = 'Error al eliminar el paciente.';
         
         if (error.response) {

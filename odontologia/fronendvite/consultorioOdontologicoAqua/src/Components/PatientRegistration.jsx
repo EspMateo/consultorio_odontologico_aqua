@@ -141,33 +141,25 @@ const PatientRegistration = () => {
   const fetchPacientes = async () => {
     try {
       const response = await axios.get(buildApiUrl('pacientes'));
-      console.log('Respuesta del servidor:', response);
-      console.log('Tipo de response.data:', typeof response.data);
-      console.log('Es array?', Array.isArray(response.data));
-      console.log('Contenido de response.data:', response.data);
       
       const pacientesData = Array.isArray(response.data)
         ? response.data
         : (typeof response.data === 'string'
             ? JSON.parse(response.data)
             : []);
-      console.log('Pacientes procesados:', pacientesData);
       
       // Verificar si hay cédulas duplicadas en los datos recibidos
       const cedulas = pacientesData.map(p => p.ci).filter(ci => ci != null);
       const cedulasUnicas = new Set(cedulas);
       if (cedulas.length !== cedulasUnicas.size) {
-        console.warn('⚠️ Se detectaron cédulas duplicadas en los datos del servidor:', cedulas);
         const duplicados = cedulas.filter(ci => {
           const count = cedulas.filter(c => c === ci).length;
           return count > 1;
         });
-        console.warn('Cédulas duplicadas:', [...new Set(duplicados)]);
       }
       
       setPacientes(pacientesData);
     } catch (error) {
-      console.error('Error al obtener pacientes:', error);
       showMessage('Error al cargar la lista de pacientes', 'error');
       // En caso de error, establecer un array vacío
       setPacientes([]);
@@ -192,7 +184,7 @@ const PatientRegistration = () => {
       }));
       setEvents(formattedEvents);
     } catch (error) {
-      console.error('Error al obtener citas:', error);
+      // Error silencioso para citas
     }
   };
 
@@ -239,13 +231,7 @@ const PatientRegistration = () => {
       }
     }
     
-    console.log('🔍 Estado de validación al enviar:', {
-      cedulaDuplicada,
-      pacienteExistente,
-      formDataCedula: formData.cedula,
-      pacientesCount: pacientes.length,
-      pacientesCIs: pacientes.map(p => p.ci).filter(ci => ci != null)
-    });
+
     
     // Verificación inmediata del estado de validación
     if (cedulaDuplicada) {
@@ -319,14 +305,12 @@ const PatientRegistration = () => {
     );
     
     if (pacienteExistenteFinal) {
-      console.error('🚨 Validación de seguridad detectó cédula duplicada:', pacienteExistenteFinal);
       showMessage(`Error de validación: Ya existe un paciente con la cédula ${formData.cedula}: ${pacienteExistenteFinal.name} ${pacienteExistenteFinal.lastname}.`, 'error');
       return;
     }
     
     // Verificación adicional: asegurar que la lista de pacientes esté actualizada
     if (pacientes.length === 0) {
-      console.warn('⚠️ Lista de pacientes vacía, recargando datos...');
       await fetchPacientes();
       
       // Verificar nuevamente después de recargar
@@ -335,7 +319,6 @@ const PatientRegistration = () => {
       );
       
       if (pacienteExistenteRecargado) {
-        console.error('🚨 Validación después de recargar detectó cédula duplicada:', pacienteExistenteRecargado);
         showMessage(`Error de validación: Ya existe un paciente con la cédula ${formData.cedula}: ${pacienteExistenteRecargado.name} ${pacienteExistenteRecargado.lastname}.`, 'error');
         return;
       }
@@ -369,24 +352,20 @@ const PatientRegistration = () => {
         await fetchPacientes();
         
         // Verificar que la cédula no esté duplicada después de la actualización
-        if (response.data.ci) {
-          const pacienteExistente = pacientes.find(paciente => 
-            paciente.ci === response.data.ci
-          );
-          if (pacienteExistente) {
-            console.warn('Paciente duplicado detectado después del registro:', pacienteExistente);
-          }
-        }
+                 if (response.data.ci) {
+           const pacienteExistente = pacientes.find(paciente => 
+             paciente.ci === response.data.ci
+           );
+         }
       }
     } catch (error) {
       // Manejar específicamente el error de cédula duplicada
       if (error.response?.status === 409 || error.response?.data?.message?.includes('cédula') || error.response?.data?.message?.includes('cedula')) {
         showMessage('Ya existe un paciente con esa cédula. Por favor, verifique los datos.', 'error');
-      } else {
-        setError(error.response?.data?.message || 'Error al registrar el paciente');
-        showMessage('Error al registrar el paciente', 'error');
-      }
-      console.error('Error:', error);
+             } else {
+         setError(error.response?.data?.message || 'Error al registrar el paciente');
+         showMessage('Error al registrar el paciente', 'error');
+       }
     } finally {
       setLoading(false);
     }
@@ -437,12 +416,11 @@ const PatientRegistration = () => {
       setModalMessage('Cita agendada exitosamente');
       setModalMessageType('success');
       
-    } catch (error) {
-      console.error('Error al crear la cita:', error);
-      // Mostrar mensaje de error dentro del modal
-      setModalMessage('Error al crear la cita. Por favor, intente nuevamente.');
-      setModalMessageType('error');
-    }
+         } catch (error) {
+       // Mostrar mensaje de error dentro del modal
+       setModalMessage('Error al crear la cita. Por favor, intente nuevamente.');
+       setModalMessageType('error');
+     }
   };
 
   const handleEditCita = (cita) => {
@@ -503,12 +481,11 @@ const PatientRegistration = () => {
       setModalMessage('Cita actualizada exitosamente');
       setModalMessageType('success');
       
-    } catch (error) {
-      console.error('Error al actualizar la cita:', error);
-      // Mostrar mensaje de error dentro del modal
-      setModalMessage('Error al actualizar la cita. Por favor, intente nuevamente.');
-      setModalMessageType('error');
-    }
+         } catch (error) {
+       // Mostrar mensaje de error dentro del modal
+       setModalMessage('Error al actualizar la cita. Por favor, intente nuevamente.');
+       setModalMessageType('error');
+     }
   };
 
   const handleChange = (e) => {
@@ -585,10 +562,9 @@ const PatientRegistration = () => {
       setCitaToDelete(null);
       
       showMessage('Cita eliminada exitosamente');
-    } catch (error) {
-      console.error('Error al eliminar la cita:', error);
-      showMessage('Error al eliminar la cita. Por favor, intente nuevamente.', 'error');
-    }
+         } catch (error) {
+       showMessage('Error al eliminar la cita. Por favor, intente nuevamente.', 'error');
+     }
   };
 
   const cancelDeleteCita = () => {
@@ -922,11 +898,8 @@ const PatientRegistration = () => {
                     className="form-select"
                   >
                     <option value="">Seleccione un paciente</option>
-                    {(() => {
-                      console.log('Estado actual de pacientes:', pacientes);
-                      console.log('Tipo de pacientes:', typeof pacientes);
-                      console.log('Es array?', Array.isArray(pacientes));
-                      return Array.isArray(pacientes) && pacientes.length > 0 ? (
+                                         {(() => {
+                       return Array.isArray(pacientes) && pacientes.length > 0 ? (
                         pacientes.map(paciente => (
                           <option key={paciente.id} value={paciente.id}>
                             {paciente.name} {paciente.lastname} - CI: {paciente.ci}

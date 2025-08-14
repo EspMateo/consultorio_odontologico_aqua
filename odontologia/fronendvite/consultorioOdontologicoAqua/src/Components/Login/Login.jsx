@@ -21,8 +21,6 @@ export default function Login() {
     setButtonMessage('Iniciando sesión...');
     
     try {
-      console.log('Attempting login for email:', email);
-      
       const res = await axios.post(buildApiUrl('usuarios/login'), {
         email,
         password,
@@ -32,8 +30,6 @@ export default function Login() {
           'Accept': 'application/json'
         }
       });
-
-      console.log('Login response:', res.data);
 
       if (res.data) {
         // Guardar el token y datos del usuario
@@ -49,22 +45,18 @@ export default function Login() {
         }, 1500);
       }
     } catch (err) {
-      console.error('Error en login:', err);
       setLoading(false);
       setButtonMessage('Ingresar');
       
       if (err.response) {
-        console.error('Error response:', err.response);
         if (err.response.status === 400) {
           setPasswordError('Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
         } else {
           setPasswordError(err.response.data || 'Error en el inicio de sesión');
         }
       } else if (err.request) {
-        console.error('No response received:', err.request);
         setPasswordError('Error al conectar con el servidor. Por favor, verifica tu conexión.');
       } else {
-        console.error('Error setting up request:', err.message);
         setPasswordError('Error al conectar con el servidor. Por favor, verifica tu conexión.');
       }
     }

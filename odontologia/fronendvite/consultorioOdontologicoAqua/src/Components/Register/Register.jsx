@@ -65,12 +65,9 @@ function Register() {
     
     setCheckingEmail(true);
     try {
-      console.log('Verificando email:', email);
       const response = await axios.get(buildApiUrl(`usuarios/check-email/${email}`));
-      console.log('Respuesta verificación:', response.data);
       setEmailExists(response.data.exists);
     } catch (error) {
-      console.error('Error checking email:', error);
       setEmailExists(false);
     } finally {
       setCheckingEmail(false);
@@ -109,8 +106,6 @@ function Register() {
     }
     
     try {
-      console.log('Attempting registration for email:', form.email);
-      
       const response = await axios.post(buildApiUrl('usuarios/register'), form, {
         headers: {
           'Content-Type': 'application/json',
@@ -118,9 +113,7 @@ function Register() {
         }
       });
 
-      console.log('Registration response:', response.data);
-
-      if (response.data) {
+            if (response.data) {
         setButtonMessage('¡Usuario registrado con éxito!');
         setPasswordError(''); // Limpiar errores
         // Limpiar el formulario después del registro exitoso
@@ -137,13 +130,11 @@ function Register() {
         }, 2000);
         navigate("/");
       }
-    } catch (err) {
-      console.error('Error during registration:', err);
-      setButtonMessage('Registrarse');
-      
-      if (err.response) {
-        console.error('Error response:', err.response);
-        const errorMessage = err.response.data;
+         } catch (err) {
+       setButtonMessage('Registrarse');
+       
+       if (err.response) {
+         const errorMessage = err.response.data;
         
         // Manejar errores específicos
         if (errorMessage.includes('email ya está registrado')) {
@@ -151,16 +142,14 @@ function Register() {
           setEmailExists(true); // Actualizar el estado local
         } else if (errorMessage.includes('obligatorio')) {
           setPasswordError(`⚠️ ${errorMessage}`);
-        } else {
-          setPasswordError(`Error: ${errorMessage || 'No se pudo registrar el usuario'}`);
-        }
-      } else if (err.request) {
-        console.error('No response received:', err.request);
-        setPasswordError('Error al conectar con el servidor. Por favor, asegúrate de que el servidor esté corriendo.');
-      } else {
-        console.error('Error setting up request:', err.message);
-        setPasswordError('Error al conectar con el servidor. Por favor, verifica tu conexión.');
-      }
+                 } else {
+           setPasswordError(`Error: ${errorMessage || 'No se pudo registrar el usuario'}`);
+         }
+       } else if (err.request) {
+         setPasswordError('Error al conectar con el servidor. Por favor, asegúrate de que el servidor esté corriendo.');
+       } else {
+         setPasswordError('Error al conectar con el servidor. Por favor, verifica tu conexión.');
+       }
     } finally {
       setLoading(false);
     }

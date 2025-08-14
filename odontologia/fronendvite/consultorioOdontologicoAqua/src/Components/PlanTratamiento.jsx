@@ -64,10 +64,7 @@ const PlanTratamiento = ({ paciente, onClose }) => {
       } else {
         setTratamientoActual(null);
       }
-      
-      console.log('Tratamientos cargados:', tratamientosData);
     } catch (error) {
-      console.error('Error al cargar tratamientos:', error);
       showMessage('Error al cargar tratamientos', 'error');
       setTratamientos([]);
       setTratamientoActual(null);

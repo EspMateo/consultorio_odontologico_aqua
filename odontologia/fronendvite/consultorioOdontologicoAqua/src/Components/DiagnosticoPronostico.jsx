@@ -56,10 +56,7 @@ const DiagnosticoPronostico = ({ paciente, onClose }) => {
         setDiagnosticoActual(null);
         setIsEditing(false);
       }
-      
-      console.log('Diagnóstico cargado:', response.data);
     } catch (error) {
-      console.error('Error al cargar diagnóstico:', error);
       // Si no existe diagnóstico, no mostrar error
       if (error.response?.status !== 404) {
         showMessage('Error al cargar diagnóstico', 'error');
