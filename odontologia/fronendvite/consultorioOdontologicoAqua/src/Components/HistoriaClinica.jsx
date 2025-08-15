@@ -135,7 +135,7 @@ const HistoriaClinica = () => {
 
   // Forzar re-render cuando se actualiza formData
   useEffect(() => {
-    console.log('FormData actualizado:', formData);
+    // FormData actualizado
   }, [formData]);
 
   const cargarPacientes = async () => {
@@ -162,27 +162,9 @@ const HistoriaClinica = () => {
   const cargarDatosHistoriaClinica = async () => {
     try {
       setLoading(true);
-      console.log('Cargando datos para paciente:', pacienteSeleccionado.id, 'fecha:', fechaSeleccionada);
       
       const response = await axios.get(buildApiUrl(`historia-clinica/paciente/${pacienteSeleccionado.id}/fecha/${fechaSeleccionada}`));
       const data = response.data;
-      
-      console.log('Respuesta del servidor:', data);
-      console.log('Tipo de datos recibidos:', typeof data);
-      console.log('Keys del objeto:', Object.keys(data));
-      
-      if (data) {
-        console.log('Datos específicos:', {
-          motivoConsulta: data.motivoConsulta,
-          cepilladoDental: data.cepilladoDental,
-          usaHiloDental: data.usaHiloDental,
-          fumador: data.fumador,
-          enfermedadesActuales: data.enfermedadesActuales,
-          alergias: data.alergias,
-          medicamentos: data.medicamentos,
-          examenLocal: data.examenLocal
-        });
-      }
       
       cargarDatosEnFormulario(data);
       setHistoriaActual(data);
@@ -190,7 +172,6 @@ const HistoriaClinica = () => {
       showMessage('Historia clínica cargada correctamente', 'success');
       
     } catch (error) {
-      console.error('Error al cargar datos:', error);
       const errorMsg = error.response?.data?.error || error.message || 'Error al cargar datos de la fecha seleccionada';
       showMessage(errorMsg, 'error');
       limpiarDatos();
@@ -200,8 +181,6 @@ const HistoriaClinica = () => {
   };
 
   const cargarDatosEnFormulario = (data) => {
-    console.log('Datos recibidos del servidor:', data); // Debug
-    
     // Asignar datos directamente como en Periodoncia
     setFormData({
       motivoConsulta: data.motivoConsulta || '',
@@ -267,19 +246,6 @@ const HistoriaClinica = () => {
         rebordesResiduales: false,
         bridasyFrenillos: false
       }
-    });
-    
-    console.log('FormData actualizado:', {
-      motivoConsulta: data.motivoConsulta || '',
-      cepilladoDental: data.cepilladoDental || '',
-      usaHiloDental: data.usaHiloDental === true || data.usaHiloDental === 1,
-      fumador: data.fumador === true || data.fumador === 1,
-      tieneEnfermedades: data.enfermedadesActuales && data.enfermedadesActuales.trim() !== '',
-      enfermedadesActuales: data.enfermedadesActuales || '',
-      alergias: data.alergias && data.alergias.trim() !== '',
-      tomaMedicamentos: data.medicamentos && data.medicamentos.trim() !== '',
-      medicamentos: data.medicamentos || '',
-      continenteAlteraciones: data.examenLocal && data.examenLocal.trim() !== ''
     });
   };
 

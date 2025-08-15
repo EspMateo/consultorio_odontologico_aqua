@@ -1,36 +1,48 @@
 /* Contenedor principal */
 .historia-clinica-container {
-  width: 1300px;
+  width: 100%;
+  max-width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 20px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 /* Header */
 .historia-clinica-header {
   text-align: center;
   margin-bottom: 2rem;
-  color: white;
+  color: #1e293b;
   padding: 2rem 0;
+  width: 95%;
+  max-width: 1400px;
 }
 
 .historia-clinica-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
 }
 
 /* Contenido principal */
 .historia-clinica-content {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
+  width: 95%;
+  max-width: 1400px;
+  margin: 0 auto;
   background: white;
-  border-radius: 0;
-  box-shadow: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
   overflow: hidden;
   position: relative;
 }
@@ -390,15 +402,13 @@
 /* Responsive */
 @media (max-width: 1400px) {
   .historia-clinica-container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0;
+    padding: 15px;
   }
   
+  .historia-clinica-header,
   .historia-clinica-content {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
+    width: 95%;
+    max-width: 1200px;
   }
   
   .form-section {
@@ -418,15 +428,13 @@
 
 @media (max-width: 1200px) {
   .historia-clinica-container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0;
+    padding: 10px;
   }
   
+  .historia-clinica-header,
   .historia-clinica-content {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
+    width: 95%;
+    max-width: 1000px;
   }
   
   .form-section {
@@ -446,15 +454,13 @@
 
 @media (max-width: 768px) {
   .historia-clinica-container {
-    width: 100%;
-    max-width: 100%;
-    padding: 0;
+    padding: 10px;
   }
   
+  .historia-clinica-header,
   .historia-clinica-content {
-    width: 100%;
+    width: 95%;
     max-width: 100%;
-    margin: 0;
   }
   
   .historia-clinica-header h1 {
@@ -501,7 +507,7 @@
 
 @media (max-width: 480px) {
   .historia-clinica-container {
-    padding: 0.5rem;
+    padding: 5px;
   }
   
   .form-section {
