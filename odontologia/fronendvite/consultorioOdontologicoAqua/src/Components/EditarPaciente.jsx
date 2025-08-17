@@ -64,7 +64,6 @@ const EditarPaciente = () => {
         edad: paciente.age || ''
       });
     } catch (error) {
-      console.error('Error al cargar paciente:', error);
       setError('Error al cargar los datos del paciente');
       setDisplayMessage('Error al cargar los datos del paciente.');
       setMessageType('error');
@@ -162,7 +161,6 @@ const EditarPaciente = () => {
         navigate('/dashboard/pacientes');
       }, 1500);
     } catch (error) {
-      console.error('Error al actualizar paciente:', error);
       setError(error.response?.data?.message || 'Error al actualizar el paciente');
       setDisplayMessage(error.response?.data?.message || 'Error al actualizar el paciente.');
       setMessageType('error');

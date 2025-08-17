@@ -80,7 +80,6 @@ const ControlFinanciero = () => {
         cargarCategorias()
       ]);
     } catch (error) {
-      console.error('Error al cargar datos:', error);
       setMessage('Error al cargar los datos');
     } finally {
       setLoading(false);
@@ -92,7 +91,6 @@ const ControlFinanciero = () => {
       const response = await axios.get(buildApiUrl(`gastos/por-fecha?fechaInicio=${fechaInicioParam}&fechaFin=${fechaFinParam}`));
       setGastos(response.data);
     } catch (error) {
-      console.error('Error al cargar gastos:', error);
       setGastos([]);
     }
   };
@@ -102,7 +100,6 @@ const ControlFinanciero = () => {
       const presupuestosResponse = await axios.get(buildApiUrl(`presupuesto/por-fecha?fechaInicio=${fechaInicioParam}&fechaFin=${fechaFinParam}`));
       setIngresos(presupuestosResponse.data);
     } catch (error) {
-      console.error('Error al cargar ingresos:', error);
       setIngresos([]);
     }
   };
@@ -112,7 +109,6 @@ const ControlFinanciero = () => {
       const response = await axios.get(buildApiUrl('gastos/categorias'));
       setCategorias(response.data);
     } catch (error) {
-      console.error('Error al cargar categorías:', error);
     }
   };
 
@@ -169,7 +165,6 @@ const ControlFinanciero = () => {
       // Recargar datos
       await cargarDatos();
     } catch (error) {
-      console.error('Error al crear gasto:', error);
       setMessage('Error al registrar el gasto');
     } finally {
       setFormLoading(false);
@@ -184,7 +179,6 @@ const ControlFinanciero = () => {
         setMessage('Gasto eliminado exitosamente');
         await cargarDatos();
       } catch (error) {
-        console.error('Error al eliminar gasto:', error);
         setMessage('Error al eliminar el gasto');
       } finally {
         setLoading(false);

@@ -139,7 +139,6 @@ const Odontograma = () => {
         
         setLoading(false);
       } catch (error) {
-        console.error('Error al cargar datos del paciente:', error);
         setMessage('Error al cargar los datos del paciente');
         setLoading(false);
       }
@@ -183,9 +182,7 @@ const Odontograma = () => {
             });
             
             setDientes(dientesCompletos);
-            console.log('Odontograma cargado:', odontograma);
           } catch (parseError) {
-            console.error('Error al parsear datos de dientes:', parseError);
             // Si hay error al parsear, inicializar dientes vacíos
             inicializarDientesVacios();
           }
@@ -197,7 +194,6 @@ const Odontograma = () => {
         inicializarDientesVacios();
       }
     } catch (error) {
-      console.error('Error al cargar odontograma:', error);
       // Si hay error, inicializar dientes vacíos
       inicializarDientesVacios();
     }
@@ -260,10 +256,7 @@ const Odontograma = () => {
       
       setMessage('Odontograma guardado exitosamente');
       setTimeout(() => setMessage(null), 3000);
-      
-      console.log('Odontograma guardado:', response.data);
     } catch (error) {
-      console.error('Error al guardar:', error);
       setMessage('Error al guardar el odontograma: ' + (error.response?.data || error.message));
     } finally {
       setSaving(false);
@@ -332,7 +325,6 @@ const Odontograma = () => {
       setMessage('Odontograma recargado exitosamente');
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
-      console.error('Error al recargar odontograma:', error);
       setMessage('Error al recargar el odontograma');
     } finally {
       setLoading(false);

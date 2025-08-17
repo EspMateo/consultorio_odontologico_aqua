@@ -43,7 +43,6 @@ const Periodoncia = () => {
       const response = await axios.get(buildApiUrl('pacientes'));
       setPacientes(response.data);
     } catch (error) {
-      console.error('Error al cargar pacientes:', error);
       setMessage('Error al cargar pacientes');
     }
   };
@@ -70,7 +69,6 @@ const Periodoncia = () => {
       const response = await axios.get(buildApiUrl(`periodoncia/paciente/${selectedPaciente}/fechas`));
       setFechasDisponibles(response.data);
     } catch (error) {
-      console.error('Error al cargar fechas:', error);
       setFechasDisponibles([]);
     }
   };
@@ -88,7 +86,6 @@ const Periodoncia = () => {
       setPeriodonciaActual(data);
       setIsModifying(true);
     } catch (error) {
-      console.error('Error al cargar datos:', error);
       setMessage('Error al cargar datos de la fecha seleccionada');
       limpiarDatos();
     } finally {
@@ -195,7 +192,6 @@ const Periodoncia = () => {
 
       const response = await axios.post(buildApiUrl('periodoncia'), periodonciaData);
       
-      console.log('Respuesta exitosa:', response.data);
       setMessage(response.data.message);
       setTimeout(() => setMessage(null), 3000);
       
@@ -203,11 +199,6 @@ const Periodoncia = () => {
       await cargarFechasDisponibles();
       
     } catch (error) {
-      console.error('Error al guardar:', error);
-      console.error('Error response:', error.response);
-      console.error('Error status:', error.response?.status);
-      console.error('Error data:', error.response?.data);
-      console.error('Error message:', error.message);
       setMessage('Error al guardar: ' + (error.response?.data?.error || error.message));
     } finally {
       setLoading(false);
@@ -237,7 +228,6 @@ const Periodoncia = () => {
       setTimeout(() => setMessage(null), 3000);
       
     } catch (error) {
-      console.error('Error al modificar:', error);
       setMessage('Error al modificar: ' + (error.response?.data?.error || error.message));
     } finally {
       setLoading(false);

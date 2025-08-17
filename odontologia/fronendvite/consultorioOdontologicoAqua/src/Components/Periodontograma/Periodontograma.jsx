@@ -117,7 +117,6 @@ const Periodontograma = () => {
       setPaciente(response.data);
       fetchPeriodontograma(response.data.id);
     } catch (error) {
-      console.error('Error al cargar paciente:', error);
       setError('Error al cargar los datos del paciente');
     } finally {
       setLoading(false);
@@ -140,7 +139,6 @@ const Periodontograma = () => {
               ? JSON.parse(odontogramaResponse.data.datosDientes)
               : odontogramaResponse.data.datosDientes;
           } catch (e) {
-            console.error('Error parsing datosDientes:', e);
             datosDientes = {};
           }
           
@@ -152,7 +150,6 @@ const Periodontograma = () => {
         }
       }
     } catch (error) {
-      console.log('No se encontró odontograma para este paciente');
     }
 
     // Luego cargar el periodontograma
@@ -230,11 +227,9 @@ const Periodontograma = () => {
       });
       
       setDientesAusentes(dientesAusentesCombinados);
-      console.log('Dientes ausentes cargados:', Array.from(dientesAusentesCombinados));
     } else {
       initializeDientes();
       setDientesAusentes(dientesAusentesOdontograma);
-      console.log('Dientes ausentes del odontograma:', Array.from(dientesAusentesOdontograma));
     }
     
     if (data.observaciones) {
@@ -399,12 +394,9 @@ const Periodontograma = () => {
       const newSet = new Set(prev);
       if (newSet.has(diente)) {
         newSet.delete(diente);
-        console.log(`Diente ${diente} marcado como presente`);
       } else {
         newSet.add(diente);
-        console.log(`Diente ${diente} marcado como ausente`);
       }
-      console.log('Nuevo conjunto de dientes ausentes:', Array.from(newSet));
       return newSet;
     });
   }, []);
@@ -459,11 +451,7 @@ const Periodontograma = () => {
       observaciones: observaciones
     };
 
-    console.log('Dientes ausentes antes de guardar:', Array.from(dientesAusentes));
-    console.log('Datos completos a enviar:', periodontogramaData);
-
     try {
-      console.log('Enviando datos al backend:', periodontogramaData);
       let response;
       if (periodontogramaId) {
         response = await axios.put(buildApiUrl(`periodontograma/${periodontogramaId}`), periodontogramaData);
@@ -471,7 +459,6 @@ const Periodontograma = () => {
         response = await axios.post(buildApiUrl('periodontograma'), periodontogramaData);
       }
       
-      console.log('Respuesta del backend:', response.data);
       showNotification('success', '¡Periodontograma guardado con éxito!');
       if (response.data.fechaModificacion) {
         setFechaUltimaActualizacion(response.data.fechaModificacion);
@@ -479,8 +466,6 @@ const Periodontograma = () => {
         setFechaUltimaActualizacion(response.data.fechaCreacion);
       }
     } catch (error) {
-      console.error('Error al guardar:', error);
-      console.error('Error response:', error.response);
       const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Error al guardar el periodontograma';
       showNotification('error', `Error: ${errorMessage}`);
     } finally {

@@ -62,7 +62,6 @@ const Presupuesto = () => {
       const response = await axios.get(buildApiUrl('pacientes'));
       setPacientes(response.data);
     } catch (error) {
-      console.error('Error al cargar pacientes:', error);
       setMessage('Error al cargar pacientes');
     }
   };
@@ -96,7 +95,6 @@ const Presupuesto = () => {
         }
       }
     } catch (error) {
-      console.error('Error al cargar presupuestos:', error);
       setPresupuestos([]);
     } finally {
       setLoading(false);
@@ -176,7 +174,6 @@ const Presupuesto = () => {
         setTimeout(() => setMessage(null), 3000);
         
       } catch (error) {
-        console.error('Error al actualizar pago:', error);
         setMessage('Error al actualizar pago: ' + (error.response?.data?.error || error.message));
       } finally {
         setLoading(false);
@@ -261,14 +258,12 @@ const Presupuesto = () => {
         setMessage('Presupuesto creado exitosamente');
       }
       
-      console.log('Respuesta exitosa:', response.data);
       setTimeout(() => setMessage(null), 3000);
       
       // Recargar presupuestos
       await cargarPresupuestos();
       
     } catch (error) {
-      console.error('Error al guardar:', error);
       setMessage('Error al guardar: ' + (error.response?.data?.error || error.message));
     } finally {
       setLoading(false);
