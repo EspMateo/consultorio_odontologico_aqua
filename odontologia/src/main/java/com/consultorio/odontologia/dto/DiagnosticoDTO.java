@@ -41,4 +41,60 @@ public class DiagnosticoDTO {
         this.pacienteId = pacienteId;
         this.usuarioId = usuarioId;
     }
-} 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDiagnostico() {
+        return diagnostico;
+    }
+
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+
+    public String getPronostico() {
+        return pronostico;
+    }
+
+    public void setPronostico(String pronostico) {
+        this.pronostico = pronostico;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public LocalDate getFechaDiagnostico() {
+        return fechaDiagnostico;
+    }
+
+    public void setFechaDiagnostico(LocalDate fechaDiagnostico) {
+        this.fechaDiagnostico = fechaDiagnostico;
+    }
+
+    public Long getPacienteId() {
+        return pacienteId;
+    }
+
+    public void setPacienteId(Long pacienteId) {
+        this.pacienteId = pacienteId;
+    }
+
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+}

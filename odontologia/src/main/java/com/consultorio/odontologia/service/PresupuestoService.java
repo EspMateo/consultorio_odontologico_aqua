@@ -7,6 +7,7 @@ import com.consultorio.odontologia.entity.Presupuesto;
 import com.consultorio.odontologia.entity.TratamientoPresupuesto;
 import com.consultorio.odontologia.repository.PacienteRepository;
 import com.consultorio.odontologia.repository.PresupuestoRepository;
+import com.consultorio.odontologia.service.util.DTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

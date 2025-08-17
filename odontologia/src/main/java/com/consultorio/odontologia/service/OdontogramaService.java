@@ -27,6 +27,7 @@ public class OdontogramaService {
         if (odontograma.getFechaCreacion() == null) {
             odontograma.setFechaCreacion(LocalDateTime.now());
         }
+        
         return odontogramaRepository.save(odontograma);
     }
     
@@ -73,6 +74,7 @@ public class OdontogramaService {
         if (!odontogramaRepository.existsById(id)) {
             throw new RuntimeException("Odontograma no encontrado con ID: " + id);
         }
+        
         odontogramaRepository.deleteById(id);
     }
     

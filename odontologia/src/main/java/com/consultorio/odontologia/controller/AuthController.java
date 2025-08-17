@@ -19,25 +19,20 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-        System.out.println("Login request received for email: " + usuario.getEmail());
         try {
             Optional<Usuario> user = usuarioService.login(usuario.getEmail(), usuario.getPassword());
             if (user.isPresent()) {
-                System.out.println("Login successful for user: " + user.get().getEmail());
                 return ResponseEntity.ok(user.get());
             } else {
-                System.out.println("Login failed for email: " + usuario.getEmail());
                 return ResponseEntity.badRequest().body("Credenciales incorrectas");
             }
         } catch (Exception e) {
-            System.out.println("Error during login: " + e.getMessage());
             return ResponseEntity.internalServerError().body("Error en el servidor");
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Usuario usuario) {
-        System.out.println("Register request received for email: " + usuario.getEmail());
         try {
             // Validar que el email no esté vacío
             if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
@@ -55,13 +50,10 @@ public class AuthController {
             }
             
             Usuario savedUser = usuarioService.save(usuario);
-            System.out.println("User registered successfully: " + savedUser.getEmail());
             return ResponseEntity.ok(savedUser);
         } catch (RuntimeException e) {
-            System.out.println("Error during registration: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            System.out.println("Unexpected error during registration: " + e.getMessage());
             return ResponseEntity.internalServerError().body("Error interno del servidor. Por favor, inténtalo de nuevo.");
         }
     }

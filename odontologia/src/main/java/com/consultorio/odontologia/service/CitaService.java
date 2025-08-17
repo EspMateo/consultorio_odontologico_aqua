@@ -7,6 +7,7 @@ import com.consultorio.odontologia.entity.Usuario;
 import com.consultorio.odontologia.repository.CitaRepository;
 import com.consultorio.odontologia.repository.PacienteRepository;
 import com.consultorio.odontologia.repository.UsuarioRepository;
+import com.consultorio.odontologia.service.util.DTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CitaService {
+    
     @Autowired
     private CitaRepository citaRepository;
 
@@ -46,7 +48,7 @@ public class CitaService {
     public List<CitaDTO> obtenerTodasLasCitas() {
         List<Cita> citas = citaRepository.findAllWithPaciente();
         return citas.stream()
-                .map(this::convertirADTO)
+                .map(DTOConverter::convertirCitaADTO)
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +56,7 @@ public class CitaService {
         LocalDate fechaLocal = LocalDate.parse(fecha);
         List<Cita> citas = citaRepository.findByFechaWithPaciente(fechaLocal);
         return citas.stream()
-                .map(this::convertirADTO)
+                .map(DTOConverter::convertirCitaADTO)
                 .collect(Collectors.toList());
     }
 
@@ -81,24 +83,5 @@ public class CitaService {
         cita.setUsuario(usuario);
 
         return citaRepository.save(cita);
-    }
-
-    private CitaDTO convertirADTO(Cita cita) {
-        CitaDTO dto = new CitaDTO();
-        dto.setId(cita.getId());
-        
-        // Asegurarse de que el paciente esté cargado
-        Paciente paciente = cita.getPaciente();
-        if (paciente != null) {
-            dto.setPaciente(paciente);
-        }
-        
-        dto.setFecha(cita.getFecha().toString());
-        dto.setHora(cita.getHora().toString());
-        dto.setMotivo(cita.getMotivo());
-        dto.setUsuarioId(cita.getUsuario().getId());
-        dto.setUsuarioName(cita.getUsuario().getName());
-        dto.setUsuarioEmail(cita.getUsuario().getEmail());
-        return dto;
     }
 }

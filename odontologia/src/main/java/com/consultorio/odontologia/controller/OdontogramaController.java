@@ -68,8 +68,12 @@ public class OdontogramaController {
      */
     @GetMapping("/paciente/{pacienteId}")
     public ResponseEntity<List<Odontograma>> obtenerOdontogramasPaciente(@PathVariable Long pacienteId) {
-        List<Odontograma> odontogramas = odontogramaService.obtenerOdontogramasPaciente(pacienteId);
-        return ResponseEntity.ok(odontogramas);
+        try {
+            List<Odontograma> odontogramas = odontogramaService.obtenerOdontogramasPaciente(pacienteId);
+            return ResponseEntity.ok(odontogramas);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
     
     /**
@@ -90,33 +94,27 @@ public class OdontogramaController {
      */
     @GetMapping("/paciente/{pacienteId}/reciente")
     public ResponseEntity<?> obtenerOdontogramaMasReciente(@PathVariable Long pacienteId) {
-        Optional<Odontograma> odontograma = odontogramaService.obtenerOdontogramaMasReciente(pacienteId);
-        return odontograma.isPresent() ? ResponseEntity.ok(odontograma.get()) : ResponseEntity.notFound().build();
+        try {
+            Optional<Odontograma> odontograma = odontogramaService.obtenerOdontogramaMasReciente(pacienteId);
+            if (odontograma.isPresent()) {
+                return ResponseEntity.ok(odontograma.get());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
     
     /**
      * Actualizar un odontograma existente
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarOdontograma(@PathVariable Long id, @RequestBody Map<String, Object> request) {
+    public ResponseEntity<?> actualizarOdontograma(@PathVariable Long id, @RequestBody Odontograma odontogramaActualizado) {
         try {
-            String tipoDenticion = (String) request.get("tipoDenticion");
-            Map<String, Object> datosDientes = (Map<String, Object>) request.get("datosDientes");
-            String observaciones = (String) request.get("observaciones");
-            
-            // Convertir datosDientes a JSON string
-            String datosDientesJson = objectMapper.writeValueAsString(datosDientes);
-            
-            // Crear odontograma actualizado
-            Odontograma odontogramaActualizado = new Odontograma();
-            odontogramaActualizado.setTipoDenticion(tipoDenticion);
-            odontogramaActualizado.setDatosDientes(datosDientesJson);
-            odontogramaActualizado.setObservaciones(observaciones);
-            
-            Odontograma actualizado = odontogramaService.actualizarOdontograma(id, odontogramaActualizado);
-            return ResponseEntity.ok(actualizado);
-            
-        } catch (Exception e) {
+            Odontograma odontograma = odontogramaService.actualizarOdontograma(id, odontogramaActualizado);
+            return ResponseEntity.ok(odontograma);
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Error al actualizar odontograma: " + e.getMessage());
         }
     }
@@ -128,18 +126,22 @@ public class OdontogramaController {
     public ResponseEntity<?> eliminarOdontograma(@PathVariable Long id) {
         try {
             odontogramaService.eliminarOdontograma(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Odontograma eliminado exitosamente");
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("Error al eliminar odontograma: " + e.getMessage());
         }
     }
     
     /**
      * Contar odontogramas de un paciente
      */
-    @GetMapping("/paciente/{pacienteId}/count")
-    public ResponseEntity<Long> contarOdontogramasPaciente(@PathVariable Long pacienteId) {
-        long count = odontogramaService.contarOdontogramasPaciente(pacienteId);
-        return ResponseEntity.ok(count);
+    @GetMapping("/paciente/{pacienteId}/contar")
+    public ResponseEntity<?> contarOdontogramasPaciente(@PathVariable Long pacienteId) {
+        try {
+            long cantidad = odontogramaService.contarOdontogramasPaciente(pacienteId);
+            return ResponseEntity.ok(Map.of("cantidad", cantidad));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error al contar odontogramas");
+        }
     }
 } 

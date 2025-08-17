@@ -91,19 +91,8 @@ public class HistoriaClinicaController {
                 HistoriaClinica data = historia.get();
                 HistoriaClinicaDTO dto = new HistoriaClinicaDTO(data);
                 
-                System.out.println("DEBUG - Historia encontrada:");
-                System.out.println("ID: " + dto.getId());
-                System.out.println("Motivo consulta: " + dto.getMotivoConsulta());
-                System.out.println("Cepillado dental: " + dto.getCepilladoDental());
-                System.out.println("Usa hilo dental: " + dto.getUsaHiloDental());
-                System.out.println("Fumador: " + dto.getFumador());
-                System.out.println("Enfermedades actuales: " + dto.getEnfermedadesActuales());
-                System.out.println("Alergias: " + dto.getAlergias());
-                System.out.println("Medicamentos: " + dto.getMedicamentos());
-                System.out.println("Examen local: " + dto.getExamenLocal());
                 return ResponseEntity.ok(dto);
             } else {
-                System.out.println("DEBUG - No se encontró historia para paciente " + pacienteId + " y fecha " + fecha);
                 return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {
@@ -124,19 +113,8 @@ public class HistoriaClinicaController {
                 HistoriaClinica data = historia.get();
                 HistoriaClinicaDTO dto = new HistoriaClinicaDTO(data);
                 
-                System.out.println("DEBUG - Historia más reciente encontrada:");
-                System.out.println("ID: " + dto.getId());
-                System.out.println("Motivo consulta: " + dto.getMotivoConsulta());
-                System.out.println("Cepillado dental: " + dto.getCepilladoDental());
-                System.out.println("Usa hilo dental: " + dto.getUsaHiloDental());
-                System.out.println("Fumador: " + dto.getFumador());
-                System.out.println("Enfermedades actuales: " + dto.getEnfermedadesActuales());
-                System.out.println("Alergias: " + dto.getAlergias());
-                System.out.println("Medicamentos: " + dto.getMedicamentos());
-                System.out.println("Examen local: " + dto.getExamenLocal());
                 return ResponseEntity.ok(dto);
             } else {
-                System.out.println("DEBUG - No se encontró historia más reciente para paciente " + pacienteId + " y fecha " + fecha);
                 return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {

@@ -6,293 +6,179 @@ import com.consultorio.odontologia.service.TratamientoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tratamientos")
 @CrossOrigin(origins = "*")
 public class TratamientoController {
-    
-    private static final Logger logger = LoggerFactory.getLogger(TratamientoController.class);
-    
+
     @Autowired
     private TratamientoService tratamientoService;
-    
-    /**
-     * Crea un nuevo tratamiento
-     */
+
+    // Crear nuevo tratamiento
     @PostMapping
     public ResponseEntity<?> crearTratamiento(@RequestBody TratamientoDTO tratamientoDTO) {
-        logger.info("Recibida solicitud para crear tratamiento: {}", tratamientoDTO);
-        
         try {
             Tratamiento tratamientoCreado = tratamientoService.crearTratamiento(tratamientoDTO);
             
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Tratamiento creado exitosamente");
             response.put("tratamiento", tratamientoCreado);
-            
-            logger.info("Tratamiento creado exitosamente con ID: {}", tratamientoCreado.getId());
             return ResponseEntity.ok(response);
-            
         } catch (Exception e) {
-            logger.error("Error al crear tratamiento: {}", e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al crear tratamiento: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Obtiene todos los tratamientos de un paciente
-     */
+
+    // Obtener tratamientos de un paciente
     @GetMapping("/paciente/{pacienteId}")
     public ResponseEntity<?> obtenerTratamientosPorPaciente(@PathVariable Long pacienteId) {
-        logger.info("Recibida solicitud para obtener tratamientos del paciente ID: {}", pacienteId);
-        
         try {
             List<Tratamiento> tratamientos = tratamientoService.obtenerTratamientosPorPaciente(pacienteId);
             
             Map<String, Object> response = new HashMap<>();
             response.put("tratamientos", tratamientos);
             response.put("total", tratamientos.size());
-            
-            logger.info("Encontrados {} tratamientos para paciente ID: {}", tratamientos.size(), pacienteId);
             return ResponseEntity.ok(response);
-            
         } catch (Exception e) {
-            logger.error("Error al obtener tratamientos del paciente ID {}: {}", pacienteId, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al obtener tratamientos: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Obtiene el tratamiento activo de un paciente
-     */
+
+    // Obtener tratamiento activo de un paciente
     @GetMapping("/paciente/{pacienteId}/activo")
     public ResponseEntity<?> obtenerTratamientoActivo(@PathVariable Long pacienteId) {
-        logger.info("Recibida solicitud para obtener tratamiento activo del paciente ID: {}", pacienteId);
-        
         try {
-            Optional<Tratamiento> tratamientoActivo = tratamientoService.obtenerTratamientoActivo(pacienteId);
+            var tratamientoActivo = tratamientoService.obtenerTratamientoActivo(pacienteId);
             
-            Map<String, Object> response = new HashMap<>();
             if (tratamientoActivo.isPresent()) {
-                response.put("tratamiento", tratamientoActivo.get());
-                response.put("existe", true);
+                return ResponseEntity.ok(tratamientoActivo.get());
             } else {
-                response.put("existe", false);
-                response.put("mensaje", "No hay tratamiento activo para este paciente");
+                return ResponseEntity.notFound().build();
             }
-            
-            logger.info("Tratamiento activo encontrado: {}", tratamientoActivo.isPresent());
-            return ResponseEntity.ok(response);
-            
         } catch (Exception e) {
-            logger.error("Error al obtener tratamiento activo del paciente ID {}: {}", pacienteId, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al obtener tratamiento activo: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Obtiene un tratamiento por ID
-     */
+
+    // Obtener tratamiento por ID
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerTratamientoPorId(@PathVariable Long id) {
-        logger.info("Recibida solicitud para obtener tratamiento con ID: {}", id);
-        
         try {
             Tratamiento tratamiento = tratamientoService.obtenerTratamientoPorId(id);
             return ResponseEntity.ok(tratamiento);
-            
         } catch (Exception e) {
-            logger.error("Error al obtener tratamiento con ID {}: {}", id, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al obtener tratamiento: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Actualiza un tratamiento existente
-     */
+
+    // Actualizar tratamiento
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarTratamiento(@PathVariable Long id, @RequestBody TratamientoDTO tratamientoDTO) {
-        logger.info("Recibida solicitud para actualizar tratamiento con ID: {}", id);
-        
         try {
             Tratamiento tratamientoActualizado = tratamientoService.actualizarTratamiento(id, tratamientoDTO);
             
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Tratamiento actualizado exitosamente");
             response.put("tratamiento", tratamientoActualizado);
-            
-            logger.info("Tratamiento actualizado exitosamente con ID: {}", id);
             return ResponseEntity.ok(response);
-            
         } catch (Exception e) {
-            logger.error("Error al actualizar tratamiento con ID {}: {}", id, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al actualizar tratamiento: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Desactiva un tratamiento
-     */
+
+    // Desactivar tratamiento
     @PutMapping("/{id}/desactivar")
     public ResponseEntity<?> desactivarTratamiento(@PathVariable Long id) {
-        logger.info("Recibida solicitud para desactivar tratamiento con ID: {}", id);
-        
         try {
-            Tratamiento tratamientoDesactivado = tratamientoService.desactivarTratamiento(id);
+            tratamientoService.desactivarTratamiento(id);
             
-            Map<String, Object> response = new HashMap<>();
+            Map<String, String> response = new HashMap<>();
             response.put("message", "Tratamiento desactivado exitosamente");
-            response.put("tratamiento", tratamientoDesactivado);
-            
-            logger.info("Tratamiento desactivado exitosamente con ID: {}", id);
             return ResponseEntity.ok(response);
-            
         } catch (Exception e) {
-            logger.error("Error al desactivar tratamiento con ID {}: {}", id, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al desactivar tratamiento: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Activa un tratamiento
-     */
+
+    // Activar tratamiento
     @PutMapping("/{id}/activar")
     public ResponseEntity<?> activarTratamiento(@PathVariable Long id) {
-        logger.info("Recibida solicitud para activar tratamiento con ID: {}", id);
-        
         try {
-            Tratamiento tratamientoActivado = tratamientoService.activarTratamiento(id);
+            tratamientoService.activarTratamiento(id);
             
-            Map<String, Object> response = new HashMap<>();
+            Map<String, String> response = new HashMap<>();
             response.put("message", "Tratamiento activado exitosamente");
-            response.put("tratamiento", tratamientoActivado);
-            
-            logger.info("Tratamiento activado exitosamente con ID: {}", id);
             return ResponseEntity.ok(response);
-            
         } catch (Exception e) {
-            logger.error("Error al activar tratamiento con ID {}: {}", id, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al activar tratamiento: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Elimina un tratamiento
-     */
+
+    // Eliminar tratamiento
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarTratamiento(@PathVariable Long id) {
-        logger.info("Recibida solicitud para eliminar tratamiento con ID: {}", id);
-        
         try {
             tratamientoService.eliminarTratamiento(id);
             
             Map<String, String> response = new HashMap<>();
             response.put("message", "Tratamiento eliminado exitosamente");
-            
-            logger.info("Tratamiento eliminado exitosamente con ID: {}", id);
             return ResponseEntity.ok(response);
-            
         } catch (Exception e) {
-            logger.error("Error al eliminar tratamiento con ID {}: {}", id, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al eliminar tratamiento: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Busca tratamientos por nombre
-     */
+
+    // Buscar tratamientos por nombre
     @GetMapping("/paciente/{pacienteId}/buscar")
     public ResponseEntity<?> buscarTratamientosPorNombre(
             @PathVariable Long pacienteId,
             @RequestParam String nombre) {
-        logger.info("Recibida solicitud para buscar tratamientos del paciente ID: {} con nombre: {}", pacienteId, nombre);
-        
         try {
             List<Tratamiento> tratamientos = tratamientoService.buscarTratamientosPorNombre(pacienteId, nombre);
             
             Map<String, Object> response = new HashMap<>();
             response.put("tratamientos", tratamientos);
             response.put("total", tratamientos.size());
-            response.put("busqueda", nombre);
-            
-            logger.info("Encontrados {} tratamientos para la búsqueda '{}'", tratamientos.size(), nombre);
+            response.put("nombre", nombre);
             return ResponseEntity.ok(response);
-            
         } catch (Exception e) {
-            logger.error("Error al buscar tratamientos del paciente ID {}: {}", pacienteId, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al buscar tratamientos: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
-    
-    /**
-     * Obtiene estadísticas de tratamientos de un paciente
-     */
+
+    // Obtener estadísticas de tratamientos
     @GetMapping("/paciente/{pacienteId}/estadisticas")
     public ResponseEntity<?> obtenerEstadisticasTratamientos(@PathVariable Long pacienteId) {
-        logger.info("Recibida solicitud para obtener estadísticas de tratamientos del paciente ID: {}", pacienteId);
-        
         try {
-            TratamientoService.TratamientoStats stats = tratamientoService.obtenerEstadisticasTratamientos(pacienteId);
-            
-            Map<String, Object> response = new HashMap<>();
-            response.put("totalTratamientos", stats.getTotalTratamientos());
-            response.put("tratamientosActivos", stats.getTratamientosActivos());
-            response.put("tratamientosInactivos", stats.getTratamientosInactivos());
-            
-            logger.info("Estadísticas obtenidas para paciente ID: {}", pacienteId);
-            return ResponseEntity.ok(response);
-            
+            Map<String, Object> estadisticas = tratamientoService.obtenerEstadisticasTratamientos(pacienteId);
+            return ResponseEntity.ok(estadisticas);
         } catch (Exception e) {
-            logger.error("Error al obtener estadísticas del paciente ID {}: {}", pacienteId, e.getMessage());
-            
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Error al obtener estadísticas: " + e.getMessage());
-            
-            return ResponseEntity.badRequest().body(errorResponse);
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
 } 

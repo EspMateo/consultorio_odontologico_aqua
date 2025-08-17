@@ -107,4 +107,6 @@ public class GastoDTO {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
+
 }

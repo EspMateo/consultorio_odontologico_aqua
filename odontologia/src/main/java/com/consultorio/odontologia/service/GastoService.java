@@ -3,6 +3,7 @@ package com.consultorio.odontologia.service;
 import com.consultorio.odontologia.dto.GastoDTO;
 import com.consultorio.odontologia.entity.Gasto;
 import com.consultorio.odontologia.repository.GastoRepository;
+import com.consultorio.odontologia.service.util.DTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class GastoService {
     @Autowired
     private GastoRepository gastoRepository;
 
-    // Crear un nuevo gasto
+    // Crear nuevo gasto
     public GastoDTO crearGasto(GastoDTO gastoDTO) {
         Gasto gasto = new Gasto(
             gastoDTO.getDescripcion(),
@@ -30,13 +31,13 @@ public class GastoService {
         );
         
         Gasto gastoGuardado = gastoRepository.save(gasto);
-        return convertirADTO(gastoGuardado);
+        return DTOConverter.convertirGastoADTO(gastoGuardado);
     }
 
     // Obtener todos los gastos
     public List<GastoDTO> obtenerTodosLosGastos() {
         return gastoRepository.findAll().stream()
-            .map(this::convertirADTO)
+            .map(DTOConverter::convertirGastoADTO)
             .collect(Collectors.toList());
     }
 
@@ -44,7 +45,7 @@ public class GastoService {
     public List<GastoDTO> obtenerGastosPorFecha(LocalDate fechaInicio, LocalDate fechaFin) {
         return gastoRepository.findByFechaGastoBetweenOrderByFechaGastoDesc(fechaInicio, fechaFin)
             .stream()
-            .map(this::convertirADTO)
+            .map(DTOConverter::convertirGastoADTO)
             .collect(Collectors.toList());
     }
 
@@ -52,7 +53,7 @@ public class GastoService {
     public List<GastoDTO> obtenerGastosPorCategoria(String categoria) {
         return gastoRepository.findByCategoriaOrderByFechaGastoDesc(categoria)
             .stream()
-            .map(this::convertirADTO)
+            .map(DTOConverter::convertirGastoADTO)
             .collect(Collectors.toList());
     }
 
@@ -75,7 +76,7 @@ public class GastoService {
     public List<GastoDTO> buscarGastosPorDescripcion(String descripcion) {
         return gastoRepository.findByDescripcionContainingIgnoreCaseOrderByFechaGastoDesc(descripcion)
             .stream()
-            .map(this::convertirADTO)
+            .map(DTOConverter::convertirGastoADTO)
             .collect(Collectors.toList());
     }
 
@@ -93,7 +94,7 @@ public class GastoService {
         gasto.setObservaciones(gastoDTO.getObservaciones());
 
         Gasto gastoActualizado = gastoRepository.save(gasto);
-        return convertirADTO(gastoActualizado);
+        return DTOConverter.convertirGastoADTO(gastoActualizado);
     }
 
     // Eliminar un gasto
@@ -105,21 +106,6 @@ public class GastoService {
     public GastoDTO obtenerGastoPorId(Long id) {
         Gasto gasto = gastoRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Gasto no encontrado"));
-        return convertirADTO(gasto);
-    }
-
-    // Método helper para convertir entidad a DTO
-    private GastoDTO convertirADTO(Gasto gasto) {
-        GastoDTO dto = new GastoDTO();
-        dto.setId(gasto.getId());
-        dto.setDescripcion(gasto.getDescripcion());
-        dto.setPrecio(gasto.getPrecio());
-        dto.setCantidad(gasto.getCantidad());
-        dto.setFechaGasto(gasto.getFechaGasto());
-        dto.setCategoria(gasto.getCategoria());
-        dto.setProveedor(gasto.getProveedor());
-        dto.setObservaciones(gasto.getObservaciones());
-        dto.setTotal(gasto.getTotal());
-        return dto;
+        return DTOConverter.convertirGastoADTO(gasto);
     }
 } 

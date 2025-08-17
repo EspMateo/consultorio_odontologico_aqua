@@ -18,20 +18,32 @@ public class CitaController {
 
     @PostMapping
     public ResponseEntity<Cita> crearCita(@RequestBody CitaDTO citaDTO) {
-        Cita cita = citaService.crearCita(citaDTO);
-        return ResponseEntity.ok(cita);
+        try {
+            Cita cita = citaService.crearCita(citaDTO);
+            return ResponseEntity.ok(cita);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<CitaDTO>> obtenerTodasLasCitas() {
-        List<CitaDTO> citas = citaService.obtenerTodasLasCitas();
-        return ResponseEntity.ok(citas);
+        try {
+            List<CitaDTO> citas = citaService.obtenerTodasLasCitas();
+            return ResponseEntity.ok(citas);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("/fecha/{fecha}")
     public ResponseEntity<List<CitaDTO>> obtenerCitasPorFecha(@PathVariable String fecha) {
-        List<CitaDTO> citas = citaService.obtenerCitasPorFecha(fecha);
-        return ResponseEntity.ok(citas);
+        try {
+            List<CitaDTO> citas = citaService.obtenerCitasPorFecha(fecha);
+            return ResponseEntity.ok(citas);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PutMapping("/{id}")

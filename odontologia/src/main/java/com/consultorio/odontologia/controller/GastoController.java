@@ -127,12 +127,12 @@ public class GastoController {
 
     // Eliminar un gasto
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarGasto(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarGasto(@PathVariable Long id) {
         try {
             gastoService.eliminarGasto(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Gasto eliminado exitosamente");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Error al eliminar gasto");
         }
     }
 

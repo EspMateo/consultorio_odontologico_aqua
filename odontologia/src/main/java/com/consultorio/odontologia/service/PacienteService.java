@@ -6,8 +6,6 @@ import com.consultorio.odontologia.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +13,6 @@ import java.util.Optional;
 
 @Service
 public class PacienteService {
-    private static final Logger logger = LoggerFactory.getLogger(PacienteService.class);
 
     @Autowired
     private PacienteRepository pacienteRepository;
@@ -93,24 +90,16 @@ public class PacienteService {
 
     @Transactional
     public void eliminarPaciente(Long id) {
-        logger.info("Iniciando proceso de eliminación del paciente con ID: {}", id);
-        
         try {
             if (id == null) {
                 throw new IllegalArgumentException("El ID del paciente no puede ser nulo");
             }
 
             Paciente paciente = pacienteRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.warn("Intento de eliminar paciente no existente con ID: {}", id);
-                    return new RuntimeException("Paciente no encontrado");
-                });
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
-            logger.info("Eliminando paciente con ID: {} y todas sus referencias relacionadas", id);
             pacienteRepository.delete(paciente);
-            logger.info("Paciente eliminado exitosamente con ID: {}", id);
         } catch (Exception e) {
-            logger.error("Error al eliminar paciente con ID: {} - Error: {}", id, e.getMessage());
             throw new RuntimeException("Error al eliminar el paciente: " + e.getMessage());
         }
     }
