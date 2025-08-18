@@ -1,5 +1,6 @@
 package com.consultorio.odontologia.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,10 @@ public class DiagnosticoDTO {
     private String diagnostico;
     private String pronostico;
     private String observaciones;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaDiagnostico;
+    
     private Long pacienteId;
     private Long usuarioId;
 

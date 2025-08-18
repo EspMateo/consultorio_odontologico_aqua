@@ -33,6 +33,12 @@ public class SecurityConfig {
                 // Endpoints de citas
                 .requestMatchers("/api/citas/**").permitAll()
                 
+                // Endpoints de diagnóstico
+                .requestMatchers("/api/diagnosticos/**").permitAll()
+                
+                // Endpoints de tratamiento
+                .requestMatchers("/api/tratamientos/**").permitAll()
+                
                 // Endpoints de odontograma
                 .requestMatchers("/api/odontograma/**").permitAll()
                 

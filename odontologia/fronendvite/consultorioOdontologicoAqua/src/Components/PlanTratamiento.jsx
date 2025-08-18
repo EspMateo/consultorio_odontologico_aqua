@@ -13,6 +13,7 @@ const PlanTratamiento = ({ paciente, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState('info');
+  const [showMessageModal, setShowMessageModal] = useState(false);
 
   // Estado para el formulario de nuevo tratamiento
   const [nuevoTratamiento, setNuevoTratamiento] = useState({
@@ -24,17 +25,26 @@ const PlanTratamiento = ({ paciente, onClose }) => {
     duracion: ''
   });
 
-  // Función para mostrar mensajes
-  const showMessage = (msg, type = 'info', duration = 5000) => {
+  // Función para mostrar mensajes como modal
+  const showMessage = (msg, type = 'info', duration = 3000) => {
     setMessage(msg);
     setMessageType(type);
+    setShowMessageModal(true);
     
     if (duration > 0) {
       setTimeout(() => {
+        setShowMessageModal(false);
         setMessage(null);
         setMessageType('info');
       }, duration);
     }
+  };
+
+  // Función para cerrar mensaje manualmente
+  const closeMessage = () => {
+    setShowMessageModal(false);
+    setMessage(null);
+    setMessageType('info');
   };
 
   // Cargar tratamientos del paciente
@@ -220,12 +230,6 @@ const PlanTratamiento = ({ paciente, onClose }) => {
             ×
           </button>
         </div>
-
-        {message && (
-          <div className={`message ${messageType}`}>
-            {message}
-          </div>
-        )}
 
         <div className="plan-tratamiento-content">
           {loading && (
@@ -601,6 +605,37 @@ const PlanTratamiento = ({ paciente, onClose }) => {
             </div>
           )}
         </div>
+
+        {/* Modal de mensaje */}
+        {showMessageModal && message && (
+          <div className="message-modal-overlay">
+            <div className={`message-modal ${messageType}`}>
+              <div className="message-modal-content">
+                <div className="message-modal-header">
+                  <h3>
+                    {messageType === 'success' ? '✅ Éxito' : 
+                     messageType === 'error' ? '❌ Error' : 
+                     'ℹ️ Información'}
+                  </h3>
+                  <button className="btn-cerrar" onClick={closeMessage}>
+                    ×
+                  </button>
+                </div>
+                <div className="message-modal-body">
+                  <p>{message}</p>
+                </div>
+                <div className="message-modal-actions">
+                  <button 
+                    className="btn-aceptar"
+                    onClick={closeMessage}
+                  >
+                    Aceptar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

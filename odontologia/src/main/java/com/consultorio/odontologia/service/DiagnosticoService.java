@@ -38,17 +38,30 @@ public class DiagnosticoService {
         Usuario usuario = usuarioRepository.findById(diagnosticoDTO.getUsuarioId())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+        // Validar que la fecha no sea null
+        if (diagnosticoDTO.getFechaDiagnostico() == null) {
+            throw new RuntimeException("La fecha del diagnóstico es obligatoria");
+        }
+
+        // Debug: Imprimir la fecha recibida
+        System.out.println("Fecha recibida en DTO: " + diagnosticoDTO.getFechaDiagnostico());
+        System.out.println("Tipo de fecha: " + (diagnosticoDTO.getFechaDiagnostico() != null ? diagnosticoDTO.getFechaDiagnostico().getClass().getName() : "null"));
+
         // Crear entidad Diagnostico
         Diagnostico diagnostico = new Diagnostico();
         diagnostico.setPaciente(paciente);
         diagnostico.setUsuario(usuario);
-        diagnostico.setFechaDiagnostico(LocalDate.now());
+        diagnostico.setFechaDiagnostico(diagnosticoDTO.getFechaDiagnostico());
         diagnostico.setDiagnostico(diagnosticoDTO.getDiagnostico());
         diagnostico.setPronostico(diagnosticoDTO.getPronostico());
         diagnostico.setObservaciones(diagnosticoDTO.getObservaciones());
 
+        // Debug: Imprimir la fecha que se va a guardar
+        System.out.println("Fecha que se va a guardar: " + diagnostico.getFechaDiagnostico());
+
         // Guardar y retornar
         Diagnostico diagnosticoGuardado = diagnosticoRepository.save(diagnostico);
+        System.out.println("Fecha guardada en BD: " + diagnosticoGuardado.getFechaDiagnostico());
         return diagnosticoGuardado;
     }
 
@@ -58,13 +71,28 @@ public class DiagnosticoService {
         Diagnostico diagnosticoExistente = diagnosticoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Diagnóstico no encontrado"));
 
+        // Validar que la fecha no sea null
+        if (diagnosticoDTO.getFechaDiagnostico() == null) {
+            throw new RuntimeException("La fecha del diagnóstico es obligatoria");
+        }
+
+        // Debug: Imprimir la fecha recibida para actualización
+        System.out.println("Actualizando diagnóstico ID: " + id);
+        System.out.println("Fecha recibida para actualizar: " + diagnosticoDTO.getFechaDiagnostico());
+        System.out.println("Fecha anterior: " + diagnosticoExistente.getFechaDiagnostico());
+
         // Actualizar campos
+        diagnosticoExistente.setFechaDiagnostico(diagnosticoDTO.getFechaDiagnostico());
         diagnosticoExistente.setDiagnostico(diagnosticoDTO.getDiagnostico());
         diagnosticoExistente.setPronostico(diagnosticoDTO.getPronostico());
         diagnosticoExistente.setObservaciones(diagnosticoDTO.getObservaciones());
 
+        // Debug: Imprimir la fecha que se va a guardar
+        System.out.println("Fecha que se va a guardar en actualización: " + diagnosticoExistente.getFechaDiagnostico());
+
         // Guardar y retornar
         Diagnostico diagnosticoActualizado = diagnosticoRepository.save(diagnosticoExistente);
+        System.out.println("Fecha guardada después de actualización: " + diagnosticoActualizado.getFechaDiagnostico());
         return diagnosticoActualizado;
     }
 

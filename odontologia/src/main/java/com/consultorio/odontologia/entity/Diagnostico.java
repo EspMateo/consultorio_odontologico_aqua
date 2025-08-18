@@ -1,5 +1,6 @@
 package com.consultorio.odontologia.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class Diagnostico {
     private String observaciones;
 
     @Column(name = "fecha_diagnostico", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaDiagnostico;
 
     @ManyToOne(fetch = FetchType.LAZY)
