@@ -38,8 +38,8 @@
 
 .input-group {
   position: relative;
-  min-height: 48px;
-  margin-bottom: 8px;
+  min-height: 70px; /* Aumentado de 60px a 70px */
+  margin-bottom: 20px; /* Aumentado de 16px a 20px */
 }
 
 .register-input {
@@ -77,7 +77,7 @@
 .email-error {
   color: #f44336;
   font-size: 0.75rem;
-  margin-top: 4px;
+  margin-top: 12px; /* Aumentado de 8px a 12px */
   display: flex;
   align-items: center;
   gap: 4px;
@@ -87,14 +87,15 @@
   right: 0;
   z-index: 10;
   background: rgba(244, 67, 54, 0.1);
-  padding: 4px 8px;
+  padding: 8px 12px; /* Aumentado de 6px 8px a 8px 12px */
   border-radius: 4px;
   border: 1px solid rgba(244, 67, 54, 0.2);
+  margin-bottom: 8px; /* Agregado para separar del campo siguiente */
 }
 
 .password-container {
   position: relative;
-  min-height: 48px;
+  min-height: 60px;
   margin-bottom: 8px;
 }
 

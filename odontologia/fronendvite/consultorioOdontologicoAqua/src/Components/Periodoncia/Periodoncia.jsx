@@ -147,28 +147,32 @@ const Periodoncia = () => {
   };
 
   const calcularPorcentajePlaca = () => {
-    const totalSectores = Object.keys(dientesSeleccionados).length;
-    const sectoresSeleccionados = Object.values(dientesSeleccionados).filter(Boolean).length;
-    return totalSectores > 0 ? Math.round((sectoresSeleccionados / totalSectores) * 100) : 0;
+    // Contar solo los sectores que realmente tienen placa
+    const sectoresConPlaca = Object.values(dientesSeleccionados).filter(Boolean).length;
+    
+    // El total de sectores posibles es 32 dientes × 4 sectores = 128
+    const totalSectoresPosibles = 32 * 4;
+    
+    return totalSectoresPosibles > 0 ? Math.round((sectoresConPlaca / totalSectoresPosibles) * 100) : 0;
   };
 
   const calcularPorcentajeSarro = () => {
     let sectoresConSarro = 0;
-    let totalSectores = 0;
     
+    // Contar solo los sectores que realmente tienen sarro
     todosLosDientes.forEach(numero => {
       const dienteSarro = indiceSarro[numero];
       if (dienteSarro) {
         Object.values(dienteSarro).forEach(tieneSarro => {
-          totalSectores++;
           if (tieneSarro) sectoresConSarro++;
         });
-      } else {
-        totalSectores += 2; // 2 sectores por diente (superior e inferior)
       }
     });
     
-    return totalSectores > 0 ? Math.round((sectoresConSarro / totalSectores) * 100) : 0;
+    // El total de sectores posibles es 32 dientes × 2 sectores (superior e inferior) = 64
+    const totalSectoresPosibles = 32 * 2;
+    
+    return totalSectoresPosibles > 0 ? Math.round((sectoresConSarro / totalSectoresPosibles) * 100) : 0;
   };
 
   const handleGuardar = async () => {
@@ -188,8 +192,6 @@ const Periodoncia = () => {
         observaciones: observaciones
       };
 
-
-
       const response = await axios.post(buildApiUrl('periodoncia'), periodonciaData);
       
       setMessage(response.data.message);
@@ -197,6 +199,9 @@ const Periodoncia = () => {
       
       // Recargar fechas disponibles
       await cargarFechasDisponibles();
+      
+      // Limpiar los datos después de guardar exitosamente
+      limpiarDatos();
       
     } catch (error) {
       setMessage('Error al guardar: ' + (error.response?.data?.error || error.message));
@@ -226,6 +231,9 @@ const Periodoncia = () => {
       
       setMessage(response.data.message);
       setTimeout(() => setMessage(null), 3000);
+      
+      // Recargar fechas disponibles después de modificar
+      await cargarFechasDisponibles();
       
     } catch (error) {
       setMessage('Error al modificar: ' + (error.response?.data?.error || error.message));
@@ -446,7 +454,7 @@ const Periodoncia = () => {
             
             <div className="botones-container">
               <button 
-                className="btn-guardar" 
+                className="btn-nuevo-guardar"
                 onClick={handleGuardar}
                 disabled={loading || !selectedPaciente || !tipoFicha}
               >

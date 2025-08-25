@@ -430,8 +430,22 @@ const ControlFinanciero = () => {
                   <input
                     type="number"
                     value={nuevoGasto.precio}
-                    onChange={(e) => setNuevoGasto({...nuevoGasto, precio: e.target.value})}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Bloquear completamente valores negativos
+                      if (value === '' || (parseFloat(value) >= 0 && !value.includes('-'))) {
+                        setNuevoGasto({...nuevoGasto, precio: value});
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      // Bloquear tecla de guión (-) y teclas de dirección negativa
+                      if (e.key === '-' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                      }
+                    }}
                     placeholder="0"
+                    min="0"
+                    step="0.01"
                   />
                 </div>
                 <div className="form-group">
@@ -439,8 +453,21 @@ const ControlFinanciero = () => {
                   <input
                     type="number"
                     value={nuevoGasto.cantidad}
-                    onChange={(e) => setNuevoGasto({...nuevoGasto, cantidad: e.target.value})}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Bloquear completamente valores negativos
+                      if (value === '' || (parseInt(value) >= 0 && !value.includes('-'))) {
+                        setNuevoGasto({...nuevoGasto, cantidad: value});
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      // Bloquear tecla de guión (-) y teclas de dirección negativa
+                      if (e.key === '-' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                      }
+                    }}
                     min="1"
+                    step="1"
                   />
                 </div>
                 <div className="form-group">

@@ -1,7 +1,7 @@
 .periodoncia-container {
-  max-width: 100%;
+  max-width: 1800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   width: 100%;
 }
@@ -9,15 +9,15 @@
 .periodoncia-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 30px;
+  padding: 40px;
   border-radius: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 .periodoncia-header h1 {
-  margin: 0;
+  margin: 0 0 20px 0;
   font-size: 2.5em;
   font-weight: 300;
 }
@@ -614,6 +614,64 @@
   transform: none;
 }
 
+/* Estilos para botones en estado de loading */
+.btn-guardar.loading,
+.btn-modificar.loading,
+.btn-periodontograma.loading,
+.btn-volver.loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn-guardar.loading::after,
+.btn-modificar.loading::after,
+.btn-periodontograma.loading::after,
+.btn-volver.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Botón nuevo de guardar - completamente independiente */
+.btn-nuevo-guardar {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  background: #28a745;
+  color: white;
+}
+
+.btn-nuevo-guardar:hover:not(:disabled) {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-nuevo-guardar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: #6c757d;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .periodoncia-container {
@@ -688,6 +746,11 @@
   .btn-guardar,
   .btn-modificar,
   .btn-volver {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .btn-nuevo-guardar {
     width: 100%;
     max-width: 200px;
   }

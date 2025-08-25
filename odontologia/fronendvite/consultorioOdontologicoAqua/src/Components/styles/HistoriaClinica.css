@@ -1,9 +1,8 @@
 /* Contenedor principal */
 .historia-clinica-container {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 20px;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 30px;
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,22 +14,24 @@
 
 /* Header */
 .historia-clinica-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px;
+  border-radius: 15px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-bottom: 2rem;
-  color: #1e293b;
-  padding: 2rem 0;
-  width: 95%;
-  max-width: 1400px;
+  width: 100%;
 }
 
 .historia-clinica-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 2.5em;
+  font-weight: 300;
+  margin: 0 0 20px 0;
+  color: white;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
   text-shadow: none;
 }
 

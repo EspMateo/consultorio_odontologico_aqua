@@ -14,11 +14,19 @@ function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [buttonMessage, setButtonMessage] = useState('Registrarse');
   const [emailExists, setEmailExists] = useState(false);
   const [checkingEmail, setCheckingEmail] = useState(false);
   const debounceRef = useRef(null);
   const navigate = useNavigate();
+
+  // Restaurar espaciado cuando se limpien los errores
+  React.useEffect(() => {
+    if (!emailError && !passwordError) {
+      adjustSpacing(false);
+    }
+  }, [emailError, passwordError]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +39,9 @@ function Register() {
     if (passwordError) {
       setPasswordError('');
     }
+    if (emailError) {
+      setEmailError('');
+    }
     
     // Verificar email en tiempo real con debounce
     if (name === 'email') {
@@ -42,12 +53,51 @@ function Register() {
       // Establecer un nuevo timeout
       debounceRef.current = setTimeout(() => {
         if (value) {
-          checkEmailExists(value);
+          // Validar formato primero
+          const emailValidation = validateEmail(value);
+          if (emailValidation) {
+            setEmailError(emailValidation);
+            setEmailExists(false);
+            // Ajustar espaciado cuando hay error
+            adjustSpacing(true);
+          } else {
+            setEmailError('');
+            // Restaurar espaciado normal
+            adjustSpacing(false);
+            checkEmailExists(value);
+          }
         } else {
           setEmailExists(false);
+          setEmailError('');
+          // Restaurar espaciado normal
+          adjustSpacing(false);
         }
       }, 500); // Esperar 500ms después de que el usuario deje de escribir
     }
+  };
+
+  // Función para validar email
+  const validateEmail = (email) => {
+    // Regex básico para formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!emailRegex.test(email)) {
+      return 'Formato de email inválido';
+    }
+
+    // Validar dominios específicos
+    const domain = email.split('@')[1]?.toLowerCase();
+    const validDomains = [
+      'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 
+      'live.com', 'msn.com', 'icloud.com', 'protonmail.com',
+      'aol.com', 'yandex.com', 'mail.com', 'gmx.com'
+    ];
+
+    if (!validDomains.includes(domain)) {
+      return 'Dominio de email no soportado. Use Gmail, Hotmail, Outlook u otros proveedores conocidos.';
+    }
+
+    return null; // Email válido
   };
 
   const checkEmailExists = async (email) => {
@@ -57,8 +107,8 @@ function Register() {
     }
     
     // Validar formato de email antes de hacer la petición
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const emailValidation = validateEmail(email);
+    if (emailValidation) {
       setEmailExists(false);
       return;
     }
@@ -89,9 +139,9 @@ function Register() {
     }
     
     // Validar formato de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email)) {
-      setPasswordError('Por favor, ingresa un email válido');
+    const emailValidation = validateEmail(form.email);
+    if (emailValidation) {
+      setPasswordError(emailValidation);
       setButtonMessage('Registrarse');
       setLoading(false);
       return;
@@ -155,6 +205,22 @@ function Register() {
     }
   };
 
+  // Función para ajustar el espaciado dinámicamente
+  const adjustSpacing = (hasError) => {
+    const emailGroup = document.querySelector('.input-group:nth-child(2)'); // El segundo input-group es el email
+    const passwordGroup = document.querySelector('.input-group:nth-child(3)'); // El tercero es la contraseña
+    
+    if (emailGroup && passwordGroup) {
+      if (hasError) {
+        emailGroup.style.marginBottom = '24px';
+        passwordGroup.style.marginTop = '8px';
+      } else {
+        emailGroup.style.marginBottom = '16px';
+        passwordGroup.style.marginTop = '0px';
+      }
+    }
+  };
+
   // Limpiar timeout cuando el componente se desmonte
   useEffect(() => {
     return () => {
@@ -188,7 +254,7 @@ function Register() {
             
             <div className="input-group">
               <input 
-                className={`register-input ${emailExists ? 'error' : ''}`}
+                className={`register-input ${emailError || emailExists ? 'error' : ''}`}
                 name="email" 
                 placeholder="Email" 
                 value={form.email}
@@ -196,7 +262,12 @@ function Register() {
                 required 
               />
               {checkingEmail && <div className="checking-email">Verificando...</div>}
-              {emailExists && form.email && (
+              {emailError && (
+                <div className="email-error">
+                  {emailError}
+                </div>
+              )}
+              {emailExists && form.email && !emailError && (
                 <div className="email-error">
                   ⚠️ Este email ya está registrado
                 </div>
@@ -225,7 +296,7 @@ function Register() {
             <button 
               className={`register-btn ${loading ? 'loading' : ''}`}
               type="submit"
-              disabled={loading || emailExists}
+              disabled={loading || emailExists || !!emailError}
             >
               {buttonMessage}
             </button>

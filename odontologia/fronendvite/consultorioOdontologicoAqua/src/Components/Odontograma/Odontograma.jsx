@@ -517,8 +517,8 @@ const Odontograma = () => {
           {filaInferiorIzquierda.map(num => renderTooth(num))}
         </div>
       </div>
-      {/* Sección: Estados de los Dientes y Diente Seleccionado en una fila */}
-      <div className="odontograma-section odontograma-row">
+      {/* Sección: Estados de los Dientes */}
+      <div className="odontograma-section">
         <div className="condiciones-panel">
           <h3>Estados de los Dientes</h3>
           <div className="condiciones-lista">
@@ -540,17 +540,11 @@ const Odontograma = () => {
             ))}
           </div>
         </div>
-        {selectedTooth && selectedPart && (
-          <div className="diente-seleccionado" style={{ minWidth: 220 }}>
-            <h3>Diente Seleccionado: {selectedTooth}</h3>
-            <p>Parte: <strong>{partesDiente[selectedPart]?.nombre}</strong></p>
-            <p>Estado actual: <strong>{condiciones[dientes[selectedTooth]?.[selectedPart]]?.nombre}</strong></p>
-            <p>Haz clic en un estado para cambiarlo</p>
-          </div>
-        )}
       </div>
-      {/* Sección: Observaciones */}
-      <div className="odontograma-section">
+
+      {/* Sección: Observaciones y Diente Seleccionado en la misma línea */}
+      <div className="odontograma-section odontograma-row">
+        {/* Observaciones a la izquierda */}
         <div className="observaciones-panel">
           <h3>Observaciones</h3>
           <textarea
@@ -564,6 +558,16 @@ const Odontograma = () => {
             className="observaciones-textarea"
           />
         </div>
+        
+        {/* Diente Seleccionado a la derecha */}
+        {selectedTooth && selectedPart && (
+          <div className="diente-seleccionado" style={{ minWidth: 220 }}>
+            <h3>Diente Seleccionado: {selectedTooth}</h3>
+            <p>Parte: <strong>{partesDiente[selectedPart]?.nombre}</strong></p>
+            <p>Estado actual: <strong>{condiciones[dientes[selectedTooth]?.[selectedPart]]?.nombre}</strong></p>
+            <p>Haz clic en un estado para cambiarlo</p>
+          </div>
+        )}
       </div>
 
       {/* Sección: Acciones */}
@@ -575,19 +579,27 @@ const Odontograma = () => {
               {message}
             </div>
           )}
-          <button 
-            className="btn-guardar" 
-            onClick={handleSaveChanges}
-            disabled={saving}
-          >
-            {saving ? 'Guardando...' : 'Guardar Cambios'}
-          </button>
-          <button 
-            className="btn-exportar" 
-            onClick={handleExportOdontograma}
-          >
-            Exportar Odontograma
-          </button>
+          <div className="acciones-buttons">
+            <button 
+              className="btn-guardar" 
+              onClick={handleSaveChanges}
+              disabled={saving}
+            >
+              {saving ? 'Guardando...' : 'Guardar Cambios'}
+            </button>
+            <button 
+              className="btn-exportar" 
+              onClick={handleExportOdontograma}
+            >
+              Exportar Odontograma
+            </button>
+            <button 
+              className="btn-volver" 
+              onClick={() => window.history.back()}
+            >
+              ← Volver
+            </button>
+          </div>
         </div>
       </div>
     </div>

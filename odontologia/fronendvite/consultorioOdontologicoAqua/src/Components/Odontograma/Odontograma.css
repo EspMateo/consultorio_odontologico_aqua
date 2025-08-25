@@ -321,8 +321,10 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  flex: 0 0 250px;
+  margin: 0;
 }
 
 .diente-seleccionado h3 {
@@ -1034,21 +1036,17 @@
   gap: 40px;
   margin-bottom: 35px;
   flex-wrap: wrap;
+  align-items: flex-start;
 }
 
-.label-cuadrante {
-  font-weight: bold;
-  margin: 0 12px;
-  color: #666;
-  font-size: 1em;
-  min-width: 60px;
-  text-align: center;
-}
-
+/* Ajustar el panel de observaciones para que esté en línea */
 .observaciones-panel {
-  margin-bottom: 40px;
-  padding-top: 30px;
-  border-top: 1px solid #eee;
+  margin-bottom: 0;
+  padding-top: 0;
+  border-top: none;
+  flex: 0 0 400px;
+  min-width: 350px;
+  max-width: 450px;
 }
 
 .observaciones-panel h3 {
@@ -1062,7 +1060,7 @@
 
 .observaciones-textarea {
   width: 100%;
-  max-width: 600px;
+  max-width: 100%;
   padding: 15px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
@@ -1080,7 +1078,71 @@
 
 .observaciones-textarea::placeholder {
   color: #999;
-} 
+}
+
+/* Ajustar el diente seleccionado para que esté más centrado pero a la derecha */
+.diente-seleccionado {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  flex: 0 0 280px;
+  margin: 0;
+  align-self: center;
+}
+
+.diente-seleccionado h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.diente-seleccionado p {
+  margin: 8px 0;
+  font-size: 0.95em;
+}
+
+/* Ajustar el panel de acciones */
+.acciones-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.acciones-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.acciones-panel button {
+  max-width: 200px;
+  width: auto;
+  min-width: 160px;
+  margin: 0;
+  padding: 10px 20px;
+  font-size: 0.95em;
+  font-weight: 600;
+  border-radius: 8px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+  transition: all 0.3s ease;
+}
+
+/* Botón volver */
+.btn-volver {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+}
+
+.btn-volver:hover {
+  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+}
 
 .btn-icon {
   position: absolute;
@@ -1114,5 +1176,57 @@
 .recargar-icon {
   top: 18px;
   right: 18px;
+} 
+
+/* Media queries para responsividad */
+@media (max-width: 1200px) {
+  .odontograma-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .observaciones-panel,
+  .diente-seleccionado {
+    flex: none;
+    width: 100%;
+    max-width: none;
+  }
+  
+  .acciones-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .acciones-panel button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .odontograma-container {
+    padding: 20px 15px;
+  }
+  
+  .odontograma-row {
+    gap: 15px;
+  }
+  
+  .observaciones-textarea {
+    padding: 12px;
+    font-size: 0.9em;
+  }
+  
+  .diente-seleccionado {
+    padding: 15px;
+  }
+  
+  .diente-seleccionado h3 {
+    font-size: 1.1em;
+  }
+  
+  .diente-seleccionado p {
+    font-size: 0.9em;
+  }
 } 
 

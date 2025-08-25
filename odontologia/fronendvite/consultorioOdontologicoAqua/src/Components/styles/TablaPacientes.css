@@ -15,7 +15,7 @@
   margin-bottom: 25px;
   align-items: center;
   width: 95%; /* Aumentado de 90% a 95% para más presencia */
-  max-width: 1400px; /* Aumentado de 1200px a 1400px */
+  max-width: 1500px; /* Aumentado de 1400px a 1500px */
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding: 18px; /* Aumentado de 15px a 18px */
   border-radius: 12px; /* Aumentado de 10px a 12px */
@@ -82,7 +82,7 @@
 
 .tabla-pacientes {
   width: 95%; /* Aumentado de 90% a 95% para más presencia */
-  max-width: 1400px; /* Aumentado de 1200px a 1400px */
+  max-width: 1500px; /* Aumentado de 1400px a 1500px */
   border-collapse: collapse;
   background-color: white;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);

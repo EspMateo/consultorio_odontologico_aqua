@@ -328,7 +328,7 @@ const PatientRegistration = () => {
     setError(null);
     
     try {
-      const response = await axios.post(buildApiUrl('pacientes/registro'), formData);
+      const response = await axios.post(buildApiUrl('pacientes'), formData);
       
       if (response.data) {
         // Limpiar el formulario después de un registro exitoso
