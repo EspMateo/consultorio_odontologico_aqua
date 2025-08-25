@@ -838,7 +838,7 @@ const PatientRegistration = () => {
                     <option value="">Seleccione...</option>
                     <option value="primera_vez">Primera Vez</option>
                     <option value="control">Control</option>
-                    <option value="emergencia">Emergencia</option>
+                    <option value="urgencia">Urgencia</option>
                     <option value="limpieza">Limpieza</option>
                     <option value="tratamiento">Tratamiento</option>
                   </select>

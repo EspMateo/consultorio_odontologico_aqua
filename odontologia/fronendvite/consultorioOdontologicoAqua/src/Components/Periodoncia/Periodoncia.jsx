@@ -250,9 +250,6 @@ const Periodoncia = () => {
     }
   };
 
-  const handleVolver = () => {
-    navigate('/dashboard');
-  };
 
   const renderDienteCubo = (numero) => (
     <div key={numero} className="diente-cubo">
@@ -481,8 +478,7 @@ const Periodoncia = () => {
               
               <button 
                 className="btn-volver" 
-                onClick={handleVolver}
-                disabled={loading}
+                onClick={() => window.history.back()}
               >
                 Volver
               </button>

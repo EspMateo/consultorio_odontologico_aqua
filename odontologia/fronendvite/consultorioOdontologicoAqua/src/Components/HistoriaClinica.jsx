@@ -531,10 +531,6 @@ const HistoriaClinica = () => {
     }
   };
 
-  const handleVolver = () => {
-    navigate('/dashboard');
-  };
-
   const handlePlanTratamiento = () => {
     setShowPlanTratamiento(true);
   };
@@ -1243,10 +1239,9 @@ const HistoriaClinica = () => {
                 </button>
               )}
               
-              <button 
+             <button 
                 className="btn-volver" 
-                onClick={handleVolver}
-                disabled={loading}
+                onClick={() => window.history.back()}
               >
                 Volver
               </button>

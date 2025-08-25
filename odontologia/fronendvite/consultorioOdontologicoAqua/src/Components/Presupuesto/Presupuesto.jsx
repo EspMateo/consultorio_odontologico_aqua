@@ -272,9 +272,7 @@ const Presupuesto = () => {
 
 
 
-  const handleVolver = () => {
-    navigate('/dashboard');
-  };
+
 
   return (
     <div className="presupuesto-container">
@@ -507,8 +505,7 @@ const Presupuesto = () => {
               
               <button 
                 className="btn-volver" 
-                onClick={handleVolver}
-                disabled={loading}
+                onClick={() => window.history.back()}
               >
                 Volver
               </button>

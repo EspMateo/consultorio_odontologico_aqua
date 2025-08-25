@@ -130,9 +130,7 @@ export default function Login() {
   return (
     <div className="login-container">
       {loading ? (
-        <div className="loader-container">
-          <Loader mensaje="Iniciando sesión..." />
-        </div>
+        <Loader mensaje="Iniciando sesión..." />
       ) : (
         <>
           <div className="login-logo-section">

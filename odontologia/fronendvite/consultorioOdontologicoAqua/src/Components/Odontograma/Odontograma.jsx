@@ -574,11 +574,6 @@ const Odontograma = () => {
       <div className="odontograma-section">
         <div className="acciones-panel">
           <h3>Acciones</h3>
-          {message && (
-            <div className={`message ${message.includes('Error') ? 'error' : 'success'}`}>
-              {message}
-            </div>
-          )}
           <div className="acciones-buttons">
             <button 
               className="btn-guardar" 
@@ -597,9 +592,14 @@ const Odontograma = () => {
               className="btn-volver" 
               onClick={() => window.history.back()}
             >
-              ← Volver
+              Volver
             </button>
           </div>
+          {message && (
+            <div className={`message ${message.includes('Error') ? 'error' : 'success'}`}>
+              {message}
+            </div>
+          )}
         </div>
       </div>
     </div>
