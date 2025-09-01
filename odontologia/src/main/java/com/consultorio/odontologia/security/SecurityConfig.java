@@ -73,10 +73,11 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Configurar orígenes específicos para producción y desarrollo
+        // Configurar orígenes permitidos (producción + pre-prod + preview + local)
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://consultorio-odontologico-aqua.vercel.app",
-                "https://consultorio-odontologico-aqua-git-main-consultorio-odontologico-aqua.vercel.app",
-                "https://consultorio-odontologico-aqua-git-develop-consultorio-odontologico-aqua.vercel.app",
+                "https://consultorio-odontologico-aqua-git-pre-prod-mateoesps-projects.vercel.app",
+                "https://consultorio-odontologico-aqua-flf717xmx-mateoesps-projects.vercel.app",
                 "http://localhost:3000",
                 "http://localhost:5173",
                 "http://127.0.0.1:3000",
