@@ -55,7 +55,7 @@ export default function Login() {
     setButtonMessage('Iniciando sesión...');
     
     try {
-      const res = await axios.post(buildApiUrl('usuarios/login'), {
+      const res = await axios.post(buildApiUrl('auth/login'), {
         email,
         password,
       }, {

@@ -10,8 +10,16 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/usuarios")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000", "https://consultorio-odontologico-aqua.vercel.app"})
+@RequestMapping("/api/auth")
+@CrossOrigin(origins = {
+    "https://consultorio-odontologico-aqua.vercel.app",
+    "https://consultorio-odontologico-aqua-git-main-consultorio-odontologico-aqua.vercel.app",
+    "https://consultorio-odontologico-aqua-git-develop-consultorio-odontologico-aqua.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173"
+})
 public class AuthController {
 
     @Autowired

@@ -115,7 +115,7 @@ function Register() {
     
     setCheckingEmail(true);
     try {
-      const response = await axios.get(buildApiUrl(`usuarios/check-email/${email}`));
+      const response = await axios.get(buildApiUrl(`auth/check-email/${email}`));
       setEmailExists(response.data.exists);
     } catch (error) {
       setEmailExists(false);
@@ -156,7 +156,7 @@ function Register() {
     }
     
     try {
-      const response = await axios.post(buildApiUrl('usuarios/register'), form, {
+      const response = await axios.post(buildApiUrl('auth/register'), form, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
