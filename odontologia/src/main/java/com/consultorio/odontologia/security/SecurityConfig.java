@@ -75,7 +75,7 @@ public class SecurityConfig {
         // Configurar orígenes específicos para producción y desarrollo
         // Configurar orígenes permitidos (producción + pre-prod + preview + local)
         configuration.setAllowedOrigins(Arrays.asList(
-                "https://consultorio-odontologico-aqua.vercel.app",
+                "https://consultorio-odontologico-aqua.vercel.app/",
                 "http://localhost:3000",
                 "http://localhost:5173"
         ));
