@@ -60,13 +60,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Dominios permitidos específicos (sin wildcards cuando allowCredentials es true)
-        configuration.setAllowedOrigins(Arrays.asList(
-                "https://consultorio-odontologico-aqua.vercel.app",
-                "https://consultorioodontologicoaqua-production-0ffa.up.railway.app",
-                "http://localhost:3000",
-                "http://localhost:5173"
-        ));
+        // Permitir todos los subdominios de Vercel, Railway y localhost
+        configuration.addAllowedOriginPattern("https://*.vercel.app");
+        configuration.addAllowedOriginPattern("https://consultorioodontologicoaqua-production-0ffa.up.railway.app");
+        configuration.addAllowedOriginPattern("http://localhost:3000");
+        configuration.addAllowedOriginPattern("http://localhost:5173");
 
         // Métodos HTTP permitidos
         configuration.setAllowedMethods(Arrays.asList(
@@ -85,7 +83,6 @@ public class SecurityConfig {
         // Duración máxima del preflight
         configuration.setMaxAge(3600L);
 
-        // Registrar configuración para todos los endpoints
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 

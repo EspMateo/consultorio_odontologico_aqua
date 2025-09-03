@@ -17,12 +17,6 @@ public class AuthController {
     private UsuarioService usuarioService;
 
     @PostMapping("/login")
-    @CrossOrigin(origins = {
-        "https://consultorio-odontologico-aqua.vercel.app",
-        "https://consultorioodontologicoaqua-production-0ffa.up.railway.app",
-        "http://localhost:3000",
-        "http://localhost:5173"
-    })
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
         try {
             Optional<Usuario> user = usuarioService.login(usuario.getEmail(), usuario.getPassword());
@@ -37,12 +31,6 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    @CrossOrigin(origins = {
-        "https://consultorio-odontologico-aqua.vercel.app",
-        "https://consultorioodontologicoaqua-production-0ffa.up.railway.app",
-        "http://localhost:3000",
-        "http://localhost:5173"
-    })
     public ResponseEntity<?> register(@RequestBody Usuario usuario) {
         try {
             // Validar que el email no esté vacío
