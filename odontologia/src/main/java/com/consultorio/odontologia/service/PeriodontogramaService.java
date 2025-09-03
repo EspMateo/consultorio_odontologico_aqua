@@ -28,24 +28,54 @@ public class PeriodontogramaService {
     @Autowired
     private ObjectMapper objectMapper;
     
-    // Guardar nuevo periodontograma
+    // Guardar nuevo periodontograma (o actualizar si ya existe)
     public PeriodontogramaDTO guardarPeriodontograma(PeriodontogramaDTO dto) throws Exception {
         Paciente paciente = pacienteRepository.findById(dto.getPacienteId())
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
         
-        Periodontograma periodontograma = new Periodontograma();
-        periodontograma.setPaciente(paciente);
-        periodontograma.setFechaRegistro(dto.getFechaRegistro());
-        periodontograma.setObservaciones(dto.getObservaciones());
-        periodontograma.setFechaCreacion(LocalDateTime.now());
+        // Buscar si ya existe un periodontograma para este paciente
+        Periodontograma periodontograma;
+        boolean esNuevo = false;
+        
+        try {
+            periodontograma = periodontogramaRepository.findMostRecentByPacienteId(dto.getPacienteId())
+                    .orElse(null);
+        } catch (Exception e) {
+            periodontograma = null;
+        }
+        
+        if (periodontograma != null) {
+            // Actualizar el existente
+            periodontograma.setFechaRegistro(dto.getFechaRegistro());
+            periodontograma.setObservaciones(dto.getObservaciones());
+            periodontograma.setFechaModificacion(LocalDateTime.now());
+        } else {
+            // Crear uno nuevo
+            periodontograma = new Periodontograma();
+            periodontograma.setPaciente(paciente);
+            periodontograma.setFechaRegistro(dto.getFechaRegistro());
+            periodontograma.setObservaciones(dto.getObservaciones());
+            periodontograma.setFechaCreacion(LocalDateTime.now());
+            esNuevo = true;
+        }
         
         // Convertir datosPeriodontograma a JSON
         if (dto.getDatosPeriodontograma() != null) {
-            periodontograma.setDatosPeriodontograma(objectMapper.writeValueAsString(dto.getDatosPeriodontograma()));
+            String jsonData = objectMapper.writeValueAsString(dto.getDatosPeriodontograma());
+            periodontograma.setDatosPeriodontograma(jsonData);
         }
         
         Periodontograma saved = periodontogramaRepository.save(periodontograma);
-        return new PeriodontogramaDTO(saved);
+        
+        // Crear y retornar el DTO con los datos parseados
+        PeriodontogramaDTO savedDto = new PeriodontogramaDTO(saved);
+        
+        // Asegurar que los datosPeriodontograma estén parseados correctamente
+        if (saved.getDatosPeriodontograma() != null) {
+            savedDto.setDatosPeriodontograma(objectMapper.readValue(saved.getDatosPeriodontograma(), Map.class));
+        }
+        
+        return savedDto;
     }
     
     // Actualizar periodontograma existente
@@ -59,11 +89,21 @@ public class PeriodontogramaService {
         
         // Convertir datosPeriodontograma a JSON
         if (dto.getDatosPeriodontograma() != null) {
-            periodontograma.setDatosPeriodontograma(objectMapper.writeValueAsString(dto.getDatosPeriodontograma()));
+            String jsonData = objectMapper.writeValueAsString(dto.getDatosPeriodontograma());
+            periodontograma.setDatosPeriodontograma(jsonData);
         }
         
         Periodontograma updated = periodontogramaRepository.save(periodontograma);
-        return new PeriodontogramaDTO(updated);
+        
+        // Crear y retornar el DTO con los datos parseados
+        PeriodontogramaDTO updatedDto = new PeriodontogramaDTO(updated);
+        
+        // Asegurar que los datosPeriodontograma estén parseados correctamente
+        if (updated.getDatosPeriodontograma() != null) {
+            updatedDto.setDatosPeriodontograma(objectMapper.readValue(updated.getDatosPeriodontograma(), Map.class));
+        }
+        
+        return updatedDto;
     }
     
     // Obtener periodontograma por ID
@@ -123,7 +163,7 @@ public class PeriodontogramaService {
     
     // Obtener todos los periodontogramas de un paciente
     public List<PeriodontogramaDTO> obtenerTodasPorPaciente(Long pacienteId) throws Exception {
-        List<Periodontograma> periodontogramas = periodontogramaRepository.findByPacienteIdOrderByFechaCreacionDesc(pacienteId);
+        List<Periodontograma> periodontogramas = periodontogramaRepository.findByPacienteIdOrderByFechaModificacionDesc(pacienteId);
         
         return periodontogramas.stream().map(periodontograma -> {
             try {

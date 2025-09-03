@@ -3,6 +3,8 @@ package com.consultorio.odontologia.dto;
 import com.consultorio.odontologia.entity.Periodontograma;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -34,6 +36,17 @@ public class PeriodontogramaDTO {
         this.observaciones = periodontograma.getObservaciones();
         this.fechaCreacion = periodontograma.getFechaCreacion();
         this.fechaModificacion = periodontograma.getFechaModificacion();
+        
+        // Parsear los datosPeriodontograma desde JSON string
+        if (periodontograma.getDatosPeriodontograma() != null) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                this.datosPeriodontograma = objectMapper.readValue(periodontograma.getDatosPeriodontograma(), Map.class);
+            } catch (JsonProcessingException e) {
+                // Si hay error al parsear, mantener como null
+                this.datosPeriodontograma = null;
+            }
+        }
     }
     
     // Getters and Setters

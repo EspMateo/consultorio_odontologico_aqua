@@ -150,11 +150,13 @@ const Periodontograma = () => {
         }
       }
     } catch (error) {
+      // No se pudo cargar odontograma
     }
 
     // Luego cargar el periodontograma
     try {
       const response = await axios.get(buildApiUrl(`periodontograma/paciente/${pacienteId}/reciente`));
+      
       if (response.data && response.data.id) {
         setPeriodontogramaId(response.data.id);
         setFechaUltimaActualizacion(response.data.fechaModificacion || response.data.fechaCreacion);
@@ -181,8 +183,10 @@ const Periodontograma = () => {
   };
 
   const loadPeriodontogramaData = (data, dientesAusentesOdontograma = new Set()) => {
+    
     if (data.datosPeriodontograma) {
       const datos = data.datosPeriodontograma;
+      
       if (datos.dientes) {
         // Convertir datos antiguos a nueva estructura si es necesario
         const dientesConvertidos = {};
@@ -218,7 +222,13 @@ const Periodontograma = () => {
       
       // Agregar dientes ausentes del periodontograma
       if (datos.dientesAusentes) {
-        dientesAusentesCombinados = new Set(datos.dientesAusentes);
+        
+        if (Array.isArray(datos.dientesAusentes)) {
+          dientesAusentesCombinados = new Set(datos.dientesAusentes);
+        } else {
+          dientesAusentesCombinados = new Set([datos.dientesAusentes]);
+        }
+      } else {
       }
       
       // Agregar dientes ausentes del odontograma (no sobrescribir los del periodontograma)
@@ -235,6 +245,7 @@ const Periodontograma = () => {
     if (data.observaciones) {
       setObservaciones(data.observaciones);
     }
+    
   };
 
   // Manejadores de eventos
@@ -390,6 +401,7 @@ const Periodontograma = () => {
   }, []);
 
   const handleDienteAusente = useCallback((diente) => {
+    
     setDientesAusentes(prev => {
       const newSet = new Set(prev);
       if (newSet.has(diente)) {
@@ -397,9 +409,11 @@ const Periodontograma = () => {
       } else {
         newSet.add(diente);
       }
+      
       return newSet;
     });
-  }, []);
+    
+  }, [dientesAusentes]);
 
   // Utilidades
   const showNotification = useCallback((type, message) => {
@@ -453,10 +467,32 @@ const Periodontograma = () => {
 
     try {
       let response;
+      
+      // Siempre intentar actualizar primero, si no existe, crear uno nuevo
       if (periodontogramaId) {
         response = await axios.put(buildApiUrl(`periodontograma/${periodontogramaId}`), periodontogramaData);
       } else {
-        response = await axios.post(buildApiUrl('periodontograma'), periodontogramaData);
+        // Intentar buscar si ya existe un periodontograma para este paciente
+        try {
+          const existingResponse = await axios.get(buildApiUrl(`periodontograma/paciente/${paciente.id}/reciente`));
+          if (existingResponse.data && existingResponse.data.id) {
+            response = await axios.put(buildApiUrl(`periodontograma/${existingResponse.data.id}`), periodontogramaData);
+            // Actualizar el ID del periodontograma
+            setPeriodontogramaId(existingResponse.data.id);
+          } else {
+            response = await axios.post(buildApiUrl('periodontograma'), periodontogramaData);
+            // Actualizar el ID del periodontograma después de crear uno nuevo
+            if (response.data && response.data.id) {
+              setPeriodontogramaId(response.data.id);
+            }
+          }
+        } catch (error) {
+          response = await axios.post(buildApiUrl('periodontograma'), periodontogramaData);
+          // Actualizar el ID del periodontograma después de crear uno nuevo
+          if (response.data && response.data.id) {
+            setPeriodontogramaId(response.data.id);
+          }
+        }
       }
       
       showNotification('success', '¡Periodontograma guardado con éxito!');
@@ -465,7 +501,13 @@ const Periodontograma = () => {
       } else if (response.data.fechaCreacion) {
         setFechaUltimaActualizacion(response.data.fechaCreacion);
       }
+      
+      // Recargar los datos del periodontograma para asegurar que se muestren correctamente
+      setTimeout(() => {
+        fetchPeriodontograma(paciente.id);
+      }, 1000);
     } catch (error) {
+      console.error('Error al guardar periodontograma:', error);
       const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Error al guardar el periodontograma';
       showNotification('error', `Error: ${errorMessage}`);
     } finally {

@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpMethod;
 
 import java.util.Arrays;
 
@@ -21,59 +22,70 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests(authz -> authz
-                // Endpoints de autenticación
-                .requestMatchers("/api/auth/**").permitAll()
-                
-                // Endpoints de pacientes
-                .requestMatchers("/api/pacientes/**").permitAll()
-                
-                // Endpoints de citas
-                .requestMatchers("/api/citas/**").permitAll()
-                
-                // Endpoints de diagnóstico
-                .requestMatchers("/api/diagnosticos/**").permitAll()
-                
-                // Endpoints de tratamiento
-                .requestMatchers("/api/tratamientos/**").permitAll()
-                
-                // Endpoints de odontograma
-                .requestMatchers("/api/odontograma/**").permitAll()
-                
-                // Endpoints de periodoncia
-                .requestMatchers("/api/periodoncia/**").permitAll()
-                
-                // Endpoints de periodontograma
-                .requestMatchers("/api/periodontograma/**").permitAll()
-                
-                // Endpoints de historia clínica - TODOS los métodos
-                .requestMatchers("GET", "/api/historia-clinica/**").permitAll()
-                .requestMatchers("POST", "/api/historia-clinica/**").permitAll()
-                .requestMatchers("PUT", "/api/historia-clinica/**").permitAll()
-                .requestMatchers("DELETE", "/api/historia-clinica/**").permitAll()
-                
-                // Endpoints de usuarios
-                .requestMatchers("/api/usuarios/**").permitAll()
-                
-                // Permitir todo lo demás
-                .anyRequest().permitAll()
-            );
-        
+                // Desactivar CSRF (para APIs REST)
+                .csrf(AbstractHttpConfigurer::disable)
+                // Activar CORS usando nuestra configuración
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // Configuración de rutas y permisos
+                .authorizeHttpRequests(authz -> authz
+                        // Endpoints públicos (autenticación)
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // Endpoints de pacientes, citas, diagnóstico, tratamiento, odontograma, periodoncia, periodontograma
+                        .requestMatchers("/api/pacientes/**",
+                                "/api/citas/**",
+                                "/api/diagnosticos/**",
+                                "/api/tratamientos/**",
+                                "/api/odontograma/**",
+                                "/api/periodoncia/**",
+                                "/api/periodontograma/**").permitAll()
+
+                        // Historia clínica: todos los métodos
+                        .requestMatchers("/api/historia-clinica/**").permitAll()
+
+                        // Usuarios
+                        .requestMatchers("/api/usuarios/**").permitAll()
+
+                        // Preflight (OPTIONS) en cualquier endpoint
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Cualquier otra ruta
+                        .anyRequest().authenticated()
+                );
+
         return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+
+        // Permitir todos los subdominios de Vercel, Railway y localhost
+        configuration.addAllowedOriginPattern("https://*.vercel.app");
+        configuration.addAllowedOriginPattern("https://consultorioodontologicoaqua-production-0ffa.up.railway.app");
+        configuration.addAllowedOriginPattern("http://localhost:3000");
+        configuration.addAllowedOriginPattern("http://localhost:5173");
+
+        // Métodos HTTP permitidos
+        configuration.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        ));
+
+        // Headers permitidos
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With",
+                "Access-Control-Request-Method", "Access-Control-Request-Headers"
+        ));
+
+        // Permitir cookies o credenciales
         configuration.setAllowCredentials(true);
-        
+
+        // Duración máxima del preflight
+        configuration.setMaxAge(3600L);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 
