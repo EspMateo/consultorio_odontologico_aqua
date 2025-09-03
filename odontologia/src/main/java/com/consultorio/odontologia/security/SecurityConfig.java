@@ -59,28 +59,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
-        // Dominios permitidos: producción y desarrollo
-        configuration.setAllowedOriginPatterns(Arrays.asList(
-                "https://consultorio-odontologico-aqua.vercel.app",
-                "http://localhost:3000"
-        ));
-
-        // Métodos HTTP permitidos
-        configuration.setAllowedMethods(Arrays.asList(
-                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
-        ));
-
-        // Headers permitidos
-        configuration.setAllowedHeaders(Arrays.asList(
-                "Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With",
-                "Access-Control-Request-Method", "Access-Control-Request-Headers"
-        ));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
 
         // Permitir cookies o credenciales
         configuration.setAllowCredentials(true);
-
-        // Duración máxima del preflight
         configuration.setMaxAge(3600L);
 
         // Registrar configuración para todos los endpoints
