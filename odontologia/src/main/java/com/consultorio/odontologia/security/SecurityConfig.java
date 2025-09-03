@@ -58,7 +58,7 @@ public class SecurityConfig {
                         // Endpoints de usuarios
                         .requestMatchers("/api/usuarios/**").permitAll()
 
-                        // 👇 Importante: permitir preflight (OPTIONS) en cualquier endpoint
+                        // Importante: permitir preflight (OPTIONS) en cualquier endpoint
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Permitir todo lo demás
@@ -75,7 +75,7 @@ public class SecurityConfig {
         // Configurar orígenes específicos para producción y desarrollo
         // Configurar orígenes permitidos (producción + pre-prod + preview + local)
         configuration.setAllowedOrigins(Arrays.asList(
-                "https://consultorio-odontologico-aqua.vercel.app/",
+                "https://consultorioodontologicoaqua-production-20be.up.railway.app/",
                 "http://localhost:3000",
                 "http://localhost:5173"
         ));
