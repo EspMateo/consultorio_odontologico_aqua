@@ -60,11 +60,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Dominios permitidos: producción y desarrollo
-        configuration.setAllowedOriginPatterns(Arrays.asList(
+        // Dominios permitidos específicos (sin wildcards cuando allowCredentials es true)
+        configuration.setAllowedOrigins(Arrays.asList(
                 "https://consultorio-odontologico-aqua.vercel.app",
-                "https://*.railway.app",
-                "https://*.up.railway.app",
+                "https://consultorioodontologicoaqua-production-0ffa.up.railway.app",
                 "http://localhost:3000",
                 "http://localhost:5173"
         ));

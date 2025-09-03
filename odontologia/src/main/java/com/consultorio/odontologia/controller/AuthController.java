@@ -19,8 +19,7 @@ public class AuthController {
     @PostMapping("/login")
     @CrossOrigin(origins = {
         "https://consultorio-odontologico-aqua.vercel.app",
-        "https://*.railway.app",
-        "https://*.up.railway.app",
+        "https://consultorioodontologicoaqua-production-0ffa.up.railway.app",
         "http://localhost:3000",
         "http://localhost:5173"
     })
@@ -40,8 +39,7 @@ public class AuthController {
     @PostMapping("/register")
     @CrossOrigin(origins = {
         "https://consultorio-odontologico-aqua.vercel.app",
-        "https://*.railway.app",
-        "https://*.up.railway.app",
+        "https://consultorioodontologicoaqua-production-0ffa.up.railway.app",
         "http://localhost:3000",
         "http://localhost:5173"
     })
