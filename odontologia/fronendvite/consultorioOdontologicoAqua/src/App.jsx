@@ -1,6 +1,7 @@
 import './App.css'
 import Login from './Components/Login/Login';
-import Register from './Components/Register/Register';
+// Registro deshabilitado temporalmente
+// import Register from './Components/Register/Register';
 import Dashboard from './Components/Dashboard/Dashboard';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import EditarPaciente from './Components/EditarPaciente';
@@ -13,7 +14,7 @@ import Periodontograma from './Components/Periodontograma/Periodontograma';
 import Presupuesto from './Components/Presupuesto/Presupuesto';
 import ControlFinanciero from './Components/ControlFinanciero/ControlFinanciero';
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 
 function App() {
@@ -21,7 +22,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* Registro deshabilitado - redirige automáticamente al login */}
+        <Route path="/register" element={<Navigate to="/" replace />} />
         <Route 
           path="/dashboard" 
           element={

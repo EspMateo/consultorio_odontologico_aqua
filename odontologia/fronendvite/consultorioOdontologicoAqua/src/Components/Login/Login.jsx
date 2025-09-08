@@ -177,8 +177,8 @@ export default function Login() {
             >
               {buttonMessage}
             </button>
-            <div className="register-link">
-              ¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link>
+            <div className="register-link disabled">
+              ¿No tienes una cuenta? <span className="disabled-link">Regístrate aquí (Deshabilitado)</span>
             </div>
           </form>
         </>

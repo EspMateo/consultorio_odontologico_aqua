@@ -175,6 +175,25 @@
   text-decoration: underline;
 }
 
+/* Estilos para enlace deshabilitado */
+.register-link.disabled {
+  opacity: 0.6;
+}
+
+.disabled-link {
+  color: #999;
+  cursor: not-allowed;
+  text-decoration: none;
+  font-weight: 600;
+  transition: none;
+}
+
+.disabled-link:hover {
+  color: #999;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
 .login-logo-section {
   display: flex;
   flex-direction: column;
