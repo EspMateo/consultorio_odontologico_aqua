@@ -35,3 +35,10 @@ La aplicación web está destinada a la gestión integral de pacientes, turnos y
     Spring Security + JWT
     Spring Data JPA
     MySQL
+    
+🔨 Deploy
+
+    Railway (Backend)
+    Vercel (Frontend)
+
+    
