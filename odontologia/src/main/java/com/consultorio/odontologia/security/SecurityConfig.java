@@ -28,29 +28,43 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // Configuración de rutas y permisos
                 .authorizeHttpRequests(authz -> authz
+                        // Preflight (OPTIONS) en cualquier endpoint - PRIMERO
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        
                         // Endpoints públicos (autenticación)
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // Endpoints de pacientes, citas, diagnóstico, tratamiento, odontograma, periodoncia, periodontograma, presupuesto, gastos
-                        .requestMatchers("/api/pacientes/**",
-                                "/api/citas/**",
-                                "/api/diagnosticos/**",
-                                "/api/tratamientos/**",
-                                "/api/odontograma/**",
-                                "/api/odontogramas/**",
-                                "/api/periodoncia/**",
-                                "/api/periodontograma/**",
-                                "/api/presupuesto/**",
-                                "/api/gastos/**").permitAll()
+                        // CITAS - Específico y primero
+                        .requestMatchers("/api/citas/**").permitAll()
+                        
+                        // Pacientes
+                        .requestMatchers("/api/pacientes/**").permitAll()
+                        
+                        // Diagnósticos
+                        .requestMatchers("/api/diagnosticos/**").permitAll()
+                        
+                        // Tratamientos
+                        .requestMatchers("/api/tratamientos/**").permitAll()
+                        
+                        // Odontogramas
+                        .requestMatchers("/api/odontograma/**").permitAll()
+                        .requestMatchers("/api/odontogramas/**").permitAll()
+                        
+                        // Periodoncia
+                        .requestMatchers("/api/periodoncia/**").permitAll()
+                        .requestMatchers("/api/periodontograma/**").permitAll()
+                        
+                        // Presupuestos
+                        .requestMatchers("/api/presupuesto/**").permitAll()
+                        
+                        // Gastos
+                        .requestMatchers("/api/gastos/**").permitAll()
 
-                        // Historia clínica: todos los métodos
+                        // Historia clínica
                         .requestMatchers("/api/historia-clinica/**").permitAll()
 
                         // Usuarios
                         .requestMatchers("/api/usuarios/**").permitAll()
-
-                        // Preflight (OPTIONS) en cualquier endpoint
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Cualquier otra ruta
                         .anyRequest().authenticated()
