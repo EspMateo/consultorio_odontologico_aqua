@@ -31,7 +31,7 @@ public class SecurityConfig {
                         // Endpoints públicos (autenticación)
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // Endpoints de pacientes, citas, diagnóstico, tratamiento, odontograma, periodoncia, periodontograma
+                        // Endpoints de pacientes, citas, diagnóstico, tratamiento, odontograma, periodoncia, periodontograma, presupuesto, gastos
                         .requestMatchers("/api/pacientes/**",
                                 "/api/citas/**",
                                 "/api/diagnosticos/**",
@@ -39,7 +39,9 @@ public class SecurityConfig {
                                 "/api/odontograma/**",
                                 "/api/odontogramas/**",
                                 "/api/periodoncia/**",
-                                "/api/periodontograma/**").permitAll()
+                                "/api/periodontograma/**",
+                                "/api/presupuesto/**",
+                                "/api/gastos/**").permitAll()
 
                         // Historia clínica: todos los métodos
                         .requestMatchers("/api/historia-clinica/**").permitAll()
