@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 "/api/diagnosticos/**",
                                 "/api/tratamientos/**",
                                 "/api/odontograma/**",
+                                "/api/odontogramas/**",
                                 "/api/periodoncia/**",
                                 "/api/periodontograma/**").permitAll()
 
