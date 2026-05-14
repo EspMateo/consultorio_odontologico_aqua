@@ -1,16 +1,18 @@
 {
   "name": "consultorioodontologicoaqua",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "main": "main.cjs",
   "scripts": {
     "dev": "vite",
-    "electron:dev": "cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
     "build": "vite build",
-    "electron:build": "vite build && electron-builder",
+    "preview": "vite preview",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "electron:dev": "cross-env VITE_API_URL=http://localhost:8080/api concurrently \"npm run dev\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
+    "electron:build": "cross-env ELECTRON_BUILD=true VITE_API_URL=http://localhost:8080/api vite build && electron-builder",
+    "electron:pack": "cross-env ELECTRON_BUILD=true VITE_API_URL=http://localhost:8080/api vite build && electron-builder --dir",
+    "build:full": "cd ../.. && ./mvnw package -DskipTests && cd fronendvite/consultorioOdontologicoAqua && npm run electron:build"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.17",
@@ -27,9 +29,11 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
+    "concurrently": "^9.1.2",
     "cross-env": "^10.1.0",
     "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
+    "wait-on": "^8.0.1",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
@@ -37,19 +41,33 @@
     "vite": "^6.3.5"
   },
   "build": {
-  "appId": "com.consultorio.odontologico.aqua",
-  "productName": "Consultorio Odontológico Aqua",
-  "directories": {
-    "output": "release"
-  },
-  "files": [
-    "dist/**/*",
-    "main.cjs",
-    "package.json"
-  ],
-  "win": {
-    "target": "nsis"
+    "appId": "com.consultorio.odontologico.aqua",
+    "productName": "Consultorio Odontológico Aqua",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "main.cjs",
+      "preload.cjs",
+      "loading.html",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../../target/odontologia-0.0.1-SNAPSHOT.jar",
+        "to": "backend.jar"
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Consultorio AQUA"
+    }
   }
-}
-  
 }

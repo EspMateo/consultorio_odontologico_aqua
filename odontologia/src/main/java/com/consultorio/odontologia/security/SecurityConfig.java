@@ -82,6 +82,8 @@ public class SecurityConfig {
         configuration.addAllowedOriginPattern("https://consultorioodontologicoaqua-production-0ffa.up.railway.app");
         configuration.addAllowedOriginPattern("http://localhost:3000");
         configuration.addAllowedOriginPattern("http://localhost:5173");
+        // Electron production: file:// requests arrive with Origin: null
+        configuration.addAllowedOrigin("null");
 
         // Métodos HTTP permitidos
         configuration.setAllowedMethods(Arrays.asList(

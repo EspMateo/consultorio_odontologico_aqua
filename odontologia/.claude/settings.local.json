@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(node *)",
+      "Bash(npx skills *)",
+      "Bash(java *)",
+      "Bash(./mvnw spring-boot:run)",
+      "Bash(npm run *)",
+      "Bash(./mvnw package *)",
+      "Bash(CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder)",
+      "Bash(CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder --dir)",
+      "PowerShell([Environment]::GetFolderPath\\(\"Desktop\"\\))",
+      "Bash(npx asar *)",
+      "Bash(cross-env ELECTRON_BUILD=true VITE_API_URL=http://localhost:8080/api npx vite build)",
+      "Bash(ELECTRON_BUILD=true VITE_API_URL=http://localhost:8080/api npx vite build)",
+      "Bash(git checkout *)",
+      "Bash(git add *)"
+    ]
+  }
+}
