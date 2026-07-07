@@ -439,34 +439,28 @@ const Odontograma = () => {
   }
 
   return (
-    <div className="odontograma-container odontograma-vertical">
-      <div className="odontograma-header">
-        <h1>Odontograma del Paciente</h1>
-        {paciente && (
-          <div className="paciente-info">
-            <p><strong>Nombre:</strong> {paciente.nombre}</p>
-            <p><strong>Fecha:</strong> {paciente.fecha}</p>
-          </div>
-        )}
-        
-        {/* Sección de Tipo de Dentición */}
-        <div className="tipo-denticion-section">
-          <h3>Tipo de Dentición</h3>
-          <div className="tipo-denticion-options">
-            {tiposDenticion.map((tipo) => (
-              <div
-                key={tipo.key}
-                className={`tipo-denticion-option ${tipoDenticion === tipo.key ? 'selected' : ''}`}
-                onClick={() => handleTipoDenticionChange(tipo.key)}
-              >
-                <div className="tipo-denticion-square"></div>
-                <div className="tipo-denticion-info">
-                  <span className="tipo-denticion-label">{tipo.label}</span>
-                  <span className="tipo-denticion-descripcion">{tipo.descripcion}</span>
-                </div>
+    <div className="odontograma-page">
+      <div className="odontograma-page-header">
+        <h1>Odontograma{paciente ? ` — ${paciente.nombre}` : ''}</h1>
+      </div>
+
+      {/* Tipo de Dentición */}
+      <div className="tipo-denticion-section">
+        <h3>Tipo de Dentición</h3>
+        <div className="tipo-denticion-options">
+          {tiposDenticion.map((tipo) => (
+            <div
+              key={tipo.key}
+              className={`tipo-denticion-option ${tipoDenticion === tipo.key ? 'selected' : ''}`}
+              onClick={() => handleTipoDenticionChange(tipo.key)}
+            >
+              <div className="tipo-denticion-square"></div>
+              <div className="tipo-denticion-info">
+                <span className="tipo-denticion-label">{tipo.label}</span>
+                <span className="tipo-denticion-descripcion">{tipo.descripcion}</span>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
       <div className="odontograma-main">
@@ -606,4 +600,5 @@ const Odontograma = () => {
   );
 };
 
-export default Odontograma; 
+export default Odontograma;
+ 

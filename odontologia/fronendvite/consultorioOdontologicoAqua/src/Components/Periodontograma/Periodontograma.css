@@ -1,124 +1,263 @@
-/* Periodontograma Styles */
-.periodontograma-container {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 20px;
+/* ══════════════════════════════════════════
+   Periodontograma — AQUA theme
+   ══════════════════════════════════════════ */
+
+/* ── Page wrapper ────────────────────────── */
+.periodontograma-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f9ff;
+  min-height: 100%;
+  box-sizing: border-box;
 }
 
-.periodontograma-header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #e0e0e0;
-}
-
-.periodontograma-title {
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.paciente-info {
+/* ── Page header ─────────────────────────── */
+.periodontograma-page-header {
   display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 15px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 2px solid #e0f2fe;
+  flex-wrap: wrap;
 }
 
-.paciente-info p {
-  font-size: 1.1rem;
-  color: #555;
+.periodontograma-page-header h1 {
   margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.periodontograma-page-header h1::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 22px;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.fecha-badge {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+/* ── Main content card ───────────────────── */
+.periodontograma-page-content {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e2e8f0;
+}
+
+/* ── Controls bar ────────────────────────── */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fafbfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.paciente-cedula-badge {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0891b2;
+  background: #f0f9ff;
+  border: 1.5px solid #bae6fd;
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
+  white-space: nowrap;
+}
+
+/* ── Vista toggle ────────────────────────── */
+.vista-toggle-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.vista-toggle-btn {
+  padding: 0.45rem 1rem;
+  border: 1.5px solid #06b6d4;
+  background: white;
+  color: #0891b2;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.82rem;
+  font-family: inherit;
+}
+
+.vista-toggle-btn:hover {
+  background: #f0f9ff;
+  transform: translateY(-1px);
+}
+
+.vista-toggle-btn.active {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  color: white;
+  border-color: #06b6d4;
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.35);
+}
+
+/* ── Cuadrante selector ──────────────────── */
+.cuadrante-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.cuadrante-label {
+  font-weight: 700;
+  color: #475569;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.cuadrante-select {
+  padding: 0.4rem 0.75rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 200px;
+  font-family: inherit;
+}
+
+.cuadrante-select:focus {
+  outline: none;
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+}
+
+.cuadrante-select:hover { border-color: #06b6d4; }
+
+/* ── Legend ──────────────────────────────── */
 .periodontograma-legend {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  margin-bottom: 30px;
-  padding: 15px;
-  background-color: #f8f9fa;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+  padding: 0.65rem 1rem;
+  background: #fafbfc;
   border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  flex-wrap: wrap;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  color: #555;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #475569;
+  font-weight: 600;
 }
 
 .legend-color {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
 }
 
-.legend-color.verde {
-  background-color: #4CAF50;
-}
+.legend-color.verde   { background-color: #4CAF50; }
+.legend-color.rojo    { background-color: #F44336; }
+.legend-color.amarillo{ background-color: #FF9800; }
 
-.legend-color.rojo {
-  background-color: #F44336;
-}
-
-.legend-color.amarillo {
-  background-color: #FF9800;
-}
-
-.periodontograma-dientes {
-  margin-bottom: 30px;
-}
+/* ── Teeth sections ──────────────────────── */
+.periodontograma-dientes { margin-bottom: 1.25rem; }
 
 .dientes-superiores,
-.dientes-inferiores {
-  margin-bottom: 40px;
-}
+.dientes-inferiores { margin-bottom: 1.5rem; }
 
 .dientes-superiores h3,
-.dientes-inferiores h3 {
-  text-align: center;
-  color: #2c3e50;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #ecf0f1;
-  border-radius: 6px;
+.dientes-inferiores h3,
+.dientes-cuadrante h3 {
+  color: #0891b2;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin: 0 0 0.85rem 0;
+  padding: 0.55rem 0.85rem;
+  background: #f0f9ff;
+  border: 1px solid #e0f2fe;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dientes-superiores h3::before,
+.dientes-inferiores h3::before,
+.dientes-cuadrante h3::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-radius: 2px;
 }
 
 .dientes-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin-bottom: 0.75rem;
   justify-content: center;
 }
 
+.dientes-cuadrante { margin-bottom: 1.5rem; }
+
+/* ── Individual tooth card ───────────────── */
 .diente {
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px;
   background-color: #fff;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
   position: relative;
   min-height: 280px;
-  width: 240px;
+  width: 230px;
   flex-shrink: 0;
   overflow: hidden;
+  animation: fadeInCard 0.25s ease;
+}
+
+@keyframes fadeInCard {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .diente:hover {
-  border-color: #3498db;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: #67e8f9;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.12);
 }
 
 .diente.ausente {
   opacity: 0.5;
-  background-color: #f5f5f5;
+  background-color: #f8fafc;
 }
 
 .diente.ausente .diente-pronostico,
@@ -127,265 +266,189 @@
 .diente.ausente .diente-furca,
 .diente.ausente .diente-profundidad,
 .diente.ausente .diente-migracion,
-.diente.ausente .diente-nota {
-  display: none;
-}
+.diente.ausente .diente-nota { display: none; }
 
 .diente-ausente-label {
   text-align: center;
-  margin-top: 15px;
-  padding: 8px;
-  background-color: #f8d7da;
-  color: #721c24;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 0.8rem;
+  margin-top: 12px;
+  padding: 6px;
+  background: #fef2f2;
+  color: #991b1b;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  border: 1px solid #fecaca;
 }
 
+/* ── Tooth number badge ──────────────────── */
 .diente-numero {
   text-align: center;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #2c3e50;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #0891b2;
   margin-bottom: 8px;
-  padding: 4px;
-  background-color: #ecf0f1;
-  border-radius: 4px;
+  padding: 3px 6px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
 }
 
-
-
+/* ── Field sections inside tooth ─────────── */
 .diente-pronostico,
 .diente-condicion,
 .diente-movilidad,
-.diente-furca {
-  margin-bottom: 6px;
-}
+.diente-furca,
+.diente-sangrado,
+.diente-profundidad,
+.diente-migracion,
+.diente-nota { margin-bottom: 5px; }
 
-.diente-sangrado {
-  margin-bottom: 6px;
-}
-
-/* Estilos para contenedores de campos con nombre al lado */
 .campo-container {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .campo-label {
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: #333;
-  width: 100%;
-  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
   text-align: center;
 }
 
 .campo-select {
   width: 90%;
-  padding: 4px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  padding: 3px 4px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.72rem;
   background-color: #fff;
   text-align: center;
   margin: 0 auto;
   display: block;
+  transition: border-color 0.2s;
+  font-family: inherit;
 }
 
+.campo-select:focus {
+  outline: none;
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.15);
+}
+
+/* ── Profundidad / migración combos ──────── */
 .combo-boxes-container {
   display: flex;
-  gap: 4px;
+  gap: 3px;
   align-items: center;
   justify-content: center;
   width: 100%;
 }
 
 .combo-box {
-  width: 50px;
-  padding: 4px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.7rem;
+  width: 46px;
+  padding: 3px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 5px;
+  font-size: 0.68rem;
   background-color: #fff;
   text-align: center;
-}
-
-.diente-profundidad,
-.diente-migracion {
-  margin-bottom: 8px;
-}
-
-.diente-nota {
-  margin-bottom: 8px;
-}
-
-.nota-textarea {
-  width: 90%;
-  padding: 4px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  resize: vertical;
-  min-height: 40px;
   font-family: inherit;
-  margin: 0 auto;
-  display: block;
+  transition: border-color 0.2s;
 }
 
-.diente-pronostico select,
-.diente-condicion select,
-.diente-movilidad select,
-.diente-furca select {
-  /* width: 100%;
-  padding: 4px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  background-color: #fff; */
+.combo-box:focus {
+  outline: none;
+  border-color: #06b6d4;
 }
 
-/* Estilos para el contenedor de sangrado general */
-.sangrado-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-}
-
-.sangrado-label {
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: #666;
-  flex: 1;
-}
-
+/* ── Sangrado button ─────────────────────── */
 .sangrado-button {
-  width: 30px;
-  height: 25px;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
   margin: 0 auto;
   display: block;
 }
 
 .sangrado-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: scale(1.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Botones de cambio de vista */
-.vista-toggle-container {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.vista-toggle-btn {
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #667eea;
-  background: white;
-  color: #667eea;
-  border-radius: 8px;
-  font-weight: 600;
+/* ── Absent toggle button ────────────────── */
+.btn-ausente {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 2px 6px;
+  font-size: 0.58rem;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-weight: 700;
 }
 
-.vista-toggle-btn:hover {
-  background: #f8fafc;
-  transform: translateY(-1px);
+.btn-ausente:hover {
+  background: #fee2e2;
+  border-color: #dc2626;
 }
 
-.vista-toggle-btn.active {
-  background: #667eea;
-  color: white;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-/* Selector de cuadrantes */
-.cuadrante-selector-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.cuadrante-label {
-  font-weight: 600;
-  color: #374151;
-  font-size: 1rem;
-}
-
-.cuadrante-select {
-  padding: 0.5rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  background: white;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 200px;
-}
-
-.cuadrante-select:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.cuadrante-select:hover {
-  border-color: #667eea;
-}
-
-/* Estilos para el cuadrante individual */
-.dientes-cuadrante {
-  margin-bottom: 2rem;
-}
-
-.dientes-cuadrante h3 {
-  text-align: center;
-  color: #2c3e50;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #ecf0f1;
+/* ── Nota textarea ───────────────────────── */
+.nota-textarea {
+  width: 90%;
+  padding: 4px 6px;
+  border: 1.5px solid #e2e8f0;
   border-radius: 6px;
+  font-size: 0.72rem;
+  resize: vertical;
+  min-height: 36px;
+  font-family: inherit;
+  margin: 0 auto;
+  display: block;
+  transition: border-color 0.2s;
 }
 
-/* Estilos para el rectángulo con rayitas */
+.nota-textarea:focus {
+  outline: none;
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.15);
+}
+
+/* ── Rayitas visualization ───────────────── */
 .rayitas-container {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .rayitas-label {
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
   text-align: center;
-  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
 }
 
 .rayitas-rectangulo {
-  width: 60%;
-  height: 180px; /* Aumentado de 150px a 180px */
-  border: 2px solid #ddd;
+  width: 62%;
+  height: 180px;
+  border: 1.5px solid #e2e8f0;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: #fafbfc;
   position: relative;
   display: flex;
   justify-content: space-between;
-  padding: 5px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  padding: 4px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
   margin: 0 auto;
 }
 
@@ -393,22 +456,20 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #e2e8f0;
   padding: 0 2px;
 }
 
-.rayitas-columna:last-child {
-  border-right: none;
-}
+.rayitas-columna:last-child { border-right: none; }
 
 .rayitas-columna-label {
-  font-size: 0.6rem;
-  font-weight: bold;
-  color: #666;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #64748b;
   text-align: center;
   margin-bottom: 2px;
-  padding: 2px;
-  background-color: #f8f9fa;
+  padding: 1px 2px;
+  background: #f0f9ff;
   border-radius: 2px;
 }
 
@@ -422,183 +483,197 @@
 
 .rayitas-linea {
   height: 2px;
-  background-color: #e0e0e0;
+  background-color: #e2e8f0;
   border-radius: 1px;
-  transition: background-color 0.2s ease;
   margin: 0 1px;
 }
 
-.rayitas-linea.activa {
-  background-color: #4CAF50;
-}
-
-.rayitas-linea.activa-verde {
-  background-color: #4CAF50;
-}
-
-.rayitas-linea.activa-roja {
-  background-color: #F44336;
-}
-
-.rayitas-linea.activa-migracion {
-  background-color: #2196F3;
-}
-
-.rayitas-linea.activa-migracion-negativa {
-  background-color: #FF9800;
-}
+/* Visualization colors — semantic, keep as-is */
+.rayitas-linea.activa          { background-color: #4CAF50; }
+.rayitas-linea.activa-verde    { background-color: #4CAF50; }
+.rayitas-linea.activa-roja     { background-color: #F44336; }
+.rayitas-linea.activa-migracion{ background-color: #2196F3; }
+.rayitas-linea.activa-migracion-negativa { background-color: #FF9800; }
 
 .rayitas-divisoria {
   height: 2px;
-  background-color: #666;
+  background-color: #475569;
   margin: 2px 0;
   border-radius: 1px;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .rayitas-leyenda {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin-top: 4px;
-  font-size: 0.6rem;
+  margin-top: 3px;
+  font-size: 0.58rem;
 }
 
 .leyenda-item {
   display: flex;
   align-items: center;
-  gap: 4px;
-  color: #666;
+  gap: 3px;
+  color: #64748b;
 }
 
 .leyenda-color {
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
   display: inline-block;
 }
 
-.leyenda-color.verde {
-  background-color: #4CAF50;
-}
+.leyenda-color.verde  { background-color: #4CAF50; }
+.leyenda-color.rojo   { background-color: #F44336; }
+.leyenda-color.azul   { background-color: #2196F3; }
+.leyenda-color.naranja{ background-color: #FF9800; }
 
-.leyenda-color.rojo {
-  background-color: #F44336;
-}
-
-.leyenda-color.azul {
-  background-color: #2196F3;
-}
-
-.leyenda-color.naranja {
-  background-color: #FF9800;
-}
-
-.btn-ausente {
-  position: absolute;
-  top: 3px;
-  right: 3px;
-  padding: 3px 6px;
-  font-size: 0.6rem;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn-ausente:hover {
-  background-color: #c0392b;
-}
-
-.periodontograma-observaciones {
-  margin-top: 30px;
-}
+/* ── Observations ────────────────────────── */
+.periodontograma-observaciones { margin-top: 1rem; }
 
 .periodontograma-observaciones label {
   display: block;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 10px;
+  font-weight: 800;
+  color: #0891b2;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.periodontograma-observaciones label::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-radius: 2px;
 }
 
 .periodontograma-observaciones textarea {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.85rem;
   resize: vertical;
-  min-height: 100px;
-  transition: border-color 0.3s ease;
+  min-height: 80px;
+  transition: all 0.2s;
+  font-family: inherit;
+  color: #1e293b;
+  box-sizing: border-box;
 }
 
 .periodontograma-observaciones textarea:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+  background: #f0f9ff;
 }
 
+/* ── Actions ─────────────────────────────── */
 .periodontograma-actions {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #e0e0e0;
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e0f2fe;
+  flex-wrap: wrap;
 }
 
 .periodontograma-button {
-  padding: 12px 30px;
-  font-size: 1rem;
-  font-weight: bold;
+  padding: 0.6rem 1.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
   border: none;
-  border-radius: 6px;
+  border-radius: 9px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
   min-width: 150px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-family: inherit;
 }
 
 .periodontograma-button-primary {
-  background-color: #3498db;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
   color: white;
+  box-shadow: 0 3px 12px rgba(6, 182, 212, 0.4);
 }
 
-.periodontograma-button-primary:hover {
-  background-color: #2980b9;
+.periodontograma-button-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #22d3ee, #06b6d4);
   transform: translateY(-2px);
+  box-shadow: 0 5px 18px rgba(6, 182, 212, 0.55);
 }
 
 .periodontograma-button-primary:disabled {
-  background-color: #bdc3c7;
+  background: #cbd5e1;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 .periodontograma-button-secondary {
-  background-color: #95a5a6;
-  color: white;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1.5px solid #e2e8f0;
 }
 
-.periodontograma-button-secondary:hover {
-  background-color: #7f8c8d;
-  transform: translateY(-2px);
+.periodontograma-button-secondary:hover:not(:disabled) {
+  background: #e2e8f0;
+  color: #1e293b;
+  transform: translateY(-1px);
 }
 
 .periodontograma-button-secondary:disabled {
-  background-color: #bdc3c7;
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
 }
 
-/* Modal styles */
+/* ── Notification ────────────────────────── */
+.notification {
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.85rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-left: 4px solid transparent;
+  animation: msgIn 0.3s ease;
+}
+
+.notification.success {
+  background: #ecfdf5;
+  color: #065f46;
+  border-left-color: #10b981;
+}
+
+.notification.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border-left-color: #ef4444;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Confirm modal ───────────────────────── */
 .modal-confirm {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -606,200 +681,56 @@
 }
 
 .modal-confirm-content {
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
+  background: white;
+  border-radius: 14px;
   max-width: 400px;
   width: 90%;
-  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
 
 .modal-confirm-title {
-  font-size: 1.5rem;
-  color: #2c3e50;
-  margin-bottom: 15px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  border-bottom: 3px solid #06b6d4;
 }
 
 .modal-confirm-message {
-  color: #555;
-  margin-bottom: 25px;
-  line-height: 1.5;
+  color: #475569;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  line-height: 1.6;
+  font-size: 0.9rem;
 }
 
 .modal-confirm-actions {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 0.75rem;
+  padding: 0 1.25rem 1.25rem;
 }
 
-/* Notification styles */
-.notification {
-  padding: 12px 20px;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.notification.success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.notification.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-/* Fecha última actualización */
-.fecha-periodontograma {
-  text-align: right;
-  color: #888;
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-  font-style: italic;
-}
-
-/* Responsive design */
+/* ── Responsive ──────────────────────────── */
 @media (max-width: 768px) {
-  .periodontograma-container {
-    padding: 10px;
-  }
-  
-  .periodontograma-title {
-    font-size: 2rem;
-  }
-  
-  .dientes-grid {
-    justify-content: center;
-    gap: 8px;
-  }
-  
-  .diente {
-    padding: 8px;
-    min-height: 240px;
-    width: 200px;
-  }
-  
-
-  
-  .campo-label {
-    font-size: 0.7rem;
-  }
-  
-  .campo-select {
-    width: 85%;
-    font-size: 0.7rem;
-  }
-  
-  .paciente-info {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .periodontograma-legend {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .periodontograma-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .periodontograma-button {
-    width: 100%;
-    max-width: 200px;
-  }
-
-  .rayitas-rectangulo {
-    height: 140px;
-    width: 70%;
-  }
-
-  .rayitas-columna-label {
-    font-size: 0.5rem;
-  }
-
-  .vista-toggle-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-  }
-
-  .cuadrante-selector-container {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .cuadrante-select {
-    min-width: 180px;
-    font-size: 0.8rem;
-  }
-
-  .rayitas-leyenda {
-    font-size: 0.55rem;
-  }
+  .periodontograma-page { padding: 0.75rem; }
+  .periodontograma-page-content { padding: 1rem; }
+  .controls-bar { flex-direction: column; align-items: flex-start; gap: 0.65rem; }
+  .cuadrante-selector-container { margin-left: 0; }
+  .cuadrante-select { min-width: 180px; }
+  .dientes-grid { gap: 6px; }
+  .diente { padding: 8px; min-height: 250px; width: 200px; }
+  .periodontograma-actions { flex-direction: column; align-items: center; }
+  .periodontograma-button { width: 100%; max-width: 220px; }
+  .rayitas-rectangulo { height: 140px; width: 70%; }
+  .vista-toggle-container { flex-wrap: wrap; }
 }
 
 @media (max-width: 480px) {
-  .dientes-grid {
-    justify-content: center;
-    gap: 5px;
-  }
-  
-  .diente {
-    width: 160px;
-    min-height: 200px;
-    padding: 6px;
-  }
-
-  .rayitas-rectangulo {
-    height: 120px;
-    width: 80%;
-  }
-
-  .rayitas-columna-label {
-    font-size: 0.45rem;
-  }
-
-  .vista-toggle-btn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.7rem;
-  }
-
-  .cuadrante-selector-container {
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .cuadrante-select {
-    min-width: 160px;
-    font-size: 0.7rem;
-  }
-
-  .rayitas-leyenda {
-    font-size: 0.5rem;
-  }
+  .diente { width: 160px; min-height: 200px; padding: 6px; }
+  .rayitas-rectangulo { height: 120px; width: 80%; }
+  .cuadrante-select { min-width: 160px; }
 }
-
-/* Animaciones */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.diente {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-
-
- 

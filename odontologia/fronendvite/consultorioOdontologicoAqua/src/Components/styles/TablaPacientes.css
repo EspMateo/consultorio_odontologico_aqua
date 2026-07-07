@@ -97,9 +97,10 @@
 
 .tabla-pacientes th,
 .tabla-pacientes td {
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 1rem;
   text-align: left;
   border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
 }
 
 .tabla-pacientes th {
@@ -107,8 +108,8 @@
   color: #e0f2fe;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.72rem;
-  letter-spacing: 0.5px;
+  font-size: 0.68rem;
+  letter-spacing: 0.6px;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -119,12 +120,41 @@
   border-left: 3px solid #06b6d4;
 }
 
+/* data cell typography */
+.tabla-pacientes tbody td:first-child {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.tabla-pacientes tbody td:nth-child(2) {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.tabla-pacientes tbody td:nth-child(3) {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: #475569;
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.tabla-pacientes tbody td:nth-child(4),
+.tabla-pacientes tbody td:nth-child(5) {
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
 .tabla-pacientes tbody tr {
-  transition: all 0.15s;
+  transition: background 0.12s;
 }
 
 .tabla-pacientes tbody tr:hover {
   background: #f0f9ff;
+}
+
+.tabla-pacientes tbody tr:hover td:first-child {
+  color: #0891b2;
 }
 
 .tabla-pacientes tbody tr:last-child td {
@@ -142,95 +172,102 @@
 /* ── Action buttons cell ─────────────────── */
 .acciones-cell {
   display: flex;
-  gap: 5px;
+  gap: 4px;
   flex-wrap: wrap;
   align-items: center;
 }
 
-/* base shared style */
+/* base shared style — outlined ghost */
 .btn-historia,
 .btn-odontograma,
 .btn-periodoncia,
 .btn-presupuesto,
 .btn-editar,
 .btn-eliminar {
-  padding: 0.32rem 0.7rem;
-  border: none;
-  border-radius: 6px;
+  padding: 0.28rem 0.65rem;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  transition: all 0.2s;
+  transition: all 0.18s;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
   white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  background: white;
+  border: 1.5px solid;
 }
 
 .btn-historia {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
+  color: #059669;
+  border-color: #6ee7b7;
 }
 .btn-historia:hover {
-  background: linear-gradient(135deg, #34d399, #10b981);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.4);
+  background: #059669;
+  border-color: #059669;
+  color: white;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.35);
 }
 
 .btn-odontograma {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  color: white;
+  color: #7c3aed;
+  border-color: #c4b5fd;
 }
 .btn-odontograma:hover {
-  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(139, 92, 246, 0.4);
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: white;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
 }
 
 .btn-periodoncia {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: white;
+  color: #d97706;
+  border-color: #fcd34d;
 }
 .btn-periodoncia:hover {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(245, 158, 11, 0.4);
+  background: #d97706;
+  border-color: #d97706;
+  color: white;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.35);
 }
 
 .btn-presupuesto {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  color: white;
+  color: #0891b2;
+  border-color: #67e8f9;
 }
 .btn-presupuesto:hover {
-  background: linear-gradient(135deg, #22d3ee, #06b6d4);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(6, 182, 212, 0.4);
+  background: #0891b2;
+  border-color: #0891b2;
+  color: white;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.35);
 }
 
 .btn-editar {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
+  color: #2563eb;
+  border-color: #93c5fd;
 }
 .btn-editar:hover {
-  background: linear-gradient(135deg, #60a5fa, #3b82f6);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.4);
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
 }
 
 .btn-eliminar {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
+  color: #dc2626;
+  border-color: #fca5a5;
 }
 .btn-eliminar:hover {
-  background: linear-gradient(135deg, #f87171, #ef4444);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.4);
+  background: #dc2626;
+  border-color: #dc2626;
+  color: white;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35);
 }
 
 .btn-eliminar:disabled {
-  background: #cbd5e1;
+  color: #cbd5e1;
+  border-color: #e2e8f0;
+  background: white;
   cursor: not-allowed;
-  transform: none;
   box-shadow: none;
 }
 

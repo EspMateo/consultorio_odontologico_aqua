@@ -274,10 +274,13 @@ const Presupuesto = () => {
 
 
 
+  const pacienteActualObj = pacienteFromState || pacientes.find(p => p.id == selectedPaciente);
+  const nombrePaciente = pacienteActualObj ? ` — ${pacienteActualObj.name} ${pacienteActualObj.lastname}` : '';
+
   return (
     <div className="presupuesto-container">
       <div className="presupuesto-header">
-        <h1>Presupuesto</h1>
+        <h1>Presupuesto{nombrePaciente}</h1>
       </div>
       
       <div className="presupuesto-content">

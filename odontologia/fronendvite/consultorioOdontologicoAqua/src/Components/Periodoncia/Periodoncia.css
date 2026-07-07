@@ -1,142 +1,187 @@
+/* ══════════════════════════════════════════
+   Periodoncia — AQUA theme
+   ══════════════════════════════════════════ */
+
+/* ── Page wrapper ────────────────────────── */
 .periodoncia-container {
-  max-width: 1800px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 1.25rem 1.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  width: 100%;
+  background: #f0f9ff;
+  min-height: 100%;
+  box-sizing: border-box;
 }
 
+/* ── Page header ─────────────────────────── */
 .periodoncia-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 40px;
-  border-radius: 15px;
-  margin-bottom: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 2px solid #e0f2fe;
 }
 
 .periodoncia-header h1 {
-  margin: 0 0 20px 0;
-  font-size: 2.5em;
-  font-weight: 300;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.periodoncia-header h1::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 22px;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-radius: 2px;
+}
+
+/* ── Main content card ───────────────────── */
 .periodoncia-content {
   background: white;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e2e8f0;
 }
 
 .form-section {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 
+/* ── Patient / date row ──────────────────── */
 .form-row {
   display: flex;
-  gap: 20px;
-  margin-bottom: 25px;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
   align-items: flex-end;
   flex-wrap: wrap;
 }
 
 .form-group {
   flex: 1;
-  min-width: 200px;
+  min-width: 180px;
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
 }
 
 .form-group label {
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 6px;
-  font-size: 0.95em;
+  font-weight: 700;
+  color: #475569;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .form-select,
 .form-input {
-  padding: 10px 14px;
-  border: 2px solid #e0e0e0;
+  padding: 0.45rem 0.65rem;
+  border: 1.5px solid #e2e8f0;
   border-radius: 8px;
-  font-size: 0.95em;
+  font-size: 0.85rem;
   font-family: inherit;
-  transition: border-color 0.3s ease;
+  transition: all 0.2s;
   background: white;
+  color: #1e293b;
+  height: 36px;
+  box-sizing: border-box;
 }
 
 .form-select:focus,
 .form-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+  background: #f0f9ff;
 }
 
+/* ── Tipo de ficha ───────────────────────── */
 .tipo-ficha-section {
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: #fafbfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
 }
 
 .tipo-ficha-section h3 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.2em;
-  font-weight: 500;
-  text-align: center;
+  color: #0891b2;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin: 0 0 0.65rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.tipo-ficha-section h3::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-radius: 2px;
 }
 
 .tipo-ficha-options {
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  gap: 0.6rem;
   flex-wrap: wrap;
 }
 
 .tipo-ficha-option {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border-radius: 10px;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  background: white;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-  min-width: 150px;
+  transition: all 0.2s;
+  border: 1.5px solid #e2e8f0;
   position: relative;
+  user-select: none;
 }
 
 .tipo-ficha-option:hover {
-  background: #e9ecef;
-  transform: translateY(-2px);
+  border-color: #06b6d4;
+  background: #f0f9ff;
 }
 
 .radio-input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
+  width: 0;
+  height: 0;
 }
 
 .radio-custom {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #ddd;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #cbd5e1;
   border-radius: 50%;
   background: white;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
   position: relative;
+  flex-shrink: 0;
 }
 
 .tipo-ficha-option:hover .radio-custom {
-  border-color: #667eea;
+  border-color: #06b6d4;
 }
 
 .radio-input:checked + .radio-custom {
-  border-color: #667eea;
-  background: #667eea;
+  border-color: #06b6d4;
+  background: #06b6d4;
 }
 
 .radio-input:checked + .radio-custom::after {
@@ -145,47 +190,63 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: white;
 }
 
 .option-text {
-  font-weight: 600;
-  color: #333;
-  font-size: 0.9em;
-  margin-left: 6px;
+  font-weight: 700;
+  color: #374151;
+  font-size: 0.8rem;
 }
 
-.tipo-ficha-option.selected {
-  background: #e3f2fd;
-  border-color: #667eea;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+.radio-input:checked ~ .option-text {
+  color: #0891b2;
 }
 
-/* Estilos para el índice de placa */
-.indice-placa-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
+/* ── Dental chart sections ───────────────── */
+.indice-placa-section,
+.indice-sarro-section {
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: #fafbfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
 }
 
-.indice-placa-section h3 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.2em;
-  font-weight: 500;
-  text-align: center;
+.indice-placa-section h3,
+.indice-sarro-section h3 {
+  color: #0891b2;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin: 0 0 0.75rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
-.odontograma-permanente {
-  max-width: 1400px;
+.indice-placa-section h3::before,
+.indice-sarro-section h3::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-radius: 2px;
+}
+
+/* ── Odontogram grid ─────────────────────── */
+.odontograma-permanente,
+.odontograma-sarro {
   margin: 0 auto;
-  padding: 25px;
-  background: #f8f9fa;
-  border-radius: 15px;
-  border: 2px solid #e9ecef;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  overflow-x: auto;
 }
 
 .fila-dientes-superior,
@@ -193,29 +254,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 4px;
+  flex-wrap: nowrap;
 }
 
 .fila-dientes-superior {
-  margin-bottom: 30px;
+  margin-bottom: 1.5rem;
 }
 
+/* ── Plaque cube (4-quadrant) ────────────── */
 .diente-cubo {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   position: relative;
   margin: 2px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.15s;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .diente-cubo:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .diente-cubo-grid {
@@ -224,40 +286,39 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  border: 1px solid #222;
-  border-radius: 0;
+  border: 1.5px solid #334155;
+  border-radius: 2px;
   background: #fff;
   position: relative;
   overflow: hidden;
 }
 
-.diente-numero-placa {
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #666;
-  font-size: 0.65em;
-  font-weight: bold;
-  z-index: 10;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  padding: 1px 3px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
+/* X cross lines */
 .diente-cubo-grid::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 45%, #222 45%, #222 55%, transparent 55%),
-              linear-gradient(-45deg, transparent 45%, #222 45%, #222 55%, transparent 55%);
+  inset: 0;
+  background:
+    linear-gradient(45deg,  transparent 45%, #334155 45%, #334155 55%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, #334155 45%, #334155 55%, transparent 55%);
   z-index: 1;
   pointer-events: none;
+}
+
+.diente-numero-placa {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #475569;
+  font-size: 0.6rem;
+  font-weight: 700;
+  z-index: 10;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 3px;
+  padding: 1px 3px;
+  white-space: nowrap;
 }
 
 .cubo-cara {
@@ -266,148 +327,71 @@
   justify-content: center;
   cursor: pointer;
   border: none;
-  transition: all 0.2s;
-  min-width: 0;
-  min-height: 0;
+  transition: background 0.15s;
   z-index: 2;
   user-select: none;
   background: transparent;
-  position: relative;
   width: 100%;
   height: 100%;
 }
 
 .cubo-cara:hover {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(6, 182, 212, 0.25);
 }
 
 .cubo-cara.selected {
-  background: #667eea;
-  opacity: 0.8;
+  background: rgba(6, 182, 212, 0.7);
 }
 
 .cubo-superior-izquierdo {
-  grid-column: 1;
-  grid-row: 1;
-  border-right: 1px solid #222;
-  border-bottom: 1px solid #222;
+  grid-column: 1; grid-row: 1;
+  border-right: 1px solid #334155;
+  border-bottom: 1px solid #334155;
 }
-
 .cubo-superior-derecho {
-  grid-column: 2;
-  grid-row: 1;
-  border-bottom: 1px solid #222;
+  grid-column: 2; grid-row: 1;
+  border-bottom: 1px solid #334155;
 }
-
 .cubo-inferior-izquierdo {
-  grid-column: 1;
-  grid-row: 2;
-  border-right: 1px solid #222;
+  grid-column: 1; grid-row: 2;
+  border-right: 1px solid #334155;
 }
-
 .cubo-inferior-derecho {
-  grid-column: 2;
-  grid-row: 2;
+  grid-column: 2; grid-row: 2;
 }
 
-.indice-placa-info {
-  margin-top: 15px;
-  text-align: center;
-  padding: 15px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.porcentaje-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-  min-width: 180px;
-}
-
-.porcentaje-label {
-  font-size: 0.85em;
-  font-weight: 500;
-  color: #666;
-  text-align: center;
-}
-
-.porcentaje-valor {
-  font-size: 1.4em;
-  font-weight: bold;
-  color: #667eea;
-  background: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 2px solid #667eea;
-  min-width: 50px;
-  text-align: center;
-}
-
-/* Estilos para el índice de sarro */
-.indice-sarro-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
-}
-
-.indice-sarro-section h3 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.2em;
-  font-weight: 500;
-  text-align: center;
-}
-
-.odontograma-sarro {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 25px;
-  background: #f8f9fa;
-  border-radius: 15px;
-  border: 2px solid #e9ecef;
-}
-
+/* ── Tartar cube (2-zone) ────────────────── */
 .diente-sarro-cubo {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   position: relative;
   margin: 2px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.15s;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .diente-sarro-cubo:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .diente-sarro-cubo .diente-numero {
   position: absolute;
-  bottom: -20px;
+  bottom: -18px;
   left: 50%;
   transform: translateX(-50%);
-  color: #666;
-  font-size: 0.65em;
-  font-weight: bold;
+  color: #475569;
+  font-size: 0.6rem;
+  font-weight: 700;
   z-index: 10;
-  background: #fff;
-  border: 1px solid #ddd;
+  background: #fefce8;
+  border: 1px solid #fde68a;
   border-radius: 3px;
   padding: 1px 3px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  white-space: nowrap;
 }
 
 .diente-sarro-grid {
@@ -416,8 +400,8 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
-  border: 1px solid #222;
-  border-radius: 0;
+  border: 1.5px solid #334155;
+  border-radius: 2px;
   background: #fff;
   position: relative;
   overflow: hidden;
@@ -429,8 +413,8 @@
   top: 50%;
   left: 0;
   right: 0;
-  height: 1px;
-  background: #222;
+  height: 1.5px;
+  background: #334155;
   z-index: 1;
   pointer-events: none;
   transform: translateY(-50%);
@@ -442,362 +426,275 @@
   justify-content: center;
   cursor: pointer;
   border: none;
-  transition: all 0.2s;
-  min-width: 0;
-  min-height: 0;
+  transition: background 0.15s;
   z-index: 2;
   user-select: none;
   background: transparent;
-  position: relative;
   width: 100%;
   height: 100%;
 }
 
-.sarro-cara:hover {
-  background: rgba(255, 193, 7, 0.2);
-}
+.sarro-cara:hover  { background: rgba(245, 158, 11, 0.25); }
+.sarro-cara.selected { background: rgba(245, 158, 11, 0.7); }
 
-.sarro-cara.selected {
-  background: #ffc107;
-  opacity: 0.8;
-}
+.sarro-superior { grid-row: 1; border-bottom: 1px solid #334155; }
+.sarro-inferior { grid-row: 2; }
 
-.sarro-superior {
-  grid-row: 1;
-  border-bottom: 1px solid #222;
-}
-
-.sarro-inferior {
-  grid-row: 2;
-}
-
+/* ── Index badges ────────────────────────── */
+.indice-placa-info,
 .indice-sarro-info {
-  margin-top: 15px;
-  text-align: center;
-  padding: 15px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-top: 0.85rem;
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
-/* Estilos para observaciones */
+.porcentaje-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.65rem 1.25rem;
+  background: #f0f9ff;
+  border-radius: 10px;
+  border: 1.5px solid #bae6fd;
+  min-width: 160px;
+}
+
+.porcentaje-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  text-align: center;
+}
+
+.porcentaje-valor {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0891b2;
+  line-height: 1;
+}
+
+/* tartar badge uses amber */
+.indice-sarro-info .porcentaje-item {
+  background: #fefce8;
+  border-color: #fde68a;
+}
+
+.indice-sarro-info .porcentaje-valor {
+  color: #b45309;
+}
+
+/* ── Observations ────────────────────────── */
 .observaciones-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: #fafbfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
 }
 
 .observaciones-section h3 {
-  color: #333;
-  margin-bottom: 15px;
-  font-size: 1.2em;
-  font-weight: 500;
-  text-align: center;
+  color: #0891b2;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin: 0 0 0.6rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.observaciones-section h3::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-radius: 2px;
 }
 
 .observaciones-textarea {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #e0e0e0;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid #e2e8f0;
   border-radius: 8px;
   font-family: inherit;
-  font-size: 0.95em;
+  font-size: 0.85rem;
   resize: vertical;
   min-height: 80px;
-  transition: border-color 0.3s ease;
+  transition: all 0.2s;
+  color: #1e293b;
+  box-sizing: border-box;
 }
 
 .observaciones-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+  background: #f0f9ff;
 }
 
-/* Estilos para acciones */
+.observaciones-textarea::placeholder {
+  color: #b0bec5;
+  font-style: italic;
+}
+
+/* ── Actions ─────────────────────────────── */
 .acciones-section {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e0f2fe;
 }
 
 .message {
-  padding: 12px 16px;
+  padding: 0.65rem 1rem;
   border-radius: 8px;
-  margin-bottom: 20px;
-  font-weight: 500;
-  text-align: center;
+  margin-bottom: 0.85rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-left: 4px solid transparent;
+  animation: msgIn 0.3s ease;
 }
 
 .message.success {
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background: #ecfdf5;
+  color: #065f46;
+  border-left-color: #10b981;
 }
 
 .message.error {
-  background: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background: #fef2f2;
+  color: #991b1b;
+  border-left-color: #ef4444;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .botones-container {
   display: flex;
-  gap: 15px;
+  gap: 0.65rem;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.btn-guardar,
+/* shared base */
+.btn-nuevo-guardar,
 .btn-modificar,
 .btn-periodontograma,
 .btn-volver {
-  padding: 12px 24px;
+  padding: 0.6rem 1.5rem;
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95em;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
   min-width: 120px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
-.btn-guardar {
-  background: #28a745;
+.btn-nuevo-guardar {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
   color: white;
+  box-shadow: 0 3px 10px rgba(6, 182, 212, 0.4);
 }
-
-.btn-guardar:hover:not(:disabled) {
-  background: #218838;
+.btn-nuevo-guardar:hover:not(:disabled) {
+  background: linear-gradient(135deg, #22d3ee, #06b6d4);
   transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(6, 182, 212, 0.5);
+}
+.btn-nuevo-guardar:disabled {
+  background: #cbd5e1;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-modificar {
-  background: #ffc107;
-  color: #212529;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.35);
 }
-
 .btn-modificar:hover:not(:disabled) {
-  background: #e0a800;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
   transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(245, 158, 11, 0.5);
+}
+.btn-modificar:disabled {
+  background: #cbd5e1;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-periodontograma {
-  background: #17a2b8;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
   color: white;
+  box-shadow: 0 3px 10px rgba(139, 92, 246, 0.35);
 }
-
 .btn-periodontograma:hover:not(:disabled) {
-  background: #138496;
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
   transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(139, 92, 246, 0.5);
+}
+.btn-periodontograma:disabled {
+  background: #cbd5e1;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-volver {
-  background: #6c757d;
-  color: white;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1.5px solid #e2e8f0;
+}
+.btn-volver:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+  transform: translateY(-1px);
 }
 
-.btn-volver:hover:not(:disabled) {
-  background: #5a6268;
-  transform: translateY(-2px);
-}
+/* keep old .btn-guardar alias for safety */
+.btn-guardar { @extend .btn-nuevo-guardar; }
 
-.btn-guardar:disabled,
-.btn-modificar:disabled,
-.btn-periodontograma:disabled,
-.btn-volver:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Estilos para botones en estado de loading */
-.btn-guardar.loading,
-.btn-modificar.loading,
-.btn-periodontograma.loading,
-.btn-volver.loading {
-  position: relative;
-  color: transparent;
-}
-
-.btn-guardar.loading::after,
-.btn-modificar.loading::after,
-.btn-periodontograma.loading::after,
-.btn-volver.loading::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Botón nuevo de guardar - completamente independiente */
-.btn-nuevo-guardar {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 120px;
-  background: #28a745;
-  color: white;
-}
-
-.btn-nuevo-guardar:hover:not(:disabled) {
-  background: #218838;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.btn-nuevo-guardar:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  background: #6c757d;
-}
-
-/* Responsive Design */
+/* ── Responsive ──────────────────────────── */
 @media (max-width: 768px) {
-  .periodoncia-container {
-    padding: 15px;
-  }
-  
-  .periodoncia-header {
-    padding: 20px;
-  }
-  
-  .periodoncia-header h1 {
-    font-size: 2em;
-  }
-  
-  .periodoncia-content {
-    padding: 20px;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .form-group {
-    min-width: auto;
-  }
-
-  .tipo-ficha-options {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .tipo-ficha-option {
-    min-width: auto;
-    width: 100%;
-    justify-content: center;
-  }
-
+  .periodoncia-container { padding: 0.75rem; }
+  .periodoncia-content   { padding: 1rem; }
+  .form-row { flex-direction: column; gap: 0.65rem; }
+  .form-group { min-width: auto; }
+  .tipo-ficha-options { flex-direction: column; }
+  .tipo-ficha-option  { width: 100%; justify-content: center; }
   .odontograma-permanente,
-  .odontograma-sarro {
-    padding: 15px;
-  }
-
+  .odontograma-sarro  { padding: 0.65rem; }
   .diente-cubo,
-  .diente-sarro-cubo {
-    width: 35px;
-    height: 35px;
-  }
-
+  .diente-sarro-cubo  { width: 32px; height: 32px; }
   .diente-numero-placa,
-  .diente-sarro-cubo .diente-numero {
-    font-size: 0.6em;
-    padding: 1px 2px;
-    bottom: -15px;
-  }
-
-  .porcentaje-item {
-    min-width: 140px;
-    padding: 10px 15px;
-  }
-
-  .porcentaje-valor {
-    font-size: 1.2em;
-    padding: 5px 10px;
-  }
-
-  .botones-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .btn-guardar,
+  .diente-sarro-cubo .diente-numero { font-size: 0.55rem; bottom: -15px; }
+  .botones-container  { flex-direction: column; align-items: center; }
+  .btn-nuevo-guardar,
   .btn-modificar,
-  .btn-volver {
-    width: 100%;
-    max-width: 200px;
-  }
-
-  .btn-nuevo-guardar {
-    width: 100%;
-    max-width: 200px;
-  }
+  .btn-periodontograma,
+  .btn-volver { width: 100%; max-width: 220px; }
 }
 
 @media (max-width: 480px) {
-  .periodoncia-header h1 {
-    font-size: 1.5em;
-  }
-  
-  .tipo-ficha-section h3,
-  .indice-placa-section h3,
-  .indice-sarro-section h3,
-  .observaciones-section h3 {
-    font-size: 1.1em;
-  }
-
-  .option-text {
-    font-size: 0.85em;
-  }
-
-  .form-select,
-  .form-input {
-    padding: 8px 10px;
-    font-size: 0.9em;
-  }
-
   .diente-cubo,
-  .diente-sarro-cubo {
-    width: 30px;
-    height: 30px;
-  }
-
+  .diente-sarro-cubo { width: 26px; height: 26px; }
   .diente-numero-placa,
-  .diente-sarro-cubo .diente-numero {
-    font-size: 0.55em;
-    padding: 1px 2px;
-    bottom: -12px;
-  }
-
-  .porcentaje-item {
-    min-width: 120px;
-    padding: 8px 12px;
-  }
-
-  .porcentaje-valor {
-    font-size: 1.1em;
-    padding: 4px 8px;
-  }
+  .diente-sarro-cubo .diente-numero { font-size: 0.5rem; bottom: -13px; padding: 1px 2px; }
+  .porcentaje-item { min-width: 130px; padding: 0.5rem 0.75rem; }
+  .porcentaje-valor { font-size: 1.25rem; }
 }

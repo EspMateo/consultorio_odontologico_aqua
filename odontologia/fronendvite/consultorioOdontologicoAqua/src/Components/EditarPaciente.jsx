@@ -4,6 +4,7 @@ import axios from 'axios';
 import { buildApiUrl } from '../config';
 import MessageDisplay from './MessageDisplay';
 import './PatientRegistration.css';
+import './styles/EditarPaciente.css';
 
 const EditarPaciente = () => {
   const { id } = useParams();
@@ -174,7 +175,12 @@ const EditarPaciente = () => {
     setMessageType('info');
   };
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) return (
+    <div className="editar-loading">
+      <div className="editar-loading-spinner" />
+      Cargando datos del paciente...
+    </div>
+  );
 
   return (
     <div className="main-container">
@@ -184,8 +190,10 @@ const EditarPaciente = () => {
       <div className="form-section">
         <div className="patient-form-card">
           <div className="patient-form-header">
-            <h2 className="patient-form-title">Editar Paciente</h2>
-            <p className="patient-form-subtitle">Modifique los datos del paciente</p>
+            <h2 className="patient-form-title">
+              {formData.nombre ? `Editando: ${formData.nombre} ${formData.apellido}` : 'Editar Paciente'}
+            </h2>
+            <p className="patient-form-subtitle">Modifique los datos del paciente y guarde los cambios</p>
           </div>
           
           {error && (

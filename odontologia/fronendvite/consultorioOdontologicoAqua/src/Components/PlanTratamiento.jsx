@@ -225,7 +225,7 @@ const PlanTratamiento = ({ paciente, onClose }) => {
     <div className="plan-tratamiento-overlay">
       <div className="plan-tratamiento-modal">
         <div className="plan-tratamiento-header">
-          <h2>Plan de Tratamiento</h2>
+          <h2>Plan de Tratamiento{paciente ? ` — ${paciente.name} ${paciente.lastname}` : ''}</h2>
           <button className="btn-cerrar" onClick={onClose}>
             ×
           </button>

@@ -291,10 +291,13 @@ const Periodoncia = () => {
     </div>
   );
 
+  const pacienteActual = pacienteFromState || pacientes.find(p => p.id == selectedPaciente);
+  const nombrePaciente = pacienteActual ? ` — ${pacienteActual.name} ${pacienteActual.lastname}` : '';
+
   return (
     <div className="periodoncia-container">
       <div className="periodoncia-header">
-        <h1>Periodoncia</h1>
+        <h1>Periodoncia{nombrePaciente}</h1>
       </div>
       
       <div className="periodoncia-content">

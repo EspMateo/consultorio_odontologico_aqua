@@ -963,26 +963,30 @@ const Periodontograma = () => {
   if (!paciente) return <p>No se encontró el paciente</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-      <div className="relative py-3 w-full px-4">
-        <div className="relative px-4 py-10 bg-white mx-0 shadow rounded-3xl sm:p-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="periodontograma-page">
+      <div className="periodontograma-page-header">
+        <h1>Periodontograma — {paciente.name} {paciente.lastname}</h1>
+        {fechaUltimaActualizacion && (
+          <span className="fecha-badge">
+            Actualizado: {new Date(fechaUltimaActualizacion).toLocaleString()}
+          </span>
+        )}
+      </div>
+
+      <div className="periodontograma-page-content">
+          <form onSubmit={handleSubmit}>
             <MessageDisplay message={displayMessage} type={messageType} onDismiss={handleDismissMessage} />
-            
+
             {notification.show && (
               <div className={`notification ${notification.type === 'success' ? 'success' : 'error'}`}>
                 {notification.message}
               </div>
             )}
 
-            <div className="periodontograma-header">
-              <h2 className="periodontograma-title">Periodontograma</h2>
-              <div className="paciente-info">
-                <p><strong>Paciente:</strong> {paciente.name} {paciente.lastname}</p>
-                <p><strong>Cédula:</strong> {paciente.ci}</p>
-              </div>
-              
-              {/* Botón de cambio de vista */}
+            {/* Controls bar */}
+            <div className="controls-bar">
+              <div className="paciente-cedula-badge">CI: {paciente.ci}</div>
+
               <div className="vista-toggle-container">
                 <button
                   type="button"
@@ -999,8 +1003,7 @@ const Periodontograma = () => {
                   Vista Palatina
                 </button>
               </div>
-              
-              {/* Selector de cuadrantes */}
+
               <div className="cuadrante-selector-container">
                 <label className="cuadrante-label">Cuadrante:</label>
                 <select
@@ -1090,7 +1093,6 @@ const Periodontograma = () => {
               </button>
             </div>
           </form>
-        </div>
       </div>
 
       {showConfirmModal && (
@@ -1115,12 +1117,6 @@ const Periodontograma = () => {
               </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {fechaUltimaActualizacion && (
-        <div className="fecha-periodontograma">
-          Última actualización: {new Date(fechaUltimaActualizacion).toLocaleString()}
         </div>
       )}
     </div>

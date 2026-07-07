@@ -350,7 +350,7 @@ const DiagnosticoPronostico = ({ paciente, onClose }) => {
     <div className="diagnostico-pronostico-overlay">
       <div className="diagnostico-pronostico-modal">
         <div className="diagnostico-pronostico-header">
-          <h2>Diagnóstico y Pronóstico</h2>
+          <h2>Diagnóstico y Pronóstico — {paciente.name} {paciente.lastname}</h2>
           <button className="btn-cerrar" onClick={onClose}>×</button>
         </div>
 
