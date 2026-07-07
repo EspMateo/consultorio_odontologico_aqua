@@ -3,12 +3,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { buildApiUrl } from '../config';
 import MessageDisplay from './MessageDisplay';
+import { generarPdfPaciente } from '../utils/generarPdfPaciente';
 import './styles/TablaPacientes.css';
 
 function TablaPacientes({ usuarioId }) {
   const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
+  const [generatingPdfId, setGeneratingPdfId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [displayMessage, setDisplayMessage] = useState(null);
   const [messageType, setMessageType] = useState('info');
@@ -122,6 +124,18 @@ function TablaPacientes({ usuarioId }) {
     navigate(`/dashboard/pacientes/presupuesto/${paciente.id}`, { state: { paciente } });
   };
 
+  const handleGenerarPdf = async (paciente) => {
+    try {
+      setGeneratingPdfId(paciente.id);
+      await generarPdfPaciente(paciente);
+    } catch (err) {
+      setDisplayMessage('Error al generar el PDF. Intente nuevamente.');
+      setMessageType('error');
+    } finally {
+      setGeneratingPdfId(null);
+    }
+  };
+
   const handleDismissMessage = () => {
     setDisplayMessage(null);
     setMessageType('info');
@@ -200,12 +214,20 @@ function TablaPacientes({ usuarioId }) {
                   >
                     Editar
                   </button>
-                  <button 
+                  <button
                     onClick={() => handleDelete(p.id)}
                     className="btn-eliminar"
                     disabled={deletingId === p.id}
                   >
                     {deletingId === p.id ? 'Eliminando...' : 'Eliminar'}
+                  </button>
+                  <button
+                    onClick={() => handleGenerarPdf(p)}
+                    className="btn-pdf"
+                    disabled={generatingPdfId === p.id}
+                    title="Descargar expediente PDF"
+                  >
+                    {generatingPdfId === p.id ? 'Generando...' : '↓ Expediente'}
                   </button>
                 </td>
               </tr>

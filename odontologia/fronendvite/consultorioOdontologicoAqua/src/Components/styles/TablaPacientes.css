@@ -271,6 +271,23 @@
   box-shadow: none;
 }
 
+.btn-pdf {
+  color: #0891b2;
+  border-color: #67e8f9;
+}
+.btn-pdf:hover {
+  background: #0891b2;
+  border-color: #0891b2;
+  color: white;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.35);
+}
+.btn-pdf:disabled {
+  color: #94a3b8;
+  border-color: #e2e8f0;
+  background: white;
+  cursor: not-allowed;
+}
+
 /* ── Message display ─────────────────────── */
 .tabla-container .message-display {
   margin-bottom: 0.75rem;
