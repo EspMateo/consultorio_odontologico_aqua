@@ -242,8 +242,10 @@ const ControlFinanciero = () => {
   return (
     <div className="control-financiero-container">
       <div className="control-financiero-header">
-        <h1>Control Financiero</h1>
-        <p>Gestión y seguimiento de ingresos y gastos</p>
+        <div>
+          <h1>Control Financiero</h1>
+          <p>Gestión y seguimiento de ingresos y gastos del período seleccionado</p>
+        </div>
       </div>
 
       {/* Filtros de fecha */}

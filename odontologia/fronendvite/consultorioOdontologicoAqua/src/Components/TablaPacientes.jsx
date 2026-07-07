@@ -127,7 +127,7 @@ function TablaPacientes({ usuarioId }) {
     setMessageType('info');
   };
 
-  if (loading) return <p>Cargando pacientes...</p>;
+  if (loading) return <div className="tabla-loading">Cargando pacientes...</div>;
 
   return (
     <div className="tabla-container">

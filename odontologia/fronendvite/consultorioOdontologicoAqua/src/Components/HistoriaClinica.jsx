@@ -550,7 +550,7 @@ const HistoriaClinica = () => {
   return (
     <div className="historia-clinica-container">
       <div className="historia-clinica-header">
-        <h1>Historia Clínica</h1>
+        <h1>Historia Clínica{pacienteSeleccionado ? ` — ${pacienteSeleccionado.name} ${pacienteSeleccionado.lastname}` : ''}</h1>
       </div>
       
       {message && (

@@ -52,6 +52,8 @@ const PatientRegistration = () => {
     direccion: '',
     consulta: '',
     fecha: '',
+    hora: '',
+    tipoConsulta: '',
     sexo: '',
     edad: ''
   });
@@ -340,6 +342,8 @@ const PatientRegistration = () => {
           direccion: '',
           consulta: '',
           fecha: '',
+          hora: '',
+          tipoConsulta: '',
           sexo: '',
           edad: ''
         });
