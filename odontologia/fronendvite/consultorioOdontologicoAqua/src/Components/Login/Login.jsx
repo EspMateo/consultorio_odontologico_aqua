@@ -65,18 +65,22 @@ export default function Login() {
         }
       });
 
-      if (res.data) {
-        // Guardar el token y datos del usuario
-        localStorage.setItem('token', res.data.token || 'dummy-token');
+      if (res.data && res.data.token) {
+        // Guardar el token real y los datos del usuario
+        localStorage.setItem('token', res.data.token);
         localStorage.setItem('userEmail', email);
         localStorage.setItem('userId', res.data.id);
-        
+
         setButtonMessage('¡Inicio exitoso!');
         setPasswordError(''); // Limpiar cualquier error previo
-        
+
         setTimeout(() => {
           navigate('/dashboard');
         }, 1500);
+      } else {
+        setLoading(false);
+        setButtonMessage('Ingresar');
+        setPasswordError('No se pudo iniciar sesión. Intenta nuevamente.');
       }
     } catch (err) {
       setLoading(false);

@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/gastos")
-@CrossOrigin(origins = "*")
 public class GastoController {
 
     @Autowired

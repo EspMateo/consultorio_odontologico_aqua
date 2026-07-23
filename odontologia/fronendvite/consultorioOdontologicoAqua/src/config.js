@@ -1,6 +1,32 @@
+import axios from 'axios';
+
 // Detectar si estamos ejecutando en Electron
-const isElectron = typeof window !== 'undefined' && 
+const isElectron = typeof window !== 'undefined' &&
   (window.process?.type === 'renderer' || window.navigator?.userAgent?.includes('Electron'));
+
+// Adjuntar automáticamente el token JWT (guardado en el login) a cada request
+axios.interceptors.request.use((requestConfig) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    requestConfig.headers.Authorization = `Bearer ${token}`;
+  }
+  return requestConfig;
+});
+
+// Si el backend responde 401 (token vencido o inválido), cerrar la sesión
+// localmente y mandar de vuelta al login.
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userEmail');
+      window.location.hash = '#/';
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Configuración de la API
 // En Electron, puedes usar una URL diferente si es necesario

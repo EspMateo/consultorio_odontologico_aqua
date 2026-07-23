@@ -7,6 +7,7 @@ import com.consultorio.odontologia.entity.Usuario;
 import com.consultorio.odontologia.repository.DiagnosticoRepository;
 import com.consultorio.odontologia.repository.PacienteRepository;
 import com.consultorio.odontologia.repository.UsuarioRepository;
+import com.consultorio.odontologia.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +35,10 @@ public class DiagnosticoService {
         Paciente paciente = pacienteRepository.findById(diagnosticoDTO.getPacienteId())
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
-        // Verificar que el usuario existe
-        Usuario usuario = usuarioRepository.findById(diagnosticoDTO.getUsuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        // El doctor se saca del token ya autenticado, no de lo que mande el cliente
+        Long usuarioIdActual = SecurityUtils.getUsuarioIdActual();
+        Usuario usuario = usuarioRepository.findById(usuarioIdActual)
+                .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado"));
 
         // Validar que la fecha no sea null
         if (diagnosticoDTO.getFechaDiagnostico() == null) {

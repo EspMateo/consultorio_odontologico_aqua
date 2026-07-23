@@ -1,6 +1,9 @@
 package com.consultorio.odontologia.dto;
 
 import com.consultorio.odontologia.entity.Paciente;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,10 +13,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CitaDTO {
     private Long id;
+
+    @NotNull(message = "El paciente es obligatorio")
     private Paciente paciente;
+
+    @NotBlank(message = "La fecha es obligatoria")
     private String fecha;
+
+    @NotBlank(message = "La hora es obligatoria")
     private String hora;
+
+    @Size(max = 500, message = "El motivo no puede tener más de 500 caracteres")
     private String motivo;
+
     private Long usuarioId;
     private String usuarioName;
     private String usuarioEmail;

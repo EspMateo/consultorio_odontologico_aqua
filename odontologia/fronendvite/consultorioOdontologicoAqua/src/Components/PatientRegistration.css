@@ -382,7 +382,7 @@
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
-  max-height: 480px;
+  max-height: 620px;
   background: white;
   border: 1px solid #e2e8f0;
   flex-shrink: 0;
@@ -416,8 +416,8 @@
 
 .calendar-container .fc-daygrid-day {
   border: 1px solid #f1f5f9 !important;
-  min-height: 42px !important;
-  max-height: 52px !important;
+  min-height: 58px !important;
+  max-height: 74px !important;
 }
 
 .calendar-container .fc-daygrid-day:hover {
@@ -440,15 +440,38 @@
 .calendar-container .fc-event {
   border: none !important;
   border-radius: 4px !important;
-  color: white !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   padding: 1px 3px !important;
   margin: 1px !important;
 }
 
+/* Eventos con fondo de color (vista Semana/Día): texto blanco */
+.calendar-container .fc-daygrid-block-event,
+.calendar-container .fc-timegrid-event,
+.calendar-container .fc-h-event {
+  color: white !important;
+}
+
+.calendar-container .fc-daygrid-block-event .fc-event-title,
+.calendar-container .fc-daygrid-block-event .fc-event-time,
+.calendar-container .fc-timegrid-event .fc-event-title,
+.calendar-container .fc-timegrid-event .fc-event-time,
+.calendar-container .fc-h-event .fc-event-title,
+.calendar-container .fc-h-event .fc-event-time {
+  color: white !important;
+  font-weight: 700 !important;
+}
+
+/* Eventos en modo "punto" (vista Mes, sin fondo de color): texto oscuro */
+.calendar-container .fc-daygrid-dot-event .fc-event-title,
+.calendar-container .fc-daygrid-dot-event .fc-event-time {
+  color: #1e293b !important;
+  font-weight: 700 !important;
+}
+
 .calendar-container .fc-daygrid-day-frame {
-  min-height: 40px !important;
-  max-height: 50px !important;
+  min-height: 56px !important;
+  max-height: 72px !important;
 }
 
 /* ── Color legend ────────────────────────── */

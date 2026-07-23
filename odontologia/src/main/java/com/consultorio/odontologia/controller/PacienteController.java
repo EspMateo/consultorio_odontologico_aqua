@@ -3,6 +3,7 @@ package com.consultorio.odontologia.controller;
 import com.consultorio.odontologia.dto.PacienteDTO;
 import com.consultorio.odontologia.entity.Paciente;
 import com.consultorio.odontologia.service.PacienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pacientes")
-@CrossOrigin(origins = "*")
 public class PacienteController {
 
     @Autowired
     private PacienteService pacienteService;
 
     @PostMapping
-    public ResponseEntity<Paciente> registrarPaciente(@RequestBody PacienteDTO pacienteDTO) {
+    public ResponseEntity<Paciente> registrarPaciente(@Valid @RequestBody PacienteDTO pacienteDTO) {
         try {
             Paciente paciente = pacienteService.registrarPaciente(pacienteDTO);
             return ResponseEntity.ok(paciente);
@@ -71,7 +71,7 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> actualizarPaciente(@PathVariable Long id, @RequestBody PacienteDTO pacienteDTO) {
+    public ResponseEntity<Paciente> actualizarPaciente(@PathVariable Long id, @Valid @RequestBody PacienteDTO pacienteDTO) {
         try {
             Paciente paciente = pacienteService.actualizarPaciente(id, pacienteDTO);
             return ResponseEntity.ok(paciente);

@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/historia-clinica")
-@CrossOrigin(origins = "*")
 public class HistoriaClinicaController {
 
     @Autowired

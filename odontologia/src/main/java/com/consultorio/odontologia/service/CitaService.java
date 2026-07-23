@@ -7,6 +7,7 @@ import com.consultorio.odontologia.entity.Usuario;
 import com.consultorio.odontologia.repository.CitaRepository;
 import com.consultorio.odontologia.repository.PacienteRepository;
 import com.consultorio.odontologia.repository.UsuarioRepository;
+import com.consultorio.odontologia.security.SecurityUtils;
 import com.consultorio.odontologia.service.util.DTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,10 @@ public class CitaService {
         Paciente paciente = pacienteRepository.findById(citaDTO.getPaciente().getId())
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(citaDTO.getUsuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        // El doctor se saca del token ya autenticado, no de lo que mande el cliente
+        Long usuarioIdActual = SecurityUtils.getUsuarioIdActual();
+        Usuario usuario = usuarioRepository.findById(usuarioIdActual)
+                .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado"));
 
         Cita cita = new Cita();
         cita.setPaciente(paciente);
@@ -73,8 +76,10 @@ public class CitaService {
         Paciente paciente = pacienteRepository.findById(citaDTO.getPaciente().getId())
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(citaDTO.getUsuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        // El doctor se saca del token ya autenticado, no de lo que mande el cliente
+        Long usuarioIdActual = SecurityUtils.getUsuarioIdActual();
+        Usuario usuario = usuarioRepository.findById(usuarioIdActual)
+                .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado"));
 
         cita.setPaciente(paciente);
         cita.setFecha(LocalDate.parse(citaDTO.getFecha()));

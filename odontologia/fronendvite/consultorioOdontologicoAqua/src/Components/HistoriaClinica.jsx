@@ -445,8 +445,8 @@ const HistoriaClinica = () => {
         examenRegional: buildExamenRegional(),
         examenRegionalDetalle: formData.examenRegionalDetalle,
         examenLocal: buildExamenLocal(),
-        examenLocalDetalle: '',
-        usuario: { id: 1 }
+        examenLocalDetalle: ''
+        // El doctor se asigna en el backend a partir del usuario autenticado (JWT)
       };
 
       const response = await axios.post(buildApiUrl('historia-clinica'), historiaClinicaData);
@@ -511,8 +511,8 @@ const HistoriaClinica = () => {
         examenRegional: buildExamenRegional(),
         examenRegionalDetalle: formData.examenRegionalDetalle,
         examenLocal: buildExamenLocal(),
-        examenLocalDetalle: '',
-        usuario: { id: 1 }
+        examenLocalDetalle: ''
+        // El doctor se asigna en el backend a partir del usuario autenticado (JWT)
       };
 
       const response = await axios.put(buildApiUrl(`historia-clinica/${historiaActual.id}`), historiaClinicaData);

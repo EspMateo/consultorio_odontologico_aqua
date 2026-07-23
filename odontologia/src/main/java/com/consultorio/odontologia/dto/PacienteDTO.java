@@ -1,5 +1,10 @@
 package com.consultorio.odontologia.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,15 +14,33 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PacienteDTO {
     private Long id;
+
+    @NotBlank(message = "La cédula es obligatoria")
+    @Size(max = 20, message = "La cédula no puede tener más de 20 caracteres")
     private String cedula;
+
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 100, message = "El nombre no puede tener más de 100 caracteres")
     private String nombre;
+
+    @NotBlank(message = "El apellido es obligatorio")
+    @Size(max = 100, message = "El apellido no puede tener más de 100 caracteres")
     private String apellido;
+
     private String sexo;
+
+    @Size(max = 30, message = "El número no puede tener más de 30 caracteres")
     private String numero;
+
+    @Email(message = "El email no tiene un formato válido")
     private String email;
+
     private String consulta;
     private String direccion;
     private String fecha;
+
+    @Min(value = 0, message = "La edad no puede ser negativa")
+    @Max(value = 150, message = "La edad no es válida")
     private Integer edad;
 
     public String getCedula() {

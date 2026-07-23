@@ -12,7 +12,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/periodontograma")
-@CrossOrigin(origins = "*")
 public class PeriodontogramaController {
     
     @Autowired

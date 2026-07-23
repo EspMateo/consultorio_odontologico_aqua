@@ -6,6 +6,7 @@ import com.consultorio.odontologia.entity.Usuario;
 import com.consultorio.odontologia.repository.HistoriaClinicaRepository;
 import com.consultorio.odontologia.repository.PacienteRepository;
 import com.consultorio.odontologia.repository.UsuarioRepository;
+import com.consultorio.odontologia.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,12 +86,13 @@ public class HistoriaClinicaService {
             throw new IllegalArgumentException("El paciente no existe");
         }
 
-        // Asignar usuario si no está asignado
-        if (historiaClinica.getUsuario() == null) {
-            Optional<Usuario> usuario = usuarioRepository.findById(1L); // Usuario por defecto
-            if (usuario.isPresent()) {
-                historiaClinica.setUsuario(usuario.get());
-            }
+        // El doctor se saca del token ya autenticado, no de lo que mande el cliente
+        // (antes se ignoraba lo que mandaba el frontend y siempre quedaba en el usuario 1)
+        Long usuarioIdActual = SecurityUtils.getUsuarioIdActual();
+        if (usuarioIdActual != null) {
+            Usuario usuario = usuarioRepository.findById(usuarioIdActual)
+                    .orElseThrow(() -> new IllegalArgumentException("Usuario autenticado no encontrado"));
+            historiaClinica.setUsuario(usuario);
         }
 
         // Establecer timestamps

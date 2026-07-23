@@ -13,7 +13,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/periodoncia")
-@CrossOrigin(origins = "*")
 public class PeriodonciaController {
     
     @Autowired

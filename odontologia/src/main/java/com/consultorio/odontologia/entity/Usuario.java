@@ -1,6 +1,10 @@
 package com.consultorio.odontologia.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
@@ -16,10 +20,21 @@ public class Usuario {
 
     private Long id;
 
+    // Estas anotaciones solo se aplican donde el controller use @Valid
+    // (hoy: solo en /api/auth/register, no afectan al login).
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "El email no tiene un formato válido")
     private String email;
 
+    // Se puede recibir en el JSON de entrada (login/registro) pero nunca
+    // se devuelve en las respuestas, para no filtrar la contraseña.
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 100, message = "El nombre no puede tener más de 100 caracteres")
     private String name;
 
     @OneToMany(mappedBy = "usuario")
