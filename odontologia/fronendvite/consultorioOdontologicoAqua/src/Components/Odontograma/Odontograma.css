@@ -69,261 +69,16 @@
   100% { transform: rotate(360deg); }
 }
 
-/* ── Tipo de Dentición section ───────────── */
-.tipo-denticion-section {
-  background: white;
-  border-radius: 10px;
-  padding: 0.85rem 1.25rem;
-  margin-bottom: 0.85rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-}
-
-.tipo-denticion-section h3 {
-  color: #0891b2;
-  font-size: 0.72rem;
-  font-weight: 800;
-  margin: 0 0 0.65rem 0;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.tipo-denticion-section h3::before {
-  content: '';
-  width: 3px;
-  height: 12px;
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  border-radius: 2px;
-}
-
-.tipo-denticion-options {
-  display: flex;
-  gap: 0.65rem;
-  flex-wrap: wrap;
-}
-
-.tipo-denticion-option {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.45rem 0.9rem;
-  background: #fafbfc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: 1.5px solid #e2e8f0;
-  min-width: 150px;
-}
-
-.tipo-denticion-option:hover {
-  border-color: #06b6d4;
-  background: #f0f9ff;
-  transform: translateY(-1px);
-}
-
-.tipo-denticion-option.selected {
-  border-color: #06b6d4;
-  background: #f0f9ff;
-  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.2);
-}
-
-.tipo-denticion-square {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #cbd5e1;
-  border-radius: 4px;
-  background: white;
-  transition: all 0.2s;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.tipo-denticion-option.selected .tipo-denticion-square {
-  background: #06b6d4;
-  border-color: #06b6d4;
-}
-
-.tipo-denticion-option.selected .tipo-denticion-square::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-weight: 800;
-  font-size: 11px;
-  line-height: 1;
-}
-
-.tipo-denticion-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.tipo-denticion-label {
-  font-weight: 700;
-  color: #1e293b;
-  font-size: 0.82rem;
-}
-
-.tipo-denticion-descripcion {
-  font-size: 0.72rem;
-  color: #64748b;
-  margin-top: 1px;
-}
-
-.tipo-denticion-option.selected .tipo-denticion-label { color: #0891b2; }
-.tipo-denticion-option.selected .tipo-denticion-descripcion { color: #0891b2; }
-
-/* ── Main odontogram canvas ──────────────── */
-.odontograma-main {
+/* ── react-advanced-odontogram wrapper ───── */
+.odontograma-shell-wrapper {
   background: white;
   border-radius: 12px;
-  padding: 50px 1.25rem 1.25rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
   border: 1px solid #e2e8f0;
-  width: 100%;
-  position: relative;
+  overflow: hidden;
   margin-bottom: 0.85rem;
-  box-sizing: border-box;
+  min-height: 640px;
 }
-
-/* Icon buttons (clear / reload) */
-.btn-icon {
-  position: absolute;
-  z-index: 10;
-  background: white;
-  border: 1.5px solid #e2e8f0;
-  color: #64748b;
-  font-size: 1.2rem;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-icon:hover {
-  background: #f0f9ff;
-  color: #0891b2;
-  border-color: #06b6d4;
-  box-shadow: 0 3px 10px rgba(6, 182, 212, 0.2);
-}
-
-.limpiar-icon  { top: 10px; left: 10px; }
-.recargar-icon { top: 10px; right: 10px; }
-
-/* ── Tooth rows ──────────────────────────── */
-.fila-dientes {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 6px;
-  gap: 0;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.fila-temporal {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: center;
-  margin-bottom: 6px;
-  gap: 6px;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-/* ── Circular tooth ──────────────────────── */
-.diente-circular {
-  width: 54px;
-  height: 54px;
-  position: relative;
-  margin: 0 1px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.diente-circular.selected { transform: scale(1.08); }
-
-.diente-circular .diente-numero {
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #0f172a;
-  color: white;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 800;
-  z-index: 10;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-}
-
-.diente-svg {
-  width: 48px;
-  height: 48px;
-  display: block;
-  border-radius: 50%;
-  background: white;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-}
-
-.sector-diente {
-  cursor: pointer;
-  stroke: #334155;
-  stroke-width: 1.5px;
-  transition: filter 0.15s, stroke-width 0.15s;
-}
-
-.sector-diente.selected {
-  filter: brightness(1.15) drop-shadow(0 0 3px rgba(0,0,0,0.3));
-  stroke-width: 2.5px;
-}
-
-.sector-oclusal {
-  stroke: #334155;
-  stroke-width: 1.5px;
-}
-
-/* ── Temporal teeth ──────────────────────── */
-.diente-temporal { opacity: 0.9; }
-
-.diente-temporal .diente-numero {
-  background: #7c3aed;
-  font-size: 0.58rem;
-  width: 13px;
-  height: 13px;
-  top: -6px;
-}
-
-.diente-temporal .diente-svg {
-  border: 1.5px solid #a78bfa;
-}
-
-.diente-temporal:hover  { transform: scale(1.05); }
-.diente-temporal.selected { transform: scale(1.1); box-shadow: 0 3px 10px rgba(124,58,237,0.2); }
-
-.fila-temporal .diente-circular { width: 48px; height: 48px; }
-.fila-temporal .diente-svg      { width: 42px; height: 42px; }
-.diente-temporal .diente-numero { width: 13px; height: 13px; font-size: 0.7rem; top: -6px; }
 
 /* ── Section cards ───────────────────────── */
 .odontograma-section {
@@ -333,97 +88,6 @@
   margin-bottom: 0.75rem;
   border: 1px solid #e2e8f0;
   box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-}
-
-/* ── Conditions panel ────────────────────── */
-.condiciones-panel { }
-
-.condiciones-panel h3 {
-  color: #0891b2;
-  font-size: 0.72rem;
-  font-weight: 800;
-  margin: 0 0 0.75rem 0;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e0f2fe;
-}
-
-.condiciones-panel h3::before {
-  content: '';
-  width: 3px;
-  height: 12px;
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  border-radius: 2px;
-}
-
-.condiciones-lista {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
-.condicion-item {
-  min-width: 120px;
-  max-width: 160px;
-  background: #fafbfc;
-  border-radius: 8px;
-  padding: 6px 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  border: 1.5px solid #e2e8f0;
-  transition: all 0.2s;
-  font-size: 0.82rem;
-}
-
-.condicion-item:hover {
-  border-color: #67e8f9;
-  background: #f0f9ff;
-}
-
-.condicion-item.selected {
-  border-color: #06b6d4;
-  background: #f0f9ff;
-  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.15);
-}
-
-.condicion-color {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.8);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-  flex-shrink: 0;
-}
-
-.condicion-info { display: flex; flex-direction: column; }
-
-.condicion-nombre {
-  font-weight: 700;
-  color: #1e293b;
-  font-size: 0.82rem;
-}
-
-.condicion-descripcion {
-  font-size: 0.7rem;
-  color: #64748b;
-  margin-top: 1px;
-}
-
-/* ── Row layout (obs + selected) ─────────── */
-.odontograma-row {
-  display: flex;
-  flex-direction: row;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-  align-items: flex-start;
 }
 
 /* ── Observations panel ──────────────────── */
@@ -475,33 +139,6 @@
 }
 
 .observaciones-textarea::placeholder { color: #b0bec5; font-style: italic; }
-
-/* ── Selected tooth panel ────────────────── */
-.diente-seleccionado {
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
-  color: white;
-  padding: 1rem 1.25rem;
-  border-radius: 10px;
-  border-bottom: 3px solid #06b6d4;
-  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.2);
-  flex: 0 0 240px;
-  align-self: flex-start;
-}
-
-.diente-seleccionado h3 {
-  margin: 0 0 0.65rem 0;
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: #67e8f9;
-}
-
-.diente-seleccionado p {
-  margin: 5px 0;
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.85);
-}
-
-.diente-seleccionado strong { color: #e0f2fe; }
 
 /* ── Actions panel ───────────────────────── */
 .acciones-panel {
@@ -583,11 +220,6 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 /* ── Buttons ─────────────────────────────── */
 .acciones-panel button {
   padding: 0.55rem 1.25rem;
@@ -624,18 +256,16 @@
   box-shadow: none;
 }
 
-.btn-exportar {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  color: white;
-  box-shadow: 0 3px 10px rgba(139, 92, 246, 0.35);
+.btn-icon-text {
+  background: #f0f9ff;
+  color: #0891b2;
+  border: 1.5px solid #bae6fd;
 }
 
-.btn-exportar:hover:not(:disabled) {
-  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
-  transform: translateY(-2px);
+.btn-icon-text:hover:not(:disabled) {
+  background: #e0f2fe;
+  transform: translateY(-1px);
 }
-
-.btn-exportar:disabled { background: #cbd5e1; box-shadow: none; }
 
 .btn-volver {
   background: #f1f5f9;
@@ -649,122 +279,13 @@
   transform: translateY(-1px);
 }
 
-/* ── Cube tooth (legacy, keep functional) ── */
-.diente-cubo {
-  width: 70px;
-  height: 70px;
-  position: relative;
-  margin: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.diente-cubo.selected { transform: scale(1.08); }
-
-.diente-cubo .diente-numero {
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #0f172a;
-  color: white;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 800;
-  z-index: 10;
-}
-
-.diente-cubo-grid {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  border: 2px solid #334155;
-  border-radius: 8px;
-  background: white;
-  position: relative;
-}
-
-.cubo-vacio { background: transparent; }
-
-.cubo-cara {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  transition: all 0.15s;
-  z-index: 1;
-  user-select: none;
-}
-
-.cubo-cara.selected { outline: 2px solid #334155; z-index: 2; }
-
-.cubo-vestibular { grid-column: 2; grid-row: 1; border-bottom: 1.5px solid #334155; }
-.cubo-mesial    { grid-column: 1; grid-row: 2; border-right: 1.5px solid #334155; }
-.cubo-distal    { grid-column: 3; grid-row: 2; border-left: 1.5px solid #334155; }
-.cubo-palatal   { grid-column: 2; grid-row: 3; border-top: 1.5px solid #334155; }
-.cubo-oclusal   { grid-column: 2; grid-row: 2; border: 1.5px solid #334155; border-radius: 3px; z-index: 2; }
-
-.diente-cubo-grid::before {
-  content: '';
-  position: absolute;
-  left: 50%; top: 0;
-  width: 2px; height: 100%;
-  background: #334155;
-  transform: translateX(-50%);
-  z-index: 0;
-}
-
-.diente-cubo-grid::after {
-  content: '';
-  position: absolute;
-  top: 50%; left: 0;
-  width: 100%; height: 2px;
-  background: #334155;
-  transform: translateY(-50%);
-  z-index: 0;
-}
-
 /* ── Responsive ──────────────────────────── */
-@media (max-width: 1200px) {
-  .odontograma-row { flex-direction: column; }
-  .observaciones-panel, .diente-seleccionado { flex: none; width: 100%; }
-  .diente-seleccionado { max-width: 100%; }
+@media (max-width: 768px) {
+  .odontograma-page { padding: 0.75rem; }
   .acciones-buttons { justify-content: center; }
 }
 
-@media (max-width: 768px) {
-  .odontograma-page { padding: 0.75rem; }
-  .odontograma-main { padding: 48px 0.75rem 0.75rem; }
-  .tipo-denticion-options { flex-direction: column; }
-  .tipo-denticion-option { min-width: auto; width: 100%; }
-  .diente-circular { width: 44px; height: 44px; }
-  .diente-svg { width: 38px; height: 38px; }
-  .diente-cubo { width: 55px; height: 55px; }
-  .fila-temporal .diente-circular { width: 36px; height: 36px; }
-  .fila-temporal .diente-svg { width: 30px; height: 30px; }
-}
-
 @media (max-width: 480px) {
-  .diente-circular { width: 36px; height: 36px; margin: 0; }
-  .diente-svg { width: 30px; height: 30px; }
-  .diente-circular .diente-numero { width: 14px; height: 14px; font-size: 0.55rem; }
-  .diente-cubo { width: 42px; height: 42px; }
-  .fila-temporal .diente-circular { width: 28px; height: 28px; }
-  .fila-temporal .diente-svg { width: 22px; height: 22px; }
-  .diente-temporal .diente-numero { width: 11px; height: 11px; font-size: 0.5rem; }
   .acciones-buttons { flex-direction: column; align-items: center; }
   .acciones-panel button { width: 100%; max-width: 220px; }
 }
